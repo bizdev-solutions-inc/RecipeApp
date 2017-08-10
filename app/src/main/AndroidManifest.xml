@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.vincentzhu.testapplication">
+
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="bizDev&apos;s Cooking Recipe"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".login"
+            android:label="bizDev Recipe">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Home" />
+        <activity android:name=".Ingredient_Categories" />
+        <activity android:name=".Introduction" />
+        <activity android:name=".MeatScroll" />
+        <activity android:name=".PersonalRecipe" />
+        <activity android:name=".SavedRecipe" />
+        <activity android:name=".SavedIngredients" />
+        <activity android:name=".LoginActivity"></activity>
+    </application>
+
+</manifest>

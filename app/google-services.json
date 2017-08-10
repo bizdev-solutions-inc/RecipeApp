@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "539397603455",
+    "firebase_url": "https://bizdevrecipeapp.firebaseio.com",
+    "project_id": "bizdevrecipeapp",
+    "storage_bucket": "bizdevrecipeapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:539397603455:android:be51c15a995e8b31",
+        "android_client_info": {
+          "package_name": "com.example.vincentzhu.testapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "539397603455-15jjpkpbe3ja3h44ijfn6veldmeqpt5i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDL300KZ8xQ5YJOVUcTRgP0bV6CQ9Jb0AU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
