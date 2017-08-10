@@ -14,12 +14,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_marginBottom="24dp"
+        android:layout_weight="0.18"
         android:ems="24"
+        android:text="User Registration"
         android:textAlignment="center"
-        android:text="User Registeration"
-        android:layout_weight="0.18" />
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
         android:layout_margin="15dp"
