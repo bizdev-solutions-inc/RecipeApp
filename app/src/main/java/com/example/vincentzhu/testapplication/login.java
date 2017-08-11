@@ -19,12 +19,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-
-
-/**
- * Created by XPS on 8/8/2017.
- */
-
 public class login extends AppCompatActivity implements View.OnClickListener {
 
     private Button buttonRegister;
@@ -34,13 +28,10 @@ public class login extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth mAuth;
 
-
-
     protected void onCreate (Bundle SavedInstanceState) {
 
         super.onCreate (SavedInstanceState);
         setContentView(R.layout.login);
-
 
         buttonRegister=(Button) findViewById(R.id.buttonRegister);
         editTextEmail=(EditText) findViewById(R.id.editTextEmail);
@@ -77,7 +68,6 @@ public class login extends AppCompatActivity implements View.OnClickListener {
 
         //if validations are ok
         //we will first show a progress bar
-
         mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -88,11 +78,9 @@ public class login extends AppCompatActivity implements View.OnClickListener {
                     finish();
                     startActivity(new Intent(login.this, login.class));
                 }else{
-                    Toast.makeText(login.this, "Could not register...Please try again", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(login.this, "Account already exists or Email is incorrect, Please try again", Toast.LENGTH_SHORT).show();
 
                 }
-
 
             }
         });
@@ -108,8 +96,6 @@ public class login extends AppCompatActivity implements View.OnClickListener {
             //Will open login activity here
             startActivity(new Intent(this,LoginActivity.class));
         }
-
-
 
     }
 }

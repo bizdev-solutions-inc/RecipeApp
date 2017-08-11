@@ -21,7 +21,6 @@ public class SavedIngredients extends AppCompatActivity {
     EditText inputSearch;
     ArrayList<HashMap<String, String>> productList;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_ingredients);
@@ -34,25 +33,19 @@ public class SavedIngredients extends AppCompatActivity {
         lv = (ListView)findViewById(R.id.list_view);
         inputSearch = (EditText)findViewById(R.id.inputSearch);
 
-        //Adding item to listview
-
         adapter = new ArrayAdapter<String>(this, R.layout.list_item, R.id.product_name, products);
         lv.setAdapter(adapter);
 
-        //Enabling Search
-
         inputSearch.addTextChangedListener(new TextWatcher() {
-            @Override
+
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 SavedIngredients.this.adapter.getFilter().filter(charSequence);
             }
 
-            @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
 
-            @Override
             public void afterTextChanged(Editable editable) {
 
             }

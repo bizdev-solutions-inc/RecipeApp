@@ -18,9 +18,6 @@ public class Introduction extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth firebaseAuth;
     private TextView textViewUserEmail;
 
-
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_introduction);
@@ -39,7 +36,6 @@ public class Introduction extends AppCompatActivity implements View.OnClickListe
 
         textViewUserEmail= (TextView) findViewById(R.id.textViewUserEmail);
         textViewUserEmail.setText("Welcome "+user.getEmail());
-
 
         Button btn = (Button)findViewById(R.id.start); //type cast
 
@@ -64,19 +60,18 @@ public class Introduction extends AppCompatActivity implements View.OnClickListe
         int selectedId=item.getItemId();
         switch (selectedId){
             case R.id.action_about_us:
-
+                finish();
+                startActivity(new Intent(this, AboutUs.class));
+                break;
             case R.id.action_logout:
                 firebaseAuth.signOut();
                 finish();
                 startActivity(new Intent(this, LoginActivity.class));
-
-
+                break;
         }
         return super.onOptionsItemSelected(item);
-
     }
 
-    @Override
     public void onClick(View view) {
 
     }

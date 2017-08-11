@@ -13,7 +13,6 @@ public class Home extends AppCompatActivity {
     // Test comment, delete later
     // Test comment 2, delete later
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);

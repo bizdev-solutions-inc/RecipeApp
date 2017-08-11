@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 public class SavedRecipe extends AppCompatActivity {
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_recipe);

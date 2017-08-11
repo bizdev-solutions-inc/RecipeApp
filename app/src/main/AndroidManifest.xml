@@ -19,6 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AboutUs" />
         <activity android:name=".Home" />
         <activity android:name=".Ingredient_Categories" />
         <activity android:name=".Introduction" />

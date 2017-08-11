@@ -1,9 +1,5 @@
 package com.example.vincentzhu.testapplication;
 
-/**
- * Created by Vincent Zhu on 8/4/2017.
- */
-
 public class Recipe {
     String recipe_name;
     String cooking_instruction;

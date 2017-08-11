@@ -25,9 +25,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private FirebaseAuth firebaseAuth;
 
-
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -48,7 +45,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         buttonSignIn.setOnClickListener(this);
         textViewSignup.setOnClickListener(this);
 
-
     }
 
     private void userLogin() {
@@ -68,20 +64,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-        firebaseAuth.signInWithEmailAndPassword(email,password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+       firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             //start the profile activity
                             finish();
-                            startActivity(new Intent(getApplicationContext(),Introduction.class));
+                            startActivity(new Intent(getApplicationContext(), Introduction.class));
+                        }else{
+                                Toast.makeText(LoginActivity.this, "Account does not exist or Email/Password is incorrect, Please try again", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                     });
+
+
+
     }
 
-    @Override
     public void onClick(View view) {
         if (view==buttonSignIn){
             userLogin();
