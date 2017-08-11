@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText editTextEmail;
     private EditText editTextPassword;
     private TextView textViewSignup;
+    private ProgressBar progressB;
 
     private FirebaseAuth firebaseAuth;
 
@@ -41,6 +43,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         buttonSignIn = (Button) findViewById(R.id.buttonSignin);
         textViewSignup = (TextView) findViewById(R.id.textViewSignup);
+        progressB=(ProgressBar) findViewById(R.id.progressLogin);
+        progressB.setVisibility(View.GONE);
 
         buttonSignIn.setOnClickListener(this);
         textViewSignup.setOnClickListener(this);
@@ -48,6 +52,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void userLogin() {
+        progressB.setVisibility(View.VISIBLE);
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
@@ -69,15 +74,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             //start the profile activity
+                            progressB.setVisibility(View.GONE);
                             finish();
                             startActivity(new Intent(getApplicationContext(), Introduction.class));
                         }else{
-                                Toast.makeText(LoginActivity.this, "Account does not exist or Email/Password is incorrect, Please try again", Toast.LENGTH_SHORT).show();
+                             progressB.setVisibility(View.GONE);
+                             Toast.makeText(LoginActivity.this, "Account does not exist or Email/Password is incorrect, Please try again", Toast.LENGTH_LONG).show();
                             }
                         }
                      });
-
-
 
     }
 

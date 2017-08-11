@@ -25,6 +25,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
     private EditText editTextEmail;
     private EditText editTextPassword;
     private TextView textViewSignin;
+    private ProgressBar progressR;
 
     private FirebaseAuth mAuth;
 
@@ -37,6 +38,8 @@ public class login extends AppCompatActivity implements View.OnClickListener {
         editTextEmail=(EditText) findViewById(R.id.editTextEmail);
         editTextPassword=(EditText) findViewById(R.id.editTextPassword);
         textViewSignin = (TextView) findViewById(R.id.textViewSignin);
+        progressR=(ProgressBar) findViewById(R.id.progressReg);
+        progressR.setVisibility(View.GONE);
 
         buttonRegister.setOnClickListener(this);
         textViewSignin.setOnClickListener(this);
@@ -50,7 +53,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void registerUser () {
-
+        progressR.setVisibility(View.VISIBLE);
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         if (TextUtils.isEmpty(email)) {
@@ -74,11 +77,13 @@ public class login extends AppCompatActivity implements View.OnClickListener {
 
                 if (task.isSuccessful()) {
                     //User is successfully registered
-                   Toast.makeText(login.this, "Registered Successfully...", Toast.LENGTH_SHORT).show();
+                    progressR.setVisibility(View.GONE);
+                    Toast.makeText(login.this, "Registered Successfully...", Toast.LENGTH_LONG).show();
                     finish();
                     startActivity(new Intent(login.this, login.class));
                 }else{
-                    Toast.makeText(login.this, "Account already exists or Email is incorrect, Please try again", Toast.LENGTH_SHORT).show();
+                    progressR.setVisibility(View.GONE);
+                    Toast.makeText(login.this, "Account already exists or Email is incorrect, Please try again", Toast.LENGTH_LONG).show();
 
                 }
 
