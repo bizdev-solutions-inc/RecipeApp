@@ -79,18 +79,20 @@ public class login extends AppCompatActivity implements View.OnClickListener {
                 if (task.isSuccessful()) {
                     //User is successfully registered
                     progressR.setVisibility(View.GONE);
-                    Toast.makeText(login.this, "Registered Successfully...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(login.this, "Registered successfully, please verify your Email to login", Toast.LENGTH_LONG).show();
                     user.sendEmailVerification().addOnCompleteListener(login.this, new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful())
                             {
+                                progressR.setVisibility(View.GONE);
                                 Toast.makeText(login.this, "Verification email sent to " + user.getEmail(), Toast.LENGTH_LONG).show();
                             }
                             else
                             {
+                                progressR.setVisibility(View.GONE);
                                 Toast.makeText(login.this, "Failed to send verification email.",
-                                        Toast.LENGTH_SHORT).show();
+                                        Toast.LENGTH_LONG).show();
                             }
                         }
                     });
