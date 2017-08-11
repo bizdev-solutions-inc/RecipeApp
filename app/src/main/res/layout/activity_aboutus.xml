@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+    <TextView
+        android:id="@+id/textViewUserEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=" About Us "
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:textAlignment="center" />
+
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" We Are Software Kings "
+        android:layout_marginTop="100dp"
+        android:textAlignment="center"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:id="@+id/homePage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Home Page"
+        android:layout_marginTop="500dp"
+        android:layout_marginLeft="136dp"
+        android:layout_marginStart="136dp"
+        />
+
+
+
+</RelativeLayout>
