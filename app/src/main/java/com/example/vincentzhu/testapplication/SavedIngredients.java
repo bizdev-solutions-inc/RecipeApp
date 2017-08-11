@@ -1,5 +1,6 @@
 package com.example.vincentzhu.testapplication;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
@@ -8,6 +9,8 @@ import android.text.TextWatcher;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,9 +24,19 @@ public class SavedIngredients extends AppCompatActivity {
     EditText inputSearch;
     ArrayList<HashMap<String, String>> productList;
 
+    private FirebaseAuth firebaseAuth;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_ingredients);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        if(firebaseAuth.getCurrentUser()==null){
+            //Profile activity here
+            finish();
+            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+        }
 
         //ListView Data Array Adapter
         String products[] = {"Dell Inspiron", "HTC One X", "HTC Wildfire S", "HTC Sense",

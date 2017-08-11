@@ -6,13 +6,23 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class Ingredient_Categories extends AppCompatActivity {
 
-    // Test comment 2, delete later
+    private FirebaseAuth firebaseAuth;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_categories);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        if(firebaseAuth.getCurrentUser()==null){
+            //Profile activity here
+            finish();
+            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+        }
         Button btn = (Button)findViewById(R.id.button); //type cast
 
         //..set what happens when the user clicks

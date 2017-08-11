@@ -8,15 +8,23 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class Home extends AppCompatActivity {
 
-    // Test comment, delete later
-    // Test comment 2, delete later
+    private FirebaseAuth firebaseAuth;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        if(firebaseAuth.getCurrentUser()==null){
+            //Profile activity here
+            finish();
+            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+        }
         //Wire up the button to do stuff
         //..get the button
         Button btn = (Button)findViewById(R.id.btnIC); //type cast
@@ -50,4 +58,6 @@ public class Home extends AppCompatActivity {
     {
         startActivity(new Intent(Home.this, SavedIngredients.class));
     }
+
+
 }

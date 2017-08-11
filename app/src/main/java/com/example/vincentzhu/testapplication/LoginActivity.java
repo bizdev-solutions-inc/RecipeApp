@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener  {
 
@@ -72,17 +73,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
        firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            //start the profile activity
-                            progressB.setVisibility(View.GONE);
-                            finish();
-                            startActivity(new Intent(getApplicationContext(), Introduction.class));
-                        }else{
-                             progressB.setVisibility(View.GONE);
-                             Toast.makeText(LoginActivity.this, "Account does not exist or Email/Password is incorrect, Please try again", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                     });
+            if (task.isSuccessful() && firebaseAuth.getCurrentUser().isEmailVerified()) {
+                finish();
+                startActivity(new Intent(LoginActivity.this, Introduction.class));
+                //start the profile activity
+            }
+            else if(task.isSuccessful() && !firebaseAuth.getCurrentUser().isEmailVerified())
+            {
+                Toast.makeText(LoginActivity.this, "User has not verified their email!", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Toast.makeText(LoginActivity.this, "Account does not exist or Email/Password is incorrect, Please try again", Toast.LENGTH_SHORT).show();
+            }
+            }
+         });
 
     }
 
@@ -97,4 +102,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
     }
+
+//    public boolean verifiedEmail(FirebaseUser user)
+//    {
+//        if(user.isEmailVerified()) {
+//            return true;
+//        }
+//        return false;
+//    }
 }

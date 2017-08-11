@@ -12,11 +12,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class PersonalRecipe extends AppCompatActivity {
 
     EditText nametext1;
     EditText nametext2;
     EditText nametext3;
+
+    private FirebaseAuth firebaseAuth;
 
     public static int index = 1;
 
@@ -24,6 +28,14 @@ public class PersonalRecipe extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_recipe);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        if(firebaseAuth.getCurrentUser()==null){
+            //Profile activity here
+            finish();
+            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+        }
 
         nametext1 = (EditText)findViewById(R.id.editText1);
         nametext2 = (EditText)findViewById(R.id.editText2);
