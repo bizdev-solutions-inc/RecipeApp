@@ -11,6 +11,7 @@ import android.widget.Button;
 public class Home extends AppCompatActivity {
 
     // Test comment, delete later
+    // Test comment 2, delete later
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

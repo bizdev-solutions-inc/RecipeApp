@@ -8,6 +8,8 @@ import android.widget.Button;
 
 public class Ingredient_Categories extends AppCompatActivity {
 
+    // Test comment 2, delete later
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
