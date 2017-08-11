@@ -71,24 +71,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
        firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-            if (task.isSuccessful() && firebaseAuth.getCurrentUser().isEmailVerified()) {
-                finish();
-                startActivity(new Intent(LoginActivity.this, Introduction.class));
-                //start the profile activity
-            }
-            else if(task.isSuccessful() && !firebaseAuth.getCurrentUser().isEmailVerified())
-            {
-                Toast.makeText(LoginActivity.this, "User has not verified their email!", Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
-                Toast.makeText(LoginActivity.this, "Account does not exist or Email/Password is incorrect, Please try again", Toast.LENGTH_SHORT).show();
-            }
-            }
-         });
-
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful() && firebaseAuth.getCurrentUser().isEmailVerified()) {
+                    finish();
+                    startActivity(new Intent(LoginActivity.this, Introduction.class));
+                    //start the profile activity
+                }
+                else if(task.isSuccessful() && !firebaseAuth.getCurrentUser().isEmailVerified())
+                {
+                    Toast.makeText(LoginActivity.this, "User has not verified their email!", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(LoginActivity.this, "Account does not exist or Email/Password is incorrect, Please try again", Toast.LENGTH_SHORT).show();
+                }
+                }
+             });
     }
 
     public void onClick(View view) {
@@ -103,11 +102,4 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-//    public boolean verifiedEmail(FirebaseUser user)
-//    {
-//        if(user.isEmailVerified()) {
-//            return true;
-//        }
-//        return false;
-//    }
 }

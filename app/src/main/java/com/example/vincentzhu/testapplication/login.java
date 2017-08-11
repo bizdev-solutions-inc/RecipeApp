@@ -75,9 +75,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
         mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-
                 final FirebaseUser user = mAuth.getCurrentUser();
-
                 if (task.isSuccessful()) {
                     //User is successfully registered
                     progressR.setVisibility(View.GONE);
@@ -87,13 +85,13 @@ public class login extends AppCompatActivity implements View.OnClickListener {
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful())
                             {
-                                Toast.makeText(login.this, "Verification email sent to " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(login.this, "Verification email sent to " + user.getEmail(), Toast.LENGTH_LONG).show();
                             }
                             else
                             {
-                                //Log.e(TAG, "sendEmailVerification", task.getException());
                                 Toast.makeText(login.this, "Failed to send verification email.",
-                                        Toast.LENGTH_SHORT).show();                            }
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
                     mAuth.signOut();
@@ -102,9 +100,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
                 }else{
                     progressR.setVisibility(View.GONE);
                     Toast.makeText(login.this, "Account already exists or Email is incorrect, Please try again", Toast.LENGTH_SHORT).show();
-
                 }
-
             }
         });
     }
