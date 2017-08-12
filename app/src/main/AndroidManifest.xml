@@ -6,28 +6,44 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="bizDev&apos;s Cooking Recipe"
+        android:label="bizdev Recipes"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        <!-- The login activity -->
         <activity
             android:name=".login"
-            android:label="bizDev Recipe">
+            android:label="bizdev Recipes">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AboutUs" />
-        <activity android:name=".Home" />
-        <activity android:name=".Ingredient_Categories" />
         <activity android:name=".Introduction" />
-        <activity android:name=".MeatScroll" />
-        <activity android:name=".PersonalRecipe" />
-        <activity android:name=".SavedRecipe" />
-        <activity android:name=".SavedIngredients" />
-        <activity android:name=".LoginActivity"></activity>
+        <activity
+            android:name=".Home"/>
+        <activity
+            android:name=".AboutUs"
+            android:label="About Us"/>
+        <activity
+            android:name=".Ingredient_Categories"
+            android:label="Ingredients Categories"/>
+
+        <activity
+            android:name=".MeatScroll"
+            android:label="Meat &amp; Seafood"/>
+        <activity
+            android:name=".PersonalRecipe"
+            android:label="Add Recipe"/>
+        <activity
+            android:name=".SavedRecipe"
+            android:label="Saved Recipes"/>
+        <activity
+            android:name=".SavedIngredients"
+            android:label="Saved Ingredients"/>
+        <activity android:name=".LoginActivity"/>
     </application>
 
 </manifest>

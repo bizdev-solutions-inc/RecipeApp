@@ -22,6 +22,7 @@ public class Introduction extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_introduction);
 
+        // Create toolbar
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
@@ -48,6 +49,7 @@ public class Introduction extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    // Create overflow menu
     public boolean onCreateOptionsMenu (Menu menu){
        super.onCreateOptionsMenu(menu);
         MenuInflater mMenuInflater = getMenuInflater();
@@ -55,21 +57,30 @@ public class Introduction extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
-    //Set the function of the overflow key menus such as logout
-    public boolean onOptionsItemSelected(MenuItem item){
-        int selectedId=item.getItemId();
-        switch (selectedId){
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_home:
+                // User chose the "Home" item, show the Home activity
+                finish();
+                startActivity(new Intent(this, Home.class));
+                return true;
             case R.id.action_about_us:
+                // User chose the "About Us" item, show the About Us activity
                 finish();
                 startActivity(new Intent(this, AboutUs.class));
-                break;
+                return true;
             case R.id.action_logout:
+                // User chose the "Log Out" item, log the user out and return to login activity
                 firebaseAuth.signOut();
                 finish();
                 startActivity(new Intent(this, LoginActivity.class));
-                break;
+                return true;
+            default:
+                // The user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     public void onClick(View view) {

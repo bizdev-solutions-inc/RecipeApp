@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,7 +34,6 @@ public class login extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mAuth;
 
     protected void onCreate (Bundle SavedInstanceState) {
-
         super.onCreate (SavedInstanceState);
         setContentView(R.layout.login);
 
