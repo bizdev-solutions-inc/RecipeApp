@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         buttonSignIn = (Button) findViewById(R.id.buttonSignin);
         textViewSignup = (TextView) findViewById(R.id.textViewSignup);
         progressB=(ProgressBar) findViewById(R.id.progressLogin);
-        progressB.setVisibility(View.VISIBLE);
+        progressB.setVisibility(View.GONE);
 
         buttonSignIn.setOnClickListener(this);
         textViewSignup.setOnClickListener(this);
