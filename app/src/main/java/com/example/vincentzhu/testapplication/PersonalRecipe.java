@@ -9,20 +9,35 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class PersonalRecipe extends AppCompatActivity {
 
-    EditText nametext1;
-    EditText nametext2;
-    EditText nametext3;
+//    EditText nametext1;
+//    EditText nametext2;
+//    EditText nametext3;
 
     private FirebaseAuth firebaseAuth;
 
-    public static int index = 1;
+    private Button mFirebaseBtn;
+    private DatabaseReference mDatabase;
+    private EditText mNameField;
+    private EditText mIngField;
+    private EditText mInstrField;
+
+    private DatabaseReference mName;
+    private DatabaseReference mIng;
+    private DatabaseReference mInstr;
+    private DatabaseReference mCuisine;
+    private DatabaseReference mMealType;
+
+    //public static int index = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +56,33 @@ public class PersonalRecipe extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
-        nametext1 = (EditText)findViewById(R.id.editText1);
-        nametext2 = (EditText)findViewById(R.id.editText2);
-        nametext3 = (EditText)findViewById(R.id.editText3);
+//        nametext1 = (EditText)findViewById(R.id.editText1);
+//        nametext2 = (EditText)findViewById(R.id.editText2);
+//        nametext3 = (EditText)findViewById(R.id.editText3);
+
+        mFirebaseBtn = (Button)findViewById(R.id.firebase_btn);
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Recipe Name");
+
+        mNameField = (EditText)findViewById(R.id.name_field);
+        mIngField = (EditText)findViewById(R.id.ing_field);
+        mInstrField = (EditText)findViewById(R.id.instr_field);
+
+        mFirebaseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name = mNameField.getText().toString().trim();
+                String ing = mIngField.getText().toString().trim();
+                String instr = mInstrField.getText().toString().trim();
+
+                mName = mDatabase.child(name);
+                mIng = mName.child("Ingredients");
+                mCuisine = mName.child("Cuisine");
+                mMealType = mName.child("Meal Type");
+                mInstr = mName.child("Instructions");
+                mIng.push().setValue(ing);
+                mInstr.push().setValue(instr);
+            }
+        });
 
 //        Button btn = (Button)findViewById(R.id.enter);
 
@@ -101,16 +140,16 @@ public class PersonalRecipe extends AppCompatActivity {
         }
     }
 
-    public void saveRecipe(View view)
-    {
-        SharedPreferences sharedPref = getSharedPreferences("recipeInfo", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-
-        editor.putString("Favorite" + index, "\nRecipe Name:\n" + nametext1.getText().toString()
-        + "\nIngredients List:\n" + nametext2.getText().toString() + "\nCooking Instructions:\n" + nametext3.getText().toString());
-        editor.putInt("index", index);
-        editor.commit();
-        Toast.makeText(this, "Saved to Favorites!", Toast.LENGTH_LONG).show();
-        index++;
-    }
+//    public void saveRecipe(View view)
+//    {
+//        SharedPreferences sharedPref = getSharedPreferences("recipeInfo", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPref.edit();
+//
+//        editor.putString("Favorite" + index, "\nRecipe Name:\n" + nametext1.getText().toString()
+//        + "\nIngredients List:\n" + nametext2.getText().toString() + "\nCooking Instructions:\n" + nametext3.getText().toString());
+//        editor.putInt("index", index);
+//        editor.commit();
+//        Toast.makeText(this, "Saved to Favorites!", Toast.LENGTH_LONG).show();
+//        index++;
+//    }
 }

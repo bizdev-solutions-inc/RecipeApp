@@ -44,7 +44,7 @@
             android:text="Recipe Name" />
 
         <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/name_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -57,7 +57,7 @@
             android:text="Ingredient List" />
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/ing_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -70,14 +70,14 @@
             android:text="Instructions" />
 
         <EditText
-            android:id="@+id/editText3"
+            android:id="@+id/instr_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textMultiLine" />
 
         <Button
-            android:id="@+id/enter"
+            android:id="@+id/firebase_btn"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:onClick="saveRecipe"
