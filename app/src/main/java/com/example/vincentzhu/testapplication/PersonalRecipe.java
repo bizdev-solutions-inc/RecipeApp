@@ -27,6 +27,7 @@ public class PersonalRecipe extends AppCompatActivity {
 
     private Button mFirebaseBtn;
     private DatabaseReference mDatabase;
+    private DatabaseReference mRef;
     private EditText mNameField;
     private EditText mIngField;
     private EditText mInstrField;
@@ -61,7 +62,7 @@ public class PersonalRecipe extends AppCompatActivity {
 //        nametext3 = (EditText)findViewById(R.id.editText3);
 
         mFirebaseBtn = (Button)findViewById(R.id.firebase_btn);
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Recipe Name");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Recipe");
 
         mNameField = (EditText)findViewById(R.id.name_field);
         mIngField = (EditText)findViewById(R.id.ing_field);
@@ -74,13 +75,17 @@ public class PersonalRecipe extends AppCompatActivity {
                 String ing = mIngField.getText().toString().trim();
                 String instr = mInstrField.getText().toString().trim();
 
-                mName = mDatabase.child(name);
-                mIng = mName.child("Ingredients");
-                mCuisine = mName.child("Cuisine");
-                mMealType = mName.child("Meal Type");
-                mInstr = mName.child("Instructions");
-                mIng.push().setValue(ing);
-                mInstr.push().setValue(instr);
+                String key = mDatabase.push().getKey();
+                //mDatabase.setValue(name);
+                mRef = mDatabase.child(key);
+                mName = mRef.child("name");
+                mIng = mRef.child("ingredients");
+                //mCuisine = mRef.child("cuisine");
+                //mMealType = mRef.child("meal type");
+                mInstr = mRef.child("instructions");
+                mName.setValue(name);
+                mIng.setValue(ing);
+                mInstr.setValue(instr);
             }
         });
 

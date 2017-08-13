@@ -1,44 +1,39 @@
 package com.example.vincentzhu.testapplication;
 
 public class Recipe {
-    String recipe_name;
-    String cooking_instruction;
-    String quantities;
+    private String name;
+    private String ingredients;
+    private String instructions;
 
-    Recipe(String name, String qty, String instr)
+    Recipe()
     {
-        recipe_name = name;
-        quantities = qty;
-        cooking_instruction = instr;
+
     }
 
-    void setRecipeName(String in)
+    public void setName(String name)
     {
-        recipe_name = in;
+        this.name = name;
     }
 
-    void setCookingInstruction(String instr)
+    public void setInstructions(String instructions)
     {
-        cooking_instruction = instr;
+        this.instructions = instructions;
     }
 
-    void setQuantities(String qty)
+    public void setIngredients(String ingredients)
     {
-        quantities = qty;
+        this.ingredients = ingredients;
     }
 
-    String getRecipeName()
+    public String getName()
     {
-        return recipe_name;
+        return name;
     }
 
-    String getCookingInstruction()
-    {
-        return cooking_instruction;
-    }
+    public String getInstructions() { return instructions; }
 
-    String getQuantities()
+    public String getIngredients()
     {
-        return quantities;
+        return ingredients;
     }
 }
