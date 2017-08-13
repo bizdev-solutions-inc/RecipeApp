@@ -2,48 +2,91 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.vincentzhu.testapplication">
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="bizdev Recipes"
+        android:label="@string/app_label"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         <!-- The login activity -->
+        <activity android:name=".LoginActivity" />
         <activity
             android:name=".login"
-            android:label="bizdev Recipes">
+            android:label="@string/app_label">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Introduction" />
-        <activity
-            android:name=".Home"/>
+
+        <!-- The searchable activity that shows search results -->
+        <activity android:name=".SearchableActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
+        <activity android:name=".Home">
+            <!-- Enable the search dialog to send searches to SearchableActivity -->
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchableActivity" />
+        </activity>
+        <activity android:name=".Introduction">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchableActivity" />
+        </activity>
         <activity
             android:name=".AboutUs"
-            android:label="About Us"/>
+            android:label="About Us">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchableActivity" />
+        </activity>
         <activity
             android:name=".Ingredient_Categories"
-            android:label="Ingredients Categories"/>
-
+            android:label="Ingredients Categories">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchableActivity" />
+        </activity>
         <activity
             android:name=".MeatScroll"
-            android:label="Meat &amp; Seafood"/>
+            android:label="Meat &amp; Seafood">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchableActivity" />
+        </activity>
         <activity
             android:name=".PersonalRecipe"
-            android:label="Add Recipe"/>
+            android:label="Add Recipe">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchableActivity" />
+        </activity>
         <activity
             android:name=".SavedRecipe"
-            android:label="Saved Recipes"/>
+            android:label="Saved Recipes">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchableActivity" />
+        </activity>
         <activity
             android:name=".SavedIngredients"
-            android:label="Saved Ingredients"/>
-        <activity android:name=".LoginActivity"/>
+            android:label="Saved Ingredients">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchableActivity" />
+        </activity>
+
+
     </application>
 
 </manifest>

@@ -3,10 +3,9 @@ package com.example.vincentzhu.testapplication;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -54,6 +53,10 @@ public class SavedRecipe extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_search:
+                // User chose the "Search" item, show search dialog
+                onSearchRequested();
+                return true;
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
                 finish();

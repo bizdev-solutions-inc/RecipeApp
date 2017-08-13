@@ -42,7 +42,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="45dp"
-        android:text="Go to Search" />
+        android:text="@string/btn_continue" />
 
 
 
