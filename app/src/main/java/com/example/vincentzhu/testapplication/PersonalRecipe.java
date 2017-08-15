@@ -36,6 +36,8 @@ public class PersonalRecipe extends AppCompatActivity {
     private DatabaseReference mCuisine;
     private DatabaseReference mMealType;
 
+    private String userID;
+
     //public static int index = 1;
 
     @Override
@@ -64,7 +66,8 @@ public class PersonalRecipe extends AppCompatActivity {
 //        nametext3 = (EditText)findViewById(R.id.editText3);
 
         mFirebaseBtn = (Button)findViewById(R.id.firebase_btn);
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Recipe");
+        userID = firebaseAuth.getCurrentUser().getUid();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child(userID).child("Recipe");
 
         mNameField = (EditText)findViewById(R.id.name_field);
         mIngField = (EditText)findViewById(R.id.ing_field);

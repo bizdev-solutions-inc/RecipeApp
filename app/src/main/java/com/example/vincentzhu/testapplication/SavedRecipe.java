@@ -47,11 +47,11 @@ public class SavedRecipe extends AppCompatActivity {
         //setSupportActionBar(myToolbar);
         expandableListView = (ExpandableListView)findViewById(R.id.expandableListView);
 
+        userID = firebaseAuth.getCurrentUser().getUid();
 
        // results = (TextView)findViewById(R.id.text_result);
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Recipe");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child(userID).child("Recipe");
       //  mUserList = (ListView)findViewById(R.id.user_list);
-        userID = firebaseAuth.getCurrentUser().getUid();
 
 
 
