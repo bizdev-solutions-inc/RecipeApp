@@ -9,7 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class Admin extends AppCompatActivity {
 
@@ -36,10 +35,10 @@ public class Admin extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_search:
-                // User chose the "Search" item, show search dialog
-                onSearchRequested();
-                return true;
+//            case R.id.action_search:
+//                // User chose the "Search" item, show search dialog
+//                onSearchRequested();
+//                return true;
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
                 finish();

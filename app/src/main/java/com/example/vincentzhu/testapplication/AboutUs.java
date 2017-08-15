@@ -2,6 +2,7 @@ package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -34,6 +35,10 @@ public class AboutUs extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
+        // Get a support ActionBar corresponding to this toolbar and enable Up button
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         Button btn = (Button)findViewById(R.id.homePage);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,10 +58,10 @@ public class AboutUs extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
-            case R.id.action_search:
-                // User chose the "Search" item, show search dialog
-                onSearchRequested();
-                return true;
+//            case R.id.action_search:
+//                // User chose the "Search" item, show search dialog
+//                onSearchRequested();
+//                return true;
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
                 finish();

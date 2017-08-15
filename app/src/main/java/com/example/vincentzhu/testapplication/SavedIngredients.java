@@ -2,6 +2,7 @@ package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -44,6 +45,10 @@ public class SavedIngredients extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
+        // Get a support ActionBar corresponding to this toolbar and enable Up button
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         //ListView Data Array Adapter
         String products[] = {"Dell Inspiron", "HTC One X", "HTC Wildfire S", "HTC Sense",
                 "HTC Sensation XE", "iPhone 4S", "Samsung Galaxy Note 800", "Samsung Galaxy S3",
@@ -80,10 +85,10 @@ public class SavedIngredients extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_search:
-                // User chose the "Search" item, show search dialog
-                onSearchRequested();
-                return true;
+//            case R.id.action_search:
+//                // User chose the "Search" item, show search dialog
+//                onSearchRequested();
+//                return true;
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
                 finish();

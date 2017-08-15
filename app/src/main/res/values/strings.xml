@@ -13,8 +13,14 @@
     <string name="about_text">We are Software Kings</string>
 
     <!-- Hint text for the search dialog -->
-    <string name="search_hint">Search ingredients</string>
+    <string name="hint_search_ingr">Search ingredients</string>
 
     <string name="btn_continue">Continue</string>
+
+    <!-- Button for adding to ingredients list -->
+    <string name="btn_add_ingr">Add</string>
+
+    <string name="btn_find_recipes">Find Recipes</string>
+    <string name="btn_clear_list">Clear List</string>
 
 </resources>

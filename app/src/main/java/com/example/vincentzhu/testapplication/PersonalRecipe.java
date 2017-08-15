@@ -1,9 +1,8 @@
 package com.example.vincentzhu.testapplication;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -11,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -56,6 +54,10 @@ public class PersonalRecipe extends AppCompatActivity {
         // Create the toolbar and set it as the app bar for the activity
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
+
+        // Get a support ActionBar corresponding to this toolbar and enable Up button
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
 //        nametext1 = (EditText)findViewById(R.id.editText1);
 //        nametext2 = (EditText)findViewById(R.id.editText2);
@@ -118,10 +120,10 @@ public class PersonalRecipe extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_search:
-                // User chose the "Search" item, show search dialog
-                onSearchRequested();
-                return true;
+//            case R.id.action_search:
+//                // User chose the "Search" item, show search dialog
+//                onSearchRequested();
+//                return true;
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
                 finish();

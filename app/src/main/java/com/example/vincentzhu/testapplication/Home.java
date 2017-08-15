@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -15,6 +16,10 @@ public class Home extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
 
+    // Key for ingredient entered by user
+    public static final String EXTRA_INGREDIENT = "INGREDIENT";
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -34,8 +39,8 @@ public class Home extends AppCompatActivity {
 
         //Wire up the button to do stuff
         //..get the button
-        Button btn = (Button)findViewById(R.id.btnIC); //type cast
-        Button addRecipe = (Button)findViewById(R.id.addrecipe);
+        Button btn = (Button) findViewById(R.id.btn_ingr_categories); //type cast
+        Button addRecipe = (Button) findViewById(R.id.btn_add_recipe);
         //..set what happens when the user clicks
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,16 +64,17 @@ public class Home extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.my_menu, menu);
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_search:
-                // User chose the "Search" item, show search dialog
-                onSearchRequested();
-                return true;
+//            case R.id.action_search:
+//                // User chose the "Search" item, show search dialog
+//                startActivity(new Intent(this, IngredientsList.class));
+//                return true;
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
                 finish();
@@ -89,6 +95,21 @@ public class Home extends AppCompatActivity {
                 // The user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /**
+     * Called when the user taps the Add button.
+     * Sends the ingredient entered by the user to the IngredientsList activity.
+     */
+    public void addIngredient(View view) {
+        Intent intent = new Intent(this, IngredientsList.class);
+        EditText et_search_ingr = (EditText) findViewById(R.id.et_search_ingr);
+        String query = et_search_ingr.getText().toString();
+        if (!query.isEmpty()) { // Do nothing if query is an empty string
+            et_search_ingr.setText(""); // Clear text field when Add button is pressed
+            intent.putExtra(EXTRA_INGREDIENT, query + "\n");
+            startActivity(intent);
         }
     }
 

@@ -22,76 +22,72 @@
             </intent-filter>
         </activity>
 
-        <!-- The searchable activity that shows search results -->
-        <activity android:name=".SearchableActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-
+        <!-- Shows the list of ingredients entered by the user -->
+        <activity
+            android:name=".IngredientsList"
+            android:label="Ingredients List"
+            android:launchMode="singleTop"
+            android:parentActivityName=".Home">
+            <!-- launchMode affects how instances of activities are created
+            and affects the animation when the Up button is pressed -->
+            <!-- parentActivityName sets the parent activity of this activity for Up navigation -->
+            <!-- This meta-data tag sets the parent activity for older Android versions -->
             <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
         </activity>
-        <activity android:name=".Home">
-
-            <!-- Enable the search dialog to send searches to SearchableActivity -->
-            <meta-data
-                android:name="android.app.default_searchable"
-                android:value=".SearchableActivity" />
+        <activity
+            android:name=".Home"
+            android:launchMode="singleTop">
         </activity>
         <activity android:name=".Introduction">
-            <meta-data
-                android:name="android.app.default_searchable"
-                android:value=".SearchableActivity" />
         </activity>
         <activity
             android:name=".AboutUs"
             android:label="About Us">
             <meta-data
-                android:name="android.app.default_searchable"
-                android:value=".SearchableActivity" />
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
         </activity>
         <activity
             android:name=".Ingredient_Categories"
-            android:label="Ingredients Categories">
+            android:label="Ingredients Categories"
+            android:launchMode="singleTop">
             <meta-data
-                android:name="android.app.default_searchable"
-                android:value=".SearchableActivity" />
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
         </activity>
         <activity
             android:name=".MeatScroll"
             android:label="Meat &amp; Seafood">
             <meta-data
-                android:name="android.app.default_searchable"
-                android:value=".SearchableActivity" />
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Ingredient_Categories" />
         </activity>
         <activity
             android:name=".PersonalRecipe"
             android:label="Add Recipe">
             <meta-data
-                android:name="android.app.default_searchable"
-                android:value=".SearchableActivity" />
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
         </activity>
         <activity
             android:name=".SavedRecipe"
             android:label="Saved Recipes">
             <meta-data
-                android:name="android.app.default_searchable"
-                android:value=".SearchableActivity" />
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
         </activity>
         <activity
             android:name=".SavedIngredients"
             android:label="Saved Ingredients">
             <meta-data
-                android:name="android.app.default_searchable"
-                android:value=".SearchableActivity" />
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
         </activity>
         <activity
             android:name=".Admin"
             android:label="Admin">
-            <meta-data
-                android:name="android.app.default_searchable"
-                android:value=".SearchableActivity" />
         </activity>
     </application>
 
