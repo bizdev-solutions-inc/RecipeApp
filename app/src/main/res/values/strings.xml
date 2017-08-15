@@ -23,4 +23,6 @@
     <string name="btn_find_recipes">Find Recipes</string>
     <string name="btn_clear_list">Clear List</string>
 
+    <string name="hint_tap_remove_ingr">(Tap an entry to remove it from the list)</string>
+
 </resources>

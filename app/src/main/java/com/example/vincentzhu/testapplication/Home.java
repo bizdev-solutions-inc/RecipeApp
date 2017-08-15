@@ -108,7 +108,7 @@ public class Home extends AppCompatActivity {
         String query = et_search_ingr.getText().toString();
         if (!query.isEmpty()) { // Do nothing if query is an empty string
             et_search_ingr.setText(""); // Clear text field when Add button is pressed
-            intent.putExtra(EXTRA_INGREDIENT, query + "\n");
+            intent.putExtra(EXTRA_INGREDIENT, query);
             startActivity(intent);
         }
     }

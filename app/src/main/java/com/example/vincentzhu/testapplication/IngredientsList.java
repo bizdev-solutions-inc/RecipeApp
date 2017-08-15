@@ -6,8 +6,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 /**
  * This activity displays the list of ingredients entered by the user.
@@ -15,6 +19,19 @@ import android.widget.TextView;
  * search for recipes that use the ingredients in the list.
  */
 public class IngredientsList extends AppCompatActivity {
+
+    private ArrayList<String> ingredients_list; // list of ingredients entered by user
+
+    // Create a list-item click-handling object as an anonymous class.
+    // When the user clicks on a list item, it is removed from the list.
+    private AdapterView.OnItemClickListener itemClickListener =
+            new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView adapterView, View view, int position, long id) {
+                    ingredients_list.remove(position);
+                    updateList();
+                }
+            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,14 +46,18 @@ public class IngredientsList extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        // Get the Intent that started this activity and extract the string
+        // Extract the string query entered by the user from the Home activity
         Intent intent = getIntent();
-        String message = intent.getStringExtra(Home.EXTRA_INGREDIENT);
+        String ingredient = intent.getStringExtra(Home.EXTRA_INGREDIENT);
 
-        // Capture the layout's TextView and set the string as its text
-        TextView textView = (TextView) findViewById(R.id.textView);
-        textView.setText(message);
+        ingredients_list = new ArrayList<String>(); // initialize list of ingredients
+        ingredients_list.add(ingredient); // Add ingredient from Home to list
 
+        // Set the ListView's OnItemClickListener to handle clicking to remove list items
+        ListView listView = (ListView) findViewById(R.id.listView);
+        listView.setOnItemClickListener(itemClickListener);
+
+        updateList();
     }
 
     /**
@@ -46,21 +67,34 @@ public class IngredientsList extends AppCompatActivity {
     public void addIngredient(View view) {
         EditText et_search_ingr = (EditText) findViewById(R.id.et_search_ingr);
         String query = et_search_ingr.getText().toString();
-        TextView textView = (TextView) findViewById(R.id.textView);
         if (!query.isEmpty()) { // Do not append if query is an empty string
-            textView.append(query + '\n');
             et_search_ingr.setText(""); // Clear text field when Add button is pressed
+            ingredients_list.add(query);
+            updateList();
         }
+    }
 
+    /**
+     * Updates the ListView with entries from the ingredients list.
+     * Should be called every time an entry is added to or removed from the list.
+     * This method uses an ArrayAdapter to retrieve data from the ingredients ArrayList
+     * and display each String entry as an item in the ListView.
+     */
+    private void updateList() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, ingredients_list);
+        ListView listView = (ListView) findViewById(R.id.listView);
+        listView.setAdapter(adapter);
+        // dynamic memory allocation issues? updateList() might be called frequently
     }
 
     /**
      * Called when the user taps the Clear List button.
-     * Clears the ingredients list contained in the textView.
+     * Clears the ingredients list contained in the ListView.
      */
     public void clearList(View view) {
-        TextView textView = (TextView) findViewById(R.id.textView);
-        textView.setText("");
+        ingredients_list.clear();
+        updateList();
     }
 
     /**
