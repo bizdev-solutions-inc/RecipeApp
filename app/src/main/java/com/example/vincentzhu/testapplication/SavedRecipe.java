@@ -21,10 +21,8 @@ public class SavedRecipe extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private DatabaseReference mDatabase;
 
-    //private ListView mUserList;
     private ArrayList<String> mUsernames = new ArrayList<>();
     private String userID;
-   // private TextView results;
     ExpandableListView expandableListView;
 
     ArrayList<ArrayList<String>> listOfLists = new ArrayList<ArrayList<String>>();
@@ -42,21 +40,13 @@ public class SavedRecipe extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(),LoginActivity.class));
         }
 
-        // Create the toolbar and set it as the app bar for the activity
         //Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(myToolbar);
         expandableListView = (ExpandableListView)findViewById(R.id.expandableListView);
 
         userID = firebaseAuth.getCurrentUser().getUid();
 
-       // results = (TextView)findViewById(R.id.text_result);
         mDatabase = FirebaseDatabase.getInstance().getReference().child(userID).child("Recipe");
-      //  mUserList = (ListView)findViewById(R.id.user_list);
-
-
-
-        //final ArrayAdapter<String>arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mUsernames);
-        //mUserList.setAdapter(arrayAdapter);
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -75,9 +65,6 @@ public class SavedRecipe extends AppCompatActivity {
     }
 
     private void showData(DataSnapshot dataSnapshot) {
-        //String display = "";
-
-
         for(DataSnapshot ds : dataSnapshot.getChildren())
         {
             Recipe recipe = new Recipe();
@@ -92,10 +79,7 @@ public class SavedRecipe extends AppCompatActivity {
             child.add(recipe.getInstructions());
             listOfLists.add(child);
 
-            //ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, array);
-            //mUserList.setAdapter(adapter);
         }
-        //results.setText(display);
     }
 
     @Override

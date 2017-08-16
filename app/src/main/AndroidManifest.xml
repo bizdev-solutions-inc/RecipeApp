@@ -28,8 +28,11 @@
             android:label="Ingredients List"
             android:launchMode="singleTop"
             android:parentActivityName=".Home">
-            <!-- launchMode affects how instances of activities are created
-            and affects the animation when the Up button is pressed -->
+
+            <!--
+            launchMode affects how instances of activities are created
+            and affects the animation when the Up button is pressed
+            -->
             <!-- parentActivityName sets the parent activity of this activity for Up navigation -->
             <!-- This meta-data tag sets the parent activity for older Android versions -->
             <meta-data
@@ -38,10 +41,8 @@
         </activity>
         <activity
             android:name=".Home"
-            android:launchMode="singleTop">
-        </activity>
-        <activity android:name=".Introduction">
-        </activity>
+            android:launchMode="singleTop"></activity>
+        <activity android:name=".Introduction"></activity>
         <activity
             android:name=".AboutUs"
             android:label="About Us">
@@ -87,8 +88,8 @@
         </activity>
         <activity
             android:name=".Admin"
-            android:label="Admin">
-        </activity>
+            android:label="Admin"></activity>
+        <activity android:name=".PersonalIngredient"></activity>
     </application>
     
     <uses-permission android:name="android.permission.INTERNET"/>

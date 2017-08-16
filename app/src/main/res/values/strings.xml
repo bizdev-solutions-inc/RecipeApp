@@ -25,4 +25,48 @@
 
     <string name="hint_tap_remove_ingr">(Tap an entry to remove it from the list)</string>
 
+    <!-- Drop down menu for admin home -->
+    <string-array name="recipe_types">
+        <item>Breakfast</item>
+        <item>Lunch</item>
+        <item>Dinner</item>
+        <item>Dessert</item>
+        <item>Snack</item>
+        <item>Anytime</item>
+    </string-array>
+
+    <string-array name="recipe_cuisines">
+        <item>American</item>
+        <item>Mexican</item>
+        <item>Chinese</item>
+        <item>Italian</item>
+        <item>Japanese</item>
+        <item>Greek</item>
+        <item>French</item>
+        <item>Thai</item>
+        <item>Spanish</item>
+        <item>Indian</item>
+        <item>Mediterranean</item>
+        <item>Vietnamese</item>
+        <item>Korean</item>
+        <item>General</item>
+    </string-array>
+
+    <string-array name="ingredient_types">
+        <item>Meat</item>
+        <item>Vegetable</item>
+        <item>Fruit</item>
+        <item>Dairy</item>
+        <item>Grain</item>
+        <item>Miscellaneous</item>
+    </string-array>
+
+    <string-array name="ingredient_seasons">
+        <item>Spring</item>
+        <item>Summer</item>
+        <item>Autumn</item>
+        <item>Winter</item>
+        <item>Year round</item>
+    </string-array>
+
 </resources>

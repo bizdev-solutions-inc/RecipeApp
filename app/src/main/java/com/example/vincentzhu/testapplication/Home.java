@@ -39,16 +39,22 @@ public class Home extends AppCompatActivity {
 
         //Wire up the button to do stuff
         //..get the button
-        Button btn = (Button) findViewById(R.id.btn_ingr_categories); //type cast
+        Button btn = (Button) findViewById(R.id.btn_ingr_categories); //type
+        Button addIng = (Button)findViewById(R.id.btn_add_ing); //add personal ingredient button
         Button addRecipe = (Button) findViewById(R.id.btn_add_recipe);
         //..set what happens when the user clicks
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Log.i(TAG, "This is a magic log message!");
-                //Toast.makeText(getApplicationContext(), "It's magic!", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(Home.this, Ingredient_Categories.class));
                 //setTitle("Ingredient Categories");
+            }
+        });
+
+        addIng.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Home.this, PersonalIngredient.class));
             }
         });
 
@@ -58,6 +64,7 @@ public class Home extends AppCompatActivity {
                 startActivity(new Intent(Home.this, PersonalRecipe.class));
             }
         });
+
 
     }
 

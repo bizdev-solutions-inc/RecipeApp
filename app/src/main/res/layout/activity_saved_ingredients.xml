@@ -24,10 +24,9 @@
         android:hint="Search Product"
         android:inputType="textVisiblePassword" />
 
-    <ListView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/list_view">
-        </ListView>
+    <ExpandableListView
+        android:id="@+id/expandableListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

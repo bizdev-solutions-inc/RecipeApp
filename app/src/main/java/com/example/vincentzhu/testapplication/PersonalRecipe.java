@@ -20,13 +20,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class PersonalRecipe extends AppCompatActivity implements View.OnClickListener {
 
-//    EditText nametext1;
-//    EditText nametext2;
-//    EditText nametext3;
-
     private FirebaseAuth firebaseAuth;
 
-    private Button mPicure;
+    private Button mPicture;
     private Button mFirebaseBtn;
     private DatabaseReference mDatabase;
     private DatabaseReference mRef;
@@ -44,8 +40,6 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
     private ImageView imageDisplay;
     private static final int RESULT_IMAGE = 1;
 
-    //public static int index = 1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,10 +47,10 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        if(firebaseAuth.getCurrentUser()==null){
+        if (firebaseAuth.getCurrentUser() == null) {
             //Profile activity here
             finish();
-            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
 
         // Create the toolbar and set it as the app bar for the activity
@@ -67,11 +61,9 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-//        nametext1 = (EditText)findViewById(R.id.editText1);
-//        nametext2 = (EditText)findViewById(R.id.editText2);
-//        nametext3 = (EditText)findViewById(R.id.editText3);
+        mFirebaseBtn = (Button) findViewById(R.id.firebase_btn);
 
-        mPicure = (Button) findViewById(R.id.pic_btn);
+        mPicture = (Button) findViewById(R.id.pic_btn);
         mFirebaseBtn = (Button) findViewById(R.id.firebase_btn);
         imageDisplay = (ImageView) findViewById(R.id.imageDisplay);
 
@@ -82,47 +74,8 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
         mIngField = (EditText)findViewById(R.id.ing_field);
         mInstrField = (EditText)findViewById(R.id.instr_field);
 
-        mPicure.setOnClickListener(this);
+        mPicture.setOnClickListener(this);
         mFirebaseBtn.setOnClickListener(this);
-
-//               mFirebaseBtn.setOnClickListener(new View.OnClickListener() {
-//
-//            public void onClick(View view) {
-//                String name = mNameField.getText().toString().trim();
-//                String ing = mIngField.getText().toString().trim();
-//                String instr = mInstrField.getText().toString().trim()
-        //        String key = mDatabase.push().getKey();
-                //mDatabase.setValue(name);
-//                mRef = mDatabase.child(key);
-//                mName = mRef.child("name");
-//                mIng = mRef.child("ingredients");
-                //mCuisine = mRef.child("cuisine");
-                //mMealType = mRef.child("meal type");
-//                mInstr = mRef.child("instructions");
-//                mName.setValue(name);
-//                mIng.setValue(ing);
-//                mInstr.setValue(instr);
-//            }
-//        });
-
-//        Button btn = (Button)findViewById(R.id.enter);
-
-
-//        btn.setOnClickListener(new View.OnClickListener(){
-//            int index = 0;
-//            Recipe[] array = new Recipe[10];
-//            view1 = (TextView)findViewById(R.id.textView4);
-//
-//            @Override
-//            public void onClick(View view) {
-//                if(index < 10) {
-//                    array[index] = new Recipe(nametext1.getText().toString(), nametext2.getText().toString(), nametext3.getText().toString());
-//
-//                    view1.setText("\nRecipe name: " + array[index].getRecipeName() + "\nIngredients: " + array[index].getQuantities() + "\nInstructions: " + array[index].getCookingInstruction());
-//                    index++;
-//                }
-//            }
-//        });
     }
 
     @Override
@@ -195,16 +148,4 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    //    public void saveRecipe(View view)
-//    {
-//        SharedPreferences sharedPref = getSharedPreferences("recipeInfo", Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPref.edit();
-//
-//        editor.putString("Favorite" + index, "\nRecipe Name:\n" + nametext1.getText().toString()
-//        + "\nIngredients List:\n" + nametext2.getText().toString() + "\nCooking Instructions:\n" + nametext3.getText().toString());
-//        editor.putInt("index", index);
-//        editor.commit();
-//        Toast.makeText(this, "Saved to Favorites!", Toast.LENGTH_LONG).show();
-//        index++;
-//    }
 }
