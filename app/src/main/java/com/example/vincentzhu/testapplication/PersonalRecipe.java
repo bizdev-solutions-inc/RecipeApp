@@ -1,7 +1,9 @@
 package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,12 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class PersonalRecipe extends AppCompatActivity {
+public class PersonalRecipe extends AppCompatActivity implements View.OnClickListener {
 
 //    EditText nametext1;
 //    EditText nametext2;
@@ -23,6 +26,7 @@ public class PersonalRecipe extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
 
+    private Button mPicure;
     private Button mFirebaseBtn;
     private DatabaseReference mDatabase;
     private DatabaseReference mRef;
@@ -37,6 +41,8 @@ public class PersonalRecipe extends AppCompatActivity {
     private DatabaseReference mMealType;
 
     private String userID;
+    private ImageView imageDisplay;
+    private static final int RESULT_IMAGE = 1;
 
     //public static int index = 1;
 
@@ -65,7 +71,10 @@ public class PersonalRecipe extends AppCompatActivity {
 //        nametext2 = (EditText)findViewById(R.id.editText2);
 //        nametext3 = (EditText)findViewById(R.id.editText3);
 
-        mFirebaseBtn = (Button)findViewById(R.id.firebase_btn);
+        mPicure = (Button) findViewById(R.id.pic_btn);
+        mFirebaseBtn = (Button) findViewById(R.id.firebase_btn);
+        imageDisplay = (ImageView) findViewById(R.id.imageDisplay);
+
         userID = firebaseAuth.getCurrentUser().getUid();
         mDatabase = FirebaseDatabase.getInstance().getReference().child(userID).child("Recipe");
 
@@ -73,26 +82,28 @@ public class PersonalRecipe extends AppCompatActivity {
         mIngField = (EditText)findViewById(R.id.ing_field);
         mInstrField = (EditText)findViewById(R.id.instr_field);
 
-        mFirebaseBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = mNameField.getText().toString().trim();
-                String ing = mIngField.getText().toString().trim();
-                String instr = mInstrField.getText().toString().trim();
+        mPicure.setOnClickListener(this);
+        mFirebaseBtn.setOnClickListener(this);
 
-                String key = mDatabase.push().getKey();
+//               mFirebaseBtn.setOnClickListener(new View.OnClickListener() {
+//
+//            public void onClick(View view) {
+//                String name = mNameField.getText().toString().trim();
+//                String ing = mIngField.getText().toString().trim();
+//                String instr = mInstrField.getText().toString().trim()
+        //        String key = mDatabase.push().getKey();
                 //mDatabase.setValue(name);
-                mRef = mDatabase.child(key);
-                mName = mRef.child("name");
-                mIng = mRef.child("ingredients");
+//                mRef = mDatabase.child(key);
+//                mName = mRef.child("name");
+//                mIng = mRef.child("ingredients");
                 //mCuisine = mRef.child("cuisine");
                 //mMealType = mRef.child("meal type");
-                mInstr = mRef.child("instructions");
-                mName.setValue(name);
-                mIng.setValue(ing);
-                mInstr.setValue(instr);
-            }
-        });
+//                mInstr = mRef.child("instructions");
+//                mName.setValue(name);
+//                mIng.setValue(ing);
+//                mInstr.setValue(instr);
+//            }
+//        });
 
 //        Button btn = (Button)findViewById(R.id.enter);
 
@@ -150,7 +161,41 @@ public class PersonalRecipe extends AppCompatActivity {
         }
     }
 
-//    public void saveRecipe(View view)
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.pic_btn:
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(galleryIntent, RESULT_IMAGE);
+                break;
+            case R.id.firebase_btn:
+                String name = mNameField.getText().toString().trim();
+                String ing = mIngField.getText().toString().trim();
+                String instr = mInstrField.getText().toString().trim();
+                String key = mDatabase.push().getKey();
+                mDatabase.setValue(name);
+                mRef = mDatabase.child(key);
+                mName = mRef.child("name");
+                mIng = mRef.child("ingredients");
+                mInstr = mRef.child("instructions");
+                mName.setValue(name);
+                mIng.setValue(ing);
+                mInstr.setValue(instr);
+                break;
+        }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==RESULT_IMAGE && resultCode==RESULT_OK && data!=null){
+            Uri selectedImage = data.getData();
+            imageDisplay.setImageURI(selectedImage);
+        }
+    }
+
+    //    public void saveRecipe(View view)
 //    {
 //        SharedPreferences sharedPref = getSharedPreferences("recipeInfo", Context.MODE_PRIVATE);
 //        SharedPreferences.Editor editor = sharedPref.edit();

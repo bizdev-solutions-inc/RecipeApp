@@ -41,47 +41,69 @@
             android:id="@+id/textView1"
             android:layout_width="97dp"
             android:layout_height="wrap_content"
-            android:text="Recipe Name" />
+            android:text="Recipe Name"
+            android:layout_gravity="center"/>
 
         <EditText
             android:id="@+id/name_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine"
+            android:layout_gravity="center"/>
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ingredient List" />
+            android:text="Ingredient List"
+            android:layout_gravity="center"/>
 
         <EditText
             android:id="@+id/ing_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine"
+            android:layout_gravity="center" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Instructions" />
+            android:text="Instructions"
+            android:layout_gravity="center"/>
 
         <EditText
             android:id="@+id/instr_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine"
+            android:layout_gravity="center"/>
+
+        <Button
+        android:id="@+id/pic_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="saveRecipe"
+        android:text="Select Picture"
+        android:layout_gravity="center"/>
+
+        <ImageView
+            android:id="@+id/imageDisplay"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center" />
 
         <Button
             android:id="@+id/firebase_btn"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:onClick="saveRecipe"
-            android:text="Save" />
+            android:text="Save"
+            android:layout_gravity="center"/>
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
