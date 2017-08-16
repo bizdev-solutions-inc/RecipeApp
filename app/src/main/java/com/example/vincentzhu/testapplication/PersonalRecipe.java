@@ -1,6 +1,8 @@
 package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,16 +15,29 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import static com.example.vincentzhu.testapplication.R.id.pic_btn;
 
 public class PersonalRecipe extends AppCompatActivity implements View.OnClickListener {
 
+//    EditText nametext1;
+//    EditText nametext2;
+//    EditText nametext3;
+
     private FirebaseAuth firebaseAuth;
 
-    private Button mPicture;
+    private Button mPicure;
     private Button mFirebaseBtn;
     private DatabaseReference mDatabase;
     private DatabaseReference mRef;
@@ -35,10 +50,16 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
     private DatabaseReference mInstr;
     private DatabaseReference mCuisine;
     private DatabaseReference mMealType;
+    private StorageReference mStorage;
+    private Uri selectedImage;
+    private ProgressBar progressU;
+
 
     private String userID;
     private ImageView imageDisplay;
     private static final int RESULT_IMAGE = 1;
+
+    //public static int index = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +68,10 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        if (firebaseAuth.getCurrentUser() == null) {
+        if(firebaseAuth.getCurrentUser()==null){
             //Profile activity here
             finish();
-            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
         }
 
         // Create the toolbar and set it as the app bar for the activity
@@ -61,9 +82,11 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        mFirebaseBtn = (Button) findViewById(R.id.firebase_btn);
+//        nametext1 = (EditText)findViewById(R.id.editText1);
+//        nametext2 = (EditText)findViewById(R.id.editText2);
+//        nametext3 = (EditText)findViewById(R.id.editText3);
 
-        mPicture = (Button) findViewById(R.id.pic_btn);
+        mPicure = (Button) findViewById(pic_btn);
         mFirebaseBtn = (Button) findViewById(R.id.firebase_btn);
         imageDisplay = (ImageView) findViewById(R.id.imageDisplay);
 
@@ -74,8 +97,50 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
         mIngField = (EditText)findViewById(R.id.ing_field);
         mInstrField = (EditText)findViewById(R.id.instr_field);
 
-        mPicture.setOnClickListener(this);
+        mStorage = FirebaseStorage.getInstance().getReference();
+        mPicure.setOnClickListener(this);
         mFirebaseBtn.setOnClickListener(this);
+        progressU=(ProgressBar) findViewById(R.id.progressUpload);
+        progressU.setVisibility(View.GONE);
+
+//               mFirebaseBtn.setOnClickListener(new View.OnClickListener() {
+//
+//            public void onClick(View view) {
+//                String name = mNameField.getText().toString().trim();
+//                String ing = mIngField.getText().toString().trim();
+//                String instr = mInstrField.getText().toString().trim()
+        //        String key = mDatabase.push().getKey();
+                //mDatabase.setValue(name);
+//                mRef = mDatabase.child(key);
+//                mName = mRef.child("name");
+//                mIng = mRef.child("ingredients");
+                //mCuisine = mRef.child("cuisine");
+                //mMealType = mRef.child("meal type");
+//                mInstr = mRef.child("instructions");
+//                mName.setValue(name);
+//                mIng.setValue(ing);
+//                mInstr.setValue(instr);
+//            }
+//        });
+
+//        Button btn = (Button)findViewById(R.id.enter);
+
+
+//        btn.setOnClickListener(new View.OnClickListener(){
+//            int index = 0;
+//            Recipe[] array = new Recipe[10];
+//            view1 = (TextView)findViewById(R.id.textView4);
+//
+//            @Override
+//            public void onClick(View view) {
+//                if(index < 10) {
+//                    array[index] = new Recipe(nametext1.getText().toString(), nametext2.getText().toString(), nametext3.getText().toString());
+//
+//                    view1.setText("\nRecipe name: " + array[index].getRecipeName() + "\nIngredients: " + array[index].getQuantities() + "\nInstructions: " + array[index].getCookingInstruction());
+//                    index++;
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -117,8 +182,9 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
-            case R.id.pic_btn:
+            case pic_btn:
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                galleryIntent.setType("image/*");
                 startActivityForResult(galleryIntent, RESULT_IMAGE);
                 break;
             case R.id.firebase_btn:
@@ -134,6 +200,17 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
                 mName.setValue(name);
                 mIng.setValue(ing);
                 mInstr.setValue(instr);
+                uploadFile();
+                Toast.makeText(PersonalRecipe.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
+//                FirebaseUser user= firebaseAuth.getCurrentUser();
+//                StorageReference uploadPath = mStorage.child(user.getEmail()).child(selectedImage.getLastPathSegment());
+//                uploadPath.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                    @Override
+//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                        Toast.makeText(PersonalRecipe.this,"Upload Completed successfully",Toast.LENGTH_LONG).show();
+//                    }
+//                });
+
                 break;
         }
 
@@ -143,9 +220,39 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode==RESULT_IMAGE && resultCode==RESULT_OK && data!=null){
-            Uri selectedImage = data.getData();
+            selectedImage = data.getData();
             imageDisplay.setImageURI(selectedImage);
         }
     }
 
+    private void uploadFile () {
+        if (selectedImage != null) {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            StorageReference uploadPath = mStorage.child(user.getEmail()).child(selectedImage.getLastPathSegment());
+            uploadPath.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                    progressU.setVisibility(View.GONE);
+//                    Toast.makeText(PersonalRecipe.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
+
+                }
+            });
+
+        }
+
+    }
 }
+
+    //    public void saveRecipe(View view)
+//    {
+//        SharedPreferences sharedPref = getSharedPreferences("recipeInfo", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPref.edit();
+//
+//        editor.putString("Favorite" + index, "\nRecipe Name:\n" + nametext1.getText().toString()
+//        + "\nIngredients List:\n" + nametext2.getText().toString() + "\nCooking Instructions:\n" + nametext3.getText().toString());
+//        editor.putInt("index", index);
+//        editor.commit();
+//        Toast.makeText(this, "Saved to Favorites!", Toast.LENGTH_LONG).show();
+//        index++;
+//    }
+

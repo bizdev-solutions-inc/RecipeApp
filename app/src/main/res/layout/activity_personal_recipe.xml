@@ -104,6 +104,12 @@
             android:text="Save"
             android:layout_gravity="center"/>
 
+        <ProgressBar
+            android:id="@+id/progressUpload"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
