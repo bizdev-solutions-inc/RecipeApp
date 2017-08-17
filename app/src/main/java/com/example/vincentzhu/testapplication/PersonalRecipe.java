@@ -1,8 +1,6 @@
 package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -144,10 +142,6 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-//            case R.id.action_search:
-//                // User chose the "Search" item, show search dialog
-//                onSearchRequested();
-//                return true;
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
                 finish();

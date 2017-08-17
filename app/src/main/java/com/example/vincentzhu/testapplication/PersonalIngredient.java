@@ -1,10 +1,8 @@
 package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -99,10 +97,6 @@ public class PersonalIngredient extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-//            case R.id.action_search:
-//                // User chose the "Search" item, show search dialog
-//                onSearchRequested();
-//                return true;
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
                 finish();

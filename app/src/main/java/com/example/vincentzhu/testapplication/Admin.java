@@ -20,20 +20,13 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
-
-import static com.example.vincentzhu.testapplication.R.id.imageDisplay;
-import static com.example.vincentzhu.testapplication.R.id.pic_btn;
-import static com.example.vincentzhu.testapplication.R.id.recipe_img;
 
 public class Admin extends AppCompatActivity {
 
@@ -231,10 +224,6 @@ public class Admin extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-//            case R.id.action_search:
-//                // User chose the "Search" item, show search dialog
-//                onSearchRequested();
-//                return true;
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
                 finish();

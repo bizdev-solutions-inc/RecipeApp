@@ -12,7 +12,9 @@
     <!-- Text for the About Us activity -->
     <string name="about_text">We are Software Kings</string>
 
-    <!-- Hint text for the search dialog -->
+    <string name="tv_search">Search recipes by: </string>
+
+    <!-- Hint text for the search dialog in IngredientsList activity-->
     <string name="hint_search_ingr">Search ingredients</string>
 
     <string name="btn_continue">Continue</string>
@@ -24,6 +26,15 @@
     <string name="btn_clear_list">Clear List</string>
 
     <string name="hint_tap_remove_ingr">(Tap an entry to remove it from the list)</string>
+
+    <!-- Drop-down menu for "Search recipes by..." in Home activity -->
+    <string-array name="search_menu_array">
+        <item>Recipe Name</item>
+        <item>Recipe Type</item>
+        <item>Recipe Cuisine</item>
+        <item>Ingredient List</item>
+        <item>Ingredient Category</item>
+    </string-array>
 
     <!-- Drop down menu for admin home -->
     <string-array name="recipe_types">

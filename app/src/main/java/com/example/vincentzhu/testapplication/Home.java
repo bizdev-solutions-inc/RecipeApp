@@ -7,17 +7,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class Home extends AppCompatActivity {
+public class Home extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private FirebaseAuth firebaseAuth;
-
-    // Key for ingredient entered by user
-    public static final String EXTRA_INGREDIENT = "INGREDIENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +36,24 @@ public class Home extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(),LoginActivity.class));
         }
 
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.search_menu_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+        // Set listener interface as the current activity
+        spinner.setOnItemSelectedListener(this);
+
         //Wire up the button to do stuff
         //..get the button
-        Button btn = (Button) findViewById(R.id.btn_ingr_categories); //type
-        Button addIng = (Button)findViewById(R.id.btn_add_ing); //add personal ingredient button
-        Button addRecipe = (Button) findViewById(R.id.btn_add_recipe);
+        Button btn_ingr_categories = (Button) findViewById(R.id.btn_ingr_categories); //type
+        Button btn_add_ing = (Button) findViewById(R.id.btn_add_ing); //add personal ingredient button
+        Button btn_add_recipe = (Button) findViewById(R.id.btn_add_recipe);
         //..set what happens when the user clicks
-        btn.setOnClickListener(new View.OnClickListener() {
+        btn_ingr_categories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Home.this, Ingredient_Categories.class));
@@ -51,21 +61,19 @@ public class Home extends AppCompatActivity {
             }
         });
 
-        addIng.setOnClickListener(new View.OnClickListener() {
+        btn_add_ing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Home.this, PersonalIngredient.class));
             }
         });
 
-        addRecipe.setOnClickListener(new View.OnClickListener(){
+        btn_add_recipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Home.this, PersonalRecipe.class));
             }
         });
-
-
     }
 
     @Override
@@ -78,10 +86,6 @@ public class Home extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-//            case R.id.action_search:
-//                // User chose the "Search" item, show search dialog
-//                startActivity(new Intent(this, IngredientsList.class));
-//                return true;
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
                 finish();
@@ -106,18 +110,15 @@ public class Home extends AppCompatActivity {
     }
 
     /**
-     * Called when the user taps the Add button.
-     * Sends the ingredient entered by the user to the IngredientsList activity.
+     * Called when an item is selected from the spinner drop-down menu.
      */
-    public void addIngredient(View view) {
-        Intent intent = new Intent(this, IngredientsList.class);
-        EditText et_search_ingr = (EditText) findViewById(R.id.et_search_ingr);
-        String query = et_search_ingr.getText().toString();
-        if (!query.isEmpty()) { // Do nothing if query is an empty string
-            et_search_ingr.setText(""); // Clear text field when Add button is pressed
-            intent.putExtra(EXTRA_INGREDIENT, query);
-            startActivity(intent);
-        }
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        // An item was selected. You can retrieve the selected item using
+        // parent.getItemAtPosition(pos)
+    }
+
+    public void onNothingSelected(AdapterView<?> parent) {
+        // Another interface callback
     }
 
     public void displaySavedRecipe(View view)

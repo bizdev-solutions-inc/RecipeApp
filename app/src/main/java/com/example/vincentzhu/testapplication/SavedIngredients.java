@@ -4,15 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -22,7 +16,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class SavedIngredients extends AppCompatActivity {
 
@@ -104,10 +97,6 @@ public class SavedIngredients extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-//            case R.id.action_search:
-//                // User chose the "Search" item, show search dialog
-//                onSearchRequested();
-//                return true;
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
                 finish();

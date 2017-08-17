@@ -5,11 +5,15 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -19,6 +23,8 @@ import java.util.ArrayList;
  * search for recipes that use the ingredients in the list.
  */
 public class IngredientsList extends AppCompatActivity {
+
+    private FirebaseAuth firebaseAuth;
 
     private ArrayList<String> ingredients_list; // list of ingredients entered by user
 
@@ -46,18 +52,45 @@ public class IngredientsList extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        // Extract the string query entered by the user from the Home activity
-        Intent intent = getIntent();
-        String ingredient = intent.getStringExtra(Home.EXTRA_INGREDIENT);
-
         ingredients_list = new ArrayList<String>(); // initialize list of ingredients
-        ingredients_list.add(ingredient); // Add ingredient from Home to list
 
         // Set the ListView's OnItemClickListener to handle clicking to remove list items
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setOnItemClickListener(itemClickListener);
 
         updateList();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.my_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_home:
+                // User chose the "Home" item, show the Home activity
+                finish();
+                startActivity(new Intent(this, Home.class));
+                return true;
+            case R.id.action_about_us:
+                // User chose the "About Us" item, show the About Us activity
+                finish();
+                startActivity(new Intent(this, AboutUs.class));
+                return true;
+            case R.id.action_logout:
+                // User chose the "Log Out" item, log the user out and return to login activity
+                firebaseAuth.signOut();
+                finish();
+                startActivity(new Intent(this, LoginActivity.class));
+                return true;
+            default:
+                // The user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
