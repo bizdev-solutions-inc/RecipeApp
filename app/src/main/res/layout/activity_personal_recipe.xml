@@ -8,64 +8,108 @@
     tools:layout_editor_absoluteY="81dp"
     tools:layout_editor_absoluteX="0dp">
 
-    <ScrollView
-        android:layout_width="370dp"
-        android:layout_height="490dp"
-        tools:layout_editor_absoluteX="7dp"
-        tools:layout_editor_absoluteY="10dp">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:elevation="4dp"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/Theme.AppCompat.Light" />
 
-        <LinearLayout
-            android:layout_width="370dp"
-            android:layout_height="match_parent"
-            android:fillViewport="true"
-            android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:orientation="vertical"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintVertical_bias="0.0">
 
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="97dp"
-                android:layout_height="wrap_content"
-                android:text="Recipe Name" />
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="97dp"
+            android:layout_height="wrap_content"
+            android:text="Recipe Name"
+            android:layout_gravity="center"/>
 
-            <EditText
-                android:id="@+id/editText1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textMultiLine" />
+        <EditText
+            android:id="@+id/name_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:layout_gravity="center"/>
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ingredient List" />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ingredient List"
+            android:layout_gravity="center"/>
 
-            <EditText
-                android:id="@+id/editText2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textMultiLine" />
+        <EditText
+            android:id="@+id/ing_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:layout_gravity="center" />
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Instructions" />
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Instructions"
+            android:layout_gravity="center"/>
 
-            <EditText
-                android:id="@+id/editText3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textMultiLine" />
+        <EditText
+            android:id="@+id/instr_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:layout_gravity="center"/>
 
-            <Button
-                android:id="@+id/enter"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:onClick="saveRecipe"
-                android:text="Save" />
-        </LinearLayout>
-    </ScrollView>
+        <Button
+        android:id="@+id/pic_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="saveRecipe"
+        android:text="Select Picture"
+        android:layout_gravity="center"/>
+
+        <ImageView
+            android:id="@+id/imageDisplay"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center" />
+
+        <Button
+            android:id="@+id/firebase_btn"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:onClick="saveRecipe"
+            android:text="Save"
+            android:layout_gravity="center"/>
+
+        <ProgressBar
+            android:id="@+id/progressUpload"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

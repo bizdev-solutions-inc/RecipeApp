@@ -2,31 +2,97 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.vincentzhu.testapplication">
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="bizDev&apos;s Cooking Recipe"
+        android:label="@string/app_label"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- The login activity -->
+        <activity android:name=".LoginActivity" />
         <activity
             android:name=".login"
-            android:label="bizDev Recipe">
+            android:label="@string/app_label">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Home" />
-        <activity android:name=".Ingredient_Categories" />
-        <activity android:name=".Introduction" />
-        <activity android:name=".MeatScroll" />
-        <activity android:name=".PersonalRecipe" />
-        <activity android:name=".SavedRecipe" />
-        <activity android:name=".SavedIngredients" />
-        <activity android:name=".LoginActivity"></activity>
+
+        <!-- Shows the list of ingredients entered by the user -->
+        <activity
+            android:name=".IngredientsList"
+            android:label="Ingredients List"
+            android:launchMode="singleTop"
+            android:parentActivityName=".Home">
+
+            <!--
+            launchMode affects how instances of activities are created
+            and affects the animation when the Up button is pressed
+            -->
+            <!-- parentActivityName sets the parent activity of this activity for Up navigation -->
+            <!-- This meta-data tag sets the parent activity for older Android versions -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
+        </activity>
+        <activity
+            android:name=".Home"
+            android:launchMode="singleTop"></activity>
+        <activity android:name=".Introduction"></activity>
+        <activity
+            android:name=".AboutUs"
+            android:label="About Us">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
+        </activity>
+        <activity
+            android:name=".Ingredient_Categories"
+            android:label="Ingredients Categories"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
+        </activity>
+        <activity
+            android:name=".MeatScroll"
+            android:label="Meat &amp; Seafood">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Ingredient_Categories" />
+        </activity>
+        <activity
+            android:name=".PersonalRecipe"
+            android:label="Add Recipe">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
+        </activity>
+        <activity
+            android:name=".SavedRecipe"
+            android:label="Saved Recipes">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
+        </activity>
+        <activity
+            android:name=".SavedIngredients"
+            android:label="Saved Ingredients">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
+        </activity>
+        <activity
+            android:name=".Admin"
+            android:label="Admin"></activity>
+        <activity android:name=".PersonalIngredient"></activity>
     </application>
+    
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
 </manifest>

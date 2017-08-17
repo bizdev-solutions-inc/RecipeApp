@@ -2,17 +2,41 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+    <!-- <item
+        android:id="@+id/searchView"
+        android:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/ic_action_name"
+        android:title="@string/action_search"
+        app:showAsAction="always"
+
+        />
+        -->
+
+    <!-- The Search button -->
+    <!--
     <item
-        android:id="@+id/action_logout"
-        android:title="@string/menu_action_logout"
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_action_name"
+        android:title="@string/action_search"
+        app:showAsAction="always" />
+        -->
+
+    <!-- Return the user to the Home activity -->
+    <item
+        android:id="@+id/action_home"
+        android:title="@string/action_home"
         app:showAsAction="never" />
 
+    <!-- Show the user the About Us activity -->
     <item
         android:id="@+id/action_about_us"
-        android:title="@string/menu_action_about_us"
+        android:title="@string/action_about_us"
         app:showAsAction="never" />
 
-
-
-
+    <!-- Log the user out and return to login activity-->
+    <item
+        android:id="@+id/action_logout"
+        android:title="@string/action_logout"
+        app:showAsAction="never" />
 </menu>

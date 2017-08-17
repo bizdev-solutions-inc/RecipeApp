@@ -9,41 +9,66 @@
     tools:layout_editor_absoluteX="0dp"
     >
 
-    <Button
-        android:id="@+id/btnIC"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="27dp"
-        android:layout_marginStart="27dp"
-        android:layout_marginTop="56dp"
-        android:text="Ingredient Categories"
-        app:layout_constraintLeft_toLeftOf="@+id/editText"
-        app:layout_constraintTop_toBottomOf="@+id/editText"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintTop_creator="1" />
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/Theme.AppCompat.Light"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintLeft_creator="1" />
 
     <EditText
-        android:id="@+id/editText"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:id="@+id/et_search_ingr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="240dp"
         android:ems="10"
         android:gravity="center"
-        android:inputType="textPersonName"
-        android:text="Search"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        android:layout_marginStart="67dp"
-        android:layout_marginEnd="67dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="125dp"
-        tools:layout_constraintLeft_creator="1"
+        android:hint="@string/hint_search_ingr"
+        android:inputType="text"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/btn_add_ingr"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="67dp"
-        android:layout_marginRight="67dp" />
+        android:layout_marginStart="16dp" />
 
     <Button
-        android:id="@+id/savedRecipe"
+        android:id="@+id/btn_add_ingr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="16dp"
+        android:onClick="addIngredient"
+        android:text="@string/btn_add_ingr"
+        app:layout_constraintBaseline_toBaselineOf="@+id/et_search_ingr"
+        app:layout_constraintLeft_toRightOf="@+id/et_search_ingr"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp" />
+
+    <Button
+        android:id="@+id/btn_ingr_categories"
+        android:layout_width="156dp"
+        android:layout_height="60dp"
+        android:text="Ingredient Categories"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="210dp"
+        app:layout_constraintHorizontal_bias="0.083" />
+
+    <Button
+        android:id="@+id/btn_saved_recipes"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="35dp"
@@ -51,27 +76,25 @@
         android:layout_marginStart="16dp"
         android:onClick="displaySavedRecipe"
         android:text="Saved Recipes"
-        app:layout_constraintBottom_toTopOf="@+id/button9"
+        app:layout_constraintBottom_toTopOf="@+id/btn_recent_searches"
         app:layout_constraintLeft_toLeftOf="parent"
         tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btn_saved_ingr"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="35dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:onClick="displaySavedIngredients"
         android:text="Saved Ingredients"
-        app:layout_constraintBottom_toTopOf="@+id/button9"
         app:layout_constraintRight_toRightOf="parent"
-        tools:layout_constraintBottom_creator="1"
-        tools:layout_constraintRight_creator="1" />
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintBaseline_toBaselineOf="@+id/btn_saved_recipes" />
 
     <Button
-        android:id="@+id/button9"
+        android:id="@+id/btn_recent_searches"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
@@ -85,56 +108,50 @@
         tools:layout_constraintRight_creator="1" />
 
     <Button
-        android:id="@+id/addrecipe"
+        android:id="@+id/btn_add_recipe"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
         android:text="Add Recipe"
         app:layout_constraintHorizontal_bias="0.928"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-         />
-
-    <SearchView
-        android:layout_width="40dp"
-        android:layout_height="0dp"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        android:layout_marginStart="32dp"
-        app:layout_constraintBottom_toBottomOf="@+id/editText"
-        android:layout_marginEnd="27dp"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintTop_toTopOf="@+id/editText"
-        app:layout_constraintLeft_toRightOf="@+id/btnIC"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="27dp"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/btn_recent_searches" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="33dp"
         android:gravity="center"
         android:text="Please make a selection below"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@android:color/holo_green_light"
+        android:textColor="@android:color/holo_green_dark"
         android:textSize="24sp"
         android:visibility="visible"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
         app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="114dp" />
+
+    <Button
+        android:id="@+id/btn_add_ing"
+        android:layout_width="141dp"
+        android:layout_height="62dp"
+        android:layout_marginBottom="47dp"
+        android:layout_marginTop="58dp"
+        android:text="Add Ingredient"
+        app:layout_constraintBottom_toTopOf="@+id/btn_saved_ingr"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@+id/btn_add_ingr"
+        app:layout_constraintRight_toLeftOf="@+id/btn_add_ingr"
+        app:layout_constraintTop_toTopOf="@+id/btn_add_ingr"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintTop_creator="1" />
-
-
 
 </android.support.constraint.ConstraintLayout>
