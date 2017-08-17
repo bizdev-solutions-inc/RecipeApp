@@ -184,11 +184,10 @@
         android:id="@+id/save_recipe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="13dp"
         android:text="Save as Recipe"
         android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/ingredientHistory"
-        android:layout_marginEnd="11dp" />
+        android:layout_toStartOf="@+id/textView2" />
 
     <TextView
         android:id="@+id/textView18"
@@ -217,5 +216,21 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="15dp"
         android:text="Save as Ingredient" />
+
+    <Button
+        android:id="@+id/recipe_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/save_recipe"
+        android:layout_alignEnd="@+id/textView14"
+        android:text="Recipe Image" />
+
+    <Button
+        android:id="@+id/ingredient_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/save_ingredient"
+        android:layout_alignStart="@+id/save_ingredient"
+        android:text="Ingredient Image" />
 
 </RelativeLayout>

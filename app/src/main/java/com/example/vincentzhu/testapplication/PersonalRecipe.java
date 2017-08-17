@@ -31,13 +31,9 @@ import static com.example.vincentzhu.testapplication.R.id.pic_btn;
 
 public class PersonalRecipe extends AppCompatActivity implements View.OnClickListener {
 
-//    EditText nametext1;
-//    EditText nametext2;
-//    EditText nametext3;
-
     private FirebaseAuth firebaseAuth;
 
-    private Button mPicure;
+    private Button mPicture;
     private Button mFirebaseBtn;
     private DatabaseReference mDatabase;
     private DatabaseReference mRef;
@@ -82,11 +78,7 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-//        nametext1 = (EditText)findViewById(R.id.editText1);
-//        nametext2 = (EditText)findViewById(R.id.editText2);
-//        nametext3 = (EditText)findViewById(R.id.editText3);
-
-        mPicure = (Button) findViewById(pic_btn);
+        mPicture = (Button) findViewById(pic_btn);
         mFirebaseBtn = (Button) findViewById(R.id.firebase_btn);
         imageDisplay = (ImageView) findViewById(R.id.imageDisplay);
 
@@ -98,7 +90,7 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
         mInstrField = (EditText)findViewById(R.id.instr_field);
 
         mStorage = FirebaseStorage.getInstance().getReference();
-        mPicure.setOnClickListener(this);
+        mPicture.setOnClickListener(this);
         mFirebaseBtn.setOnClickListener(this);
         progressU=(ProgressBar) findViewById(R.id.progressUpload);
         progressU.setVisibility(View.GONE);
@@ -242,17 +234,4 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
 
     }
 }
-
-    //    public void saveRecipe(View view)
-//    {
-//        SharedPreferences sharedPref = getSharedPreferences("recipeInfo", Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPref.edit();
-//
-//        editor.putString("Favorite" + index, "\nRecipe Name:\n" + nametext1.getText().toString()
-//        + "\nIngredients List:\n" + nametext2.getText().toString() + "\nCooking Instructions:\n" + nametext3.getText().toString());
-//        editor.putInt("index", index);
-//        editor.commit();
-//        Toast.makeText(this, "Saved to Favorites!", Toast.LENGTH_LONG).show();
-//        index++;
-//    }
 
