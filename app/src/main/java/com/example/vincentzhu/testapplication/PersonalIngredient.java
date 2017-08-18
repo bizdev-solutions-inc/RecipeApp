@@ -3,6 +3,7 @@ package com.example.vincentzhu.testapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,6 +41,9 @@ public class PersonalIngredient extends AppCompatActivity {
         setContentView(R.layout.activity_personal_ingredient);
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
         if (firebaseAuth.getCurrentUser() == null) {
             //Profile activity here

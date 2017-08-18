@@ -32,7 +32,6 @@
         android:layout_height="wrap_content"
         android:text="Home Page"
         android:layout_marginTop="500dp"
-        android:layout_marginLeft="136dp"
-        android:layout_marginStart="136dp"
-        />
+        android:layout_centerHorizontal="true"/>
+
 </RelativeLayout>

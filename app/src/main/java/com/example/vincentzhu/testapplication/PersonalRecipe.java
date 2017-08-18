@@ -25,6 +25,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.UUID;
+
 import static com.example.vincentzhu.testapplication.R.id.pic_btn;
 
 public class PersonalRecipe extends AppCompatActivity implements View.OnClickListener {
