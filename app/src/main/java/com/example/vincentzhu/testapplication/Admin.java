@@ -27,6 +27,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Admin extends AppCompatActivity {
 
@@ -65,6 +66,8 @@ public class Admin extends AppCompatActivity {
     ArrayAdapter<CharSequence>adapter_ing_season;
 
     private String userID;
+    private FirebaseUser user;
+    private String uid;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +114,8 @@ public class Admin extends AppCompatActivity {
         spinner_ing_season.setAdapter(adapter_ing_season);
 
         userID = firebaseAuth.getCurrentUser().getUid();
+        user = firebaseAuth.getCurrentUser();
+        uid = UUID.randomUUID().toString();
         mRoot = FirebaseDatabase.getInstance().getReference();
 
         mIngredients = mRoot.child("Ingredients");
@@ -137,7 +142,7 @@ public class Admin extends AppCompatActivity {
         addRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String recipeName = recipe_name.getText().toString().trim();
+                final String recipeName = recipe_name.getText().toString().trim();
                 String recipeInstruction = recipe_instruction.getText().toString().trim();
                 String recipeIngredients = recipe_ingredients.getText().toString() + " "; //need to update later
                 ArrayList<String> parse = new ArrayList<String>();
@@ -161,6 +166,13 @@ public class Admin extends AppCompatActivity {
 
                 mStorage = FirebaseStorage.getInstance().getReference().child("Recipes");
                 uploadFile();
+                mStorage.child(user.getEmail()).child(uid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        String url = uri.toString();
+                        mRecipes.child(recipeName).child("Image").setValue(url);
+                    }
+                });
                 Toast.makeText(Admin.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
             }
         });
@@ -168,7 +180,7 @@ public class Admin extends AppCompatActivity {
         addIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String ingredientName = ingredient_name.getText().toString().trim();
+                final String ingredientName = ingredient_name.getText().toString().trim();
                 String ingredientDescription = ingredient_description.getText().toString().trim();
                 String ingredientHistory = ingredient_history.getText().toString().trim();
 
@@ -185,6 +197,13 @@ public class Admin extends AppCompatActivity {
 
                 mStorage = FirebaseStorage.getInstance().getReference().child("Ingredients");
                 uploadFile();
+                mStorage.child(user.getEmail()).child(uid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        String url = uri.toString();
+                        mIngredients.child(ingredientName).child("Image").setValue(url);
+                    }
+                });
                 Toast.makeText(Admin.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
 
             }

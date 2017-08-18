@@ -53,6 +53,7 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
 
     //database-related objects
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
     private StorageReference mStorage;
     private String userID;
     private DatabaseReference mRoot;
@@ -61,6 +62,8 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
     private DatabaseReference mCuisine_Recipe;
     private DatabaseReference mRecipes;
     private DatabaseReference mType_Recipes;
+    private String uid;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +112,9 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
         mCuisine_Recipe = mRoot.child("Cuisine_Recipe");
         mRecipes = mRoot.child("Recipes");
         mType_Recipes = mRoot.child("Type_Recipes");
+        user  = firebaseAuth.getCurrentUser();
+        uid = UUID.randomUUID().toString();
+
     }
 
     @Override
@@ -152,7 +158,7 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
                 startActivityForResult(galleryIntent, RESULT_IMAGE);
                 break;
             case R.id.firebase_btn:
-                String recipeName = mNameField.getText().toString().trim();
+                final String recipeName = mNameField.getText().toString().trim();
                 String recipeInstruction = mInstrField.getText().toString().trim();
                 String recipeIngredients = mIngField.getText().toString() + " "; //need to update later
                 ArrayList<String> parse = new ArrayList<String>();
@@ -176,6 +182,13 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
 
                 mStorage = FirebaseStorage.getInstance().getReference().child("Recipes");
                 uploadFile();
+                mStorage.child(user.getEmail()).child(uid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        String url = uri.toString();
+                        mRecipes.child(recipeName).child("Image").setValue(url);
+                    }
+                });
                 Toast.makeText(PersonalRecipe.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
                 break;
         }
@@ -193,8 +206,6 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
 
     private void uploadFile () {
         if (selectedImage != null) {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            String uid = UUID.randomUUID().toString();
             StorageReference uploadPath = mStorage.child(user.getEmail()).child(uid);
             Log.i(TAG, uid);
             uploadPath.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

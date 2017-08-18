@@ -19,15 +19,19 @@ import java.util.ArrayList;
 
 public class SavedIngredients extends AppCompatActivity {
 
-    private FirebaseAuth firebaseAuth;
-    private DatabaseReference mDatabase;
 
+    //user-related
     private ArrayList<String> mUsernames = new ArrayList<>();
     private String userID;
     ExpandableListView expandableListView;
 
     ArrayList<ArrayList<String>> listOfLists = new ArrayList<ArrayList<String>>();
     ArrayList<String> parent = new ArrayList<String>();
+
+    //database-related
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference mDatabase;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
