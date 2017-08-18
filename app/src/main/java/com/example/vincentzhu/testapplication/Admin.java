@@ -110,9 +110,8 @@ public class Admin extends AppCompatActivity {
         spinner_ing_type.setAdapter(adapter_ing_cuisine);
         spinner_ing_season.setAdapter(adapter_ing_season);
 
-
         userID = firebaseAuth.getCurrentUser().getUid();
-        mRoot = FirebaseDatabase.getInstance().getReference().child(userID);
+        mRoot = FirebaseDatabase.getInstance().getReference();
 
         mIngredients = mRoot.child("Ingredients");
         mRecipe_Ingredients = mRoot.child("Recipe_Ingredients");
