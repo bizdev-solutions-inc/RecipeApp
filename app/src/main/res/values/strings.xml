@@ -14,21 +14,26 @@
 
     <string name="tv_search">Search recipes by: </string>
 
-    <!-- Hint text for the search dialog in IngredientsList activity-->
+    <!-- Hint text for the search dialog in IngredientList activity-->
     <string name="hint_search_ingr">Search ingredients</string>
 
     <string name="btn_continue">Continue</string>
 
+    <string name="btn_search">Search</string>
+
+    <string name="btn_add_recipe">Add Recipe</string>
+
     <!-- Button for adding to ingredients list -->
-    <string name="btn_add_ingr">Add</string>
+    <string name="btn_add">Add</string>
 
     <string name="btn_find_recipes">Find Recipes</string>
     <string name="btn_clear_list">Clear List</string>
 
     <string name="hint_tap_remove_ingr">(Tap an entry to remove it from the list)</string>
 
-    <!-- Drop-down menu for "Search recipes by..." in Home activity -->
+    <!-- Drop-down menu for "RecipeSearch recipes by..." in Home activity -->
     <string-array name="search_menu_array">
+        <item>Search recipes by...</item>
         <item>Recipe Name</item>
         <item>Recipe Type</item>
         <item>Recipe Cuisine</item>
@@ -79,5 +84,6 @@
         <item>Winter</item>
         <item>Year round</item>
     </string-array>
+    <string name="title_activity_basic">BasicActivity</string>
 
 </resources>

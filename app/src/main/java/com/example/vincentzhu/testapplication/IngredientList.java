@@ -22,22 +22,11 @@ import java.util.ArrayList;
  * The user is able to add and remove ingredients from the list or
  * search for recipes that use the ingredients in the list.
  */
-public class IngredientsList extends AppCompatActivity {
+public class IngredientList extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
 
     private ArrayList<String> ingredients_list; // list of ingredients entered by user
-
-    // Create a list-item click-handling object as an anonymous class.
-    // When the user clicks on a list item, it is removed from the list.
-    private AdapterView.OnItemClickListener itemClickListener =
-            new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView adapterView, View view, int position, long id) {
-                    ingredients_list.remove(position);
-                    updateList();
-                }
-            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +47,7 @@ public class IngredientsList extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setOnItemClickListener(itemClickListener);
 
-        updateList();
+        //updateList();
     }
 
     @Override
@@ -93,6 +82,17 @@ public class IngredientsList extends AppCompatActivity {
         }
     }
 
+    // Create a list-item click-handling object as an anonymous class.
+    private AdapterView.OnItemClickListener itemClickListener =
+            new AdapterView.OnItemClickListener() {
+                // When the user clicks on a list item, it is removed from the list.
+                @Override
+                public void onItemClick(AdapterView adapterView, View view, int position, long id) {
+                    ingredients_list.remove(position);
+                    updateList();
+                }
+            };
+
     /**
      * Called when the user taps the Add button.
      * Adds the ingredient entered by the user to the ingredients list.
@@ -118,7 +118,6 @@ public class IngredientsList extends AppCompatActivity {
                 android.R.layout.simple_list_item_1, ingredients_list);
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);
-        // dynamic memory allocation issues? updateList() might be called frequently
     }
 
     /**
@@ -135,5 +134,7 @@ public class IngredientsList extends AppCompatActivity {
      */
     public void findRecipes(View view) {
         // TODO: Write findRecipes method
+        // go to SearchResults activity
+        startActivity(new Intent(this, SearchResults.class));
     }
 }

@@ -19,7 +19,7 @@
         android:layout_marginRight="8dp"
         android:background="@color/colorPrimary"
         android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintRight_toRightOf="parent"
         app:popupTheme="@style/Theme.AppCompat.Light"
         tools:layout_constraintTop_creator="1"

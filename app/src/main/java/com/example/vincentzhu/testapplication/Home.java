@@ -44,30 +44,17 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
-        // Set listener interface as the current activity
         spinner.setOnItemSelectedListener(this);
 
-        //Wire up the button to do stuff
-        //..get the button
-        Button btn_ingr_categories = (Button) findViewById(R.id.btn_ingr_categories); //type
+        // onClick handlers for buttons
         Button btn_add_ing = (Button) findViewById(R.id.btn_add_ing); //add personal ingredient button
-        Button btn_add_recipe = (Button) findViewById(R.id.btn_add_recipe);
-        //..set what happens when the user clicks
-        btn_ingr_categories.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Home.this, Ingredient_Categories.class));
-                //setTitle("Ingredient Categories");
-            }
-        });
-
         btn_add_ing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Home.this, PersonalIngredient.class));
             }
         });
-
+        Button btn_add_recipe = (Button) findViewById(R.id.btn_add_recipe);
         btn_add_recipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,15 +97,42 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
     }
 
     /**
-     * Called when an item is selected from the spinner drop-down menu.
+     * Handler for selecting items from the spinner drop-down menu.
+     * Starts the activity for the corresponding item selected.
      */
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)
+        // retrieve item using parent.getItemAtPosition(pos)
+        String item = parent.getItemAtPosition(pos).toString();
+        switch (item) {
+            case "Recipe Name":
+                startActivity(new Intent(Home.this, RecipeSearch.class));
+                break;
+            case "Recipe Cuisine":
+                // startActivity(new Intent(Home.this, RecipeCuisine.class));
+                break;
+            case "Recipe Type":
+                // startActivity(new Intent(Home.this, RecipeType.class));
+                break;
+            case "Ingredient List":
+                startActivity(new Intent(Home.this, IngredientList.class));
+                break;
+            case "Ingredient Category":
+                startActivity(new Intent(Home.this, Ingredient_Categories.class));
+                break;
+            default:
+                // Do nothing
+                break;
+        }
     }
 
+    /**
+     * Handler for selecting nothing from the spinner drop-down menu.
+     * Must be included when implementing AdapterView.OnItemSelectedListener interface.
+     *
+     * @param parent
+     */
     public void onNothingSelected(AdapterView<?> parent) {
-        // Another interface callback
+        // Do nothing
     }
 
     public void displaySavedRecipe(View view)

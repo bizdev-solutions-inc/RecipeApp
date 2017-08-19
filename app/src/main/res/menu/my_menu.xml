@@ -2,26 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <!-- <item
-        android:id="@+id/searchView"
-        android:actionViewClass="android.widget.SearchView"
-        android:icon="@drawable/ic_action_name"
-        android:title="@string/action_search"
-        app:showAsAction="always"
-
-        />
-        -->
-
-    <!-- The Search button -->
-    <!--
-    <item
-        android:id="@+id/action_search"
-        android:icon="@drawable/ic_action_name"
-        android:title="@string/action_search"
-        app:showAsAction="always" />
-        -->
-
     <!-- Return the user to the Home activity -->
     <item
         android:id="@+id/action_home"

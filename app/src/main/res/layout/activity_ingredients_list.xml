@@ -71,7 +71,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginStart="8dp"
         android:onClick="addIngredient"
-        android:text="@string/btn_add_ingr"
+        android:text="@string/btn_add"
         app:layout_constraintBaseline_toBaselineOf="@+id/et_search_ingr"
         app:layout_constraintLeft_toRightOf="@+id/et_search_ingr"
         app:layout_constraintRight_toRightOf="parent" />

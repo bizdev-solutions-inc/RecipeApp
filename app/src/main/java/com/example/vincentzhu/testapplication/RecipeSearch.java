@@ -7,50 +7,40 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-public class AboutUs extends AppCompatActivity {
+public class RecipeSearch extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_aboutus);
-
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        // Check if user is still logged in. If not, return to Login activity.
-        if(firebaseAuth.getCurrentUser()==null){
-            //Profile activity here
-            finish();
-            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
-        }
-        FirebaseUser user= firebaseAuth.getCurrentUser();
+        setContentView(R.layout.activity_search);
 
         // Create the toolbar and set it as the app bar for the activity
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        // Check if user is still logged in. If not, return to Login activity
+        if (firebaseAuth.getCurrentUser() == null) {
+            //Profile activity here
+            finish();
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        }
+
         // Get a support ActionBar corresponding to this toolbar and enable Up button
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        Button btn = (Button)findViewById(R.id.homePage);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(AboutUs.this, Home.class));
-            }
-        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.my_menu, menu);
+
         return true;
     }
 
@@ -80,7 +70,3 @@ public class AboutUs extends AppCompatActivity {
         }
     }
 }
-
-
-
-
