@@ -165,15 +165,7 @@ public class Admin extends AppCompatActivity {
                 }
 
                 mStorage = FirebaseStorage.getInstance().getReference().child("Recipes");
-                uploadFile();
-                mStorage.child(user.getEmail()).child(uid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        String url = uri.toString();
-                        mRecipes.child(recipeName).child("Image").setValue(url);
-                    }
-                });
-                Toast.makeText(Admin.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
+                uploadFile(recipeName, "null");
             }
         });
 
@@ -196,16 +188,7 @@ public class Admin extends AppCompatActivity {
                 mType_Ingredients.child(spinner_ing_type.getSelectedItem().toString()).child(ingredientName).setValue(ingredientName);
 
                 mStorage = FirebaseStorage.getInstance().getReference().child("Ingredients");
-                uploadFile();
-                mStorage.child(user.getEmail()).child(uid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        String url = uri.toString();
-                        mIngredients.child(ingredientName).child("Image").setValue(url);
-                    }
-                });
-                Toast.makeText(Admin.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
-
+                uploadFile("null", ingredientName);
             }
         });
 
@@ -295,7 +278,7 @@ public class Admin extends AppCompatActivity {
         }
     }
 
-    private void uploadFile () {
+    private void uploadFile (String recipeName, String ingredientName) {
         if (selectedImage != null) {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             StorageReference uploadPath = mStorage.child(user.getEmail()).child(selectedImage.getLastPathSegment());
@@ -303,9 +286,15 @@ public class Admin extends AppCompatActivity {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 //                    progressU.setVisibility(View.GONE);
-//                    Toast.makeText(PersonalRecipe.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Admin.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
                 }
             });
+
+            if(ingredientName.equals("null"))
+                mRecipes.child(recipeName).child("Image").setValue(uploadPath.toString());
+            else if(recipeName.equals("null"))
+                mIngredients.child(ingredientName).child("Image").setValue(uploadPath.toString());
+
         }
     }
 }
