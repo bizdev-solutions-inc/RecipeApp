@@ -2,23 +2,21 @@ package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class SearchResults extends AppCompatActivity {
+public class RecipePage extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_results);
+        setContentView(R.layout.activity_recipe_page);
 
         // Create the toolbar and set it as the app bar for the activity
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -32,17 +30,6 @@ public class SearchResults extends AppCompatActivity {
             finish();
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
-
-        // Get a support ActionBar corresponding to this toolbar and enable Up button
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        // Get the Intent that started this activity and extract the string
-        Intent intent = getIntent();
-        String query = intent.getStringExtra(SearchByName.EXTRA_SEARCH_QUERY);
-        // TODO: perform database search using this String
-
-        // displayResult();
     }
 
     @Override
@@ -76,15 +63,5 @@ public class SearchResults extends AppCompatActivity {
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    /**
-     * Simple method for displaying search results in a TextView for testing
-     *
-     * @param result
-     */
-    private void displayResult(String result) {
-        TextView tv_result = (TextView) findViewById(R.id.tv_result);
-        tv_result.setText(result);
     }
 }

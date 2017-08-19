@@ -93,7 +93,6 @@
             android:name=".Admin"
             android:label="Admin" />
         <activity android:name=".PersonalIngredient" />
-
         <activity
             android:name=".SearchByName"
             android:label="Search by Name"
@@ -102,7 +101,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
         </activity>
-
         <activity
             android:name=".SearchResults"
             android:label="Search Results">
@@ -110,7 +108,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".SearchByName" />
         </activity>
-
         <activity
             android:name=".RecipeTypes"
             android:label="Recipe Types">
@@ -118,7 +115,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
         </activity>
-
         <activity
             android:name=".RecipeCuisines"
             android:label="Recipe Cuisines">
@@ -126,6 +122,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
         </activity>
+        <activity android:name=".RecipePage"></activity>
     </application>
 
 </manifest>
