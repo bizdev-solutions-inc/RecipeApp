@@ -20,18 +20,18 @@ import java.util.ArrayList;
 /**
  * This activity displays the list of ingredients entered by the user.
  * The user is able to add and remove ingredients from the list or
- * search for recipes that use the ingredients in the list.
+ * goToSearch for recipes that use the ingredients in the list.
  */
 public class IngredientList extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
 
-    private ArrayList<String> ingredients_list; // list of ingredients entered by user
+    private ArrayList<String> ingredient_list; // list of ingredients entered by user
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ingredients_list);
+        setContentView(R.layout.activity_ingredient_list);
 
         // Create the toolbar and set it as the app bar for the activity
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -41,13 +41,12 @@ public class IngredientList extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        ingredients_list = new ArrayList<String>(); // initialize list of ingredients
+        ingredient_list = new ArrayList<String>(); // initialize list of ingredients
 
         // Set the ListView's OnItemClickListener to handle clicking to remove list items
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setOnItemClickListener(itemClickListener);
 
-        //updateList();
     }
 
     @Override
@@ -88,7 +87,7 @@ public class IngredientList extends AppCompatActivity {
                 // When the user clicks on a list item, it is removed from the list.
                 @Override
                 public void onItemClick(AdapterView adapterView, View view, int position, long id) {
-                    ingredients_list.remove(position);
+                    ingredient_list.remove(position);
                     updateList();
                 }
             };
@@ -102,7 +101,7 @@ public class IngredientList extends AppCompatActivity {
         String query = et_search_ingr.getText().toString();
         if (!query.isEmpty()) { // Do not append if query is an empty string
             et_search_ingr.setText(""); // Clear text field when Add button is pressed
-            ingredients_list.add(query);
+            ingredient_list.add(query);
             updateList();
         }
     }
@@ -115,7 +114,7 @@ public class IngredientList extends AppCompatActivity {
      */
     private void updateList() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, ingredients_list);
+                android.R.layout.simple_list_item_1, ingredient_list);
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);
     }
@@ -125,7 +124,7 @@ public class IngredientList extends AppCompatActivity {
      * Clears the ingredients list contained in the ListView.
      */
     public void clearList(View view) {
-        ingredients_list.clear();
+        ingredient_list.clear();
         updateList();
     }
 

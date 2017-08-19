@@ -8,51 +8,43 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class Ingredient_Categories extends AppCompatActivity {
+public class SearchByName extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
 
+    public static final String EXTRA_SEARCH_QUERY = "SEARCH_QUERY";
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ingredient_categories);
-
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        if(firebaseAuth.getCurrentUser()==null){
-            //Profile activity here
-            finish();
-            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
-        }
+        setContentView(R.layout.activity_search_by_name);
 
         // Create the toolbar and set it as the app bar for the activity
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        // Check if user is still logged in. If not, return to Login activity
+        if (firebaseAuth.getCurrentUser() == null) {
+            //Profile activity here
+            finish();
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        }
+
         // Get a support ActionBar corresponding to this toolbar and enable Up button
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        Button btn_meat_seafood = (Button) findViewById(R.id.btn_meat_seafood); //type cast
-
-        //..set what happens when the user clicks
-        btn_meat_seafood.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Log.i(TAG, "This is a magic log message!");
-                //Toast.makeText(getApplicationContext(), "It's magic!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(Ingredient_Categories.this, MeatScroll.class));
-                //setTitle("Ingredient Categories");
-            }
-        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.my_menu, menu);
+
         return true;
     }
 
@@ -79,6 +71,22 @@ public class Ingredient_Categories extends AppCompatActivity {
                 // The user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /**
+     * Called when user taps the Search button.
+     * Take the search query entered by the user and pass it as an extra to
+     * the SearchResults activity and start the SearchResults activity.
+     */
+    public void goToSearch(View view) {
+        Intent intent = new Intent(this, SearchResults.class);
+        EditText et_search = (EditText) findViewById(R.id.et_search);
+        String query = et_search.getText().toString();
+        if (!query.isEmpty()) { // search only if query is not an empty string
+            et_search.setText("");
+            intent.putExtra(EXTRA_SEARCH_QUERY, query);
+            startActivity(intent);
         }
     }
 }

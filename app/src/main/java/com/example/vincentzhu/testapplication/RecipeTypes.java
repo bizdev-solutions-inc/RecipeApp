@@ -9,28 +9,30 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-public class RecipeSearch extends AppCompatActivity {
+public class RecipeTypes extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
-
-        // Create the toolbar and set it as the app bar for the activity
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
+        setContentView(R.layout.activity_recipe_types);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        // Check if user is still logged in. If not, return to Login activity
+        // Check if user is still logged in. If not, return to Login activity.
         if (firebaseAuth.getCurrentUser() == null) {
             //Profile activity here
             finish();
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        // Create the toolbar and set it as the app bar for the activity
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
 
         // Get a support ActionBar corresponding to this toolbar and enable Up button
         ActionBar actionBar = getSupportActionBar();
@@ -40,7 +42,6 @@ public class RecipeSearch extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.my_menu, menu);
-
         return true;
     }
 

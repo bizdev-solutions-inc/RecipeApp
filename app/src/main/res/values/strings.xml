@@ -7,14 +7,15 @@
     <string name="action_about_us">About Us</string>
     <string name="action_logout">Log Out</string>
     <string name="action_settings">Settings</string>    <!-- Unused -->
-    <string name="action_search">Search</string>
 
     <!-- Text for the About Us activity -->
     <string name="about_text">We are Software Kings</string>
 
     <string name="tv_search">Search recipes by: </string>
 
-    <!-- Hint text for the search dialog in IngredientList activity-->
+    <string name="hint_search_by_name">Search by name</string>
+
+    <!-- Hint text for the goToSearch dialog in IngredientList activity-->
     <string name="hint_search_ingr">Search ingredients</string>
 
     <string name="btn_continue">Continue</string>
@@ -31,10 +32,10 @@
 
     <string name="hint_tap_remove_ingr">(Tap an entry to remove it from the list)</string>
 
-    <!-- Drop-down menu for "RecipeSearch recipes by..." in Home activity -->
+    <!-- Drop-down menu for "SearchByName recipes by..." in Home activity -->
     <string-array name="search_menu_array">
-        <item>Search recipes by...</item>
-        <item>Recipe Name</item>
+        <item>Search by...</item>
+        <item>Recipe/Ingredient Name</item>
         <item>Recipe Type</item>
         <item>Recipe Cuisine</item>
         <item>Ingredient List</item>

@@ -24,6 +24,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".AboutUs"
+            android:label="About Us">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
+        </activity>
+        <activity
+            android:name=".Home"
+            android:launchMode="singleTop" />
+        <activity android:name=".Introduction" />
 
         <!-- Shows the list of ingredients entered by the user -->
         <activity
@@ -43,19 +54,8 @@
                 android:value=".Home" />
         </activity>
         <activity
-            android:name=".Home"
-            android:launchMode="singleTop" />
-        <activity android:name=".Introduction" />
-        <activity
-            android:name=".AboutUs"
-            android:label="About Us">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Home" />
-        </activity>
-        <activity
             android:name=".Ingredient_Categories"
-            android:label="Ingredients Categories"
+            android:label="Ingredient Categories"
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -93,19 +93,38 @@
             android:name=".Admin"
             android:label="Admin" />
         <activity android:name=".PersonalIngredient" />
+
         <activity
-            android:name=".RecipeSearch"
-            android:label="Recipe Search">
+            android:name=".SearchByName"
+            android:label="Search by Name"
+            android:windowSoftInputMode="stateVisible"> <!-- show keyboard -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
         </activity>
+
         <activity
             android:name=".SearchResults"
             android:label="Search Results">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".RecipeSearch" />
+                android:value=".SearchByName" />
+        </activity>
+
+        <activity
+            android:name=".RecipeTypes"
+            android:label="Recipe Types">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
+        </activity>
+
+        <activity
+            android:name=".RecipeCuisines"
+            android:label="Recipe Cuisines">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
         </activity>
     </application>
 

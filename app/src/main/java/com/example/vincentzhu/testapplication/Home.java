@@ -104,14 +104,14 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
         // retrieve item using parent.getItemAtPosition(pos)
         String item = parent.getItemAtPosition(pos).toString();
         switch (item) {
-            case "Recipe Name":
-                startActivity(new Intent(Home.this, RecipeSearch.class));
-                break;
-            case "Recipe Cuisine":
-                // startActivity(new Intent(Home.this, RecipeCuisine.class));
+            case "Recipe/Ingredient Name":
+                startActivity(new Intent(Home.this, SearchByName.class));
                 break;
             case "Recipe Type":
                 // startActivity(new Intent(Home.this, RecipeType.class));
+                break;
+            case "Recipe Cuisine":
+                // startActivity(new Intent(Home.this, RecipeCuisine.class));
                 break;
             case "Ingredient List":
                 startActivity(new Intent(Home.this, IngredientList.class));

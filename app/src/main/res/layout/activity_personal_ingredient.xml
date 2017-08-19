@@ -15,7 +15,7 @@
         android:background="@color/colorPrimary"
         tools:layout_constraintTop_creator="1"
         tools:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintBottom_toTopOf="@+id/btn_tap_remove"
         android:layout_marginTop="3dp"
         tools:layout_constraintLeft_creator="1"
         android:layout_marginBottom="5dp"
@@ -24,7 +24,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/btn_tap_remove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ingredient Name"
@@ -47,13 +47,13 @@
         android:inputType="textPersonName"
         android:layout_gravity="center"
         android:textAlignment="center"
-        android:layout_below="@+id/textView4"
+        android:layout_below="@+id/btn_tap_remove"
         android:layout_centerHorizontal="true"
         tools:layout_constraintTop_creator="1"
         tools:layout_constraintRight_creator="1"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="9dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/btn_tap_remove"
         tools:layout_constraintLeft_creator="1"
         app:layout_constraintLeft_toLeftOf="parent" />
 

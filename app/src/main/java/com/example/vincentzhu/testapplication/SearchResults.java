@@ -35,6 +35,11 @@ public class SearchResults extends AppCompatActivity {
         // Get a support ActionBar corresponding to this toolbar and enable Up button
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        // Get the Intent that started this activity and extract the string
+        Intent intent = getIntent();
+        String query = intent.getStringExtra(SearchByName.EXTRA_SEARCH_QUERY);
+        // TODO: perform database search using this String
     }
 
     @Override
