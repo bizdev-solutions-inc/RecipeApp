@@ -31,8 +31,6 @@ import java.util.UUID;
 
 import java.util.ArrayList;
 
-import static com.example.vincentzhu.testapplication.R.id.pic_btn;
-
 public class PersonalIngredient extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "PersonalIngredient";
@@ -61,7 +59,7 @@ public class PersonalIngredient extends AppCompatActivity implements View.OnClic
     private DatabaseReference mIngredients;
     private DatabaseReference mType_Ingredients;
     private String uid;
-
+    private StorageReference uploadPath;
 
 
     @Override
@@ -89,7 +87,7 @@ public class PersonalIngredient extends AppCompatActivity implements View.OnClic
         //actionBar.setDisplayHomeAsUpEnabled(true);
 
         //user-related display
-        mPicture = (Button) findViewById(pic_btn);
+        mPicture = (Button) findViewById(R.id.pic_btn);
         mFirebaseBtn = (Button) findViewById(R.id.firebase_ing_btn);
         imageDisplay = (ImageView) findViewById(R.id.imageDisplay);
         spinner_type = (Spinner)findViewById(R.id.spinner_ing_type);
@@ -109,7 +107,7 @@ public class PersonalIngredient extends AppCompatActivity implements View.OnClic
         user = firebaseAuth.getCurrentUser();
         uid = UUID.randomUUID().toString();
         mRoot = FirebaseDatabase.getInstance().getReference().child(userID);
-        mStorage = FirebaseStorage.getInstance().getReference();
+        mStorage = FirebaseStorage.getInstance().getReference().child("Ingredients");
         mIngredients = mRoot.child("Ingredients");
         mType_Ingredients = mRoot.child("Type_Ingredients");
 
@@ -141,17 +139,16 @@ public class PersonalIngredient extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
-            case pic_btn:
+            case R.id.pic_btn:
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 galleryIntent.setType("image/*");
                 startActivityForResult(galleryIntent, RESULT_IMAGE);
                 break;
             case R.id.firebase_ing_btn:
-                final String ingredientName = mIngName.getText().toString().trim();
+                String ingredientName = mIngName.getText().toString().trim();
                 String ingredientDescription = mIngDescription.getText().toString().trim();
                 String ingredientHistory = mIngHistory.getText().toString().trim();
 
-                mIngredients = mRoot.child("Ingredients");
                 //Method 1
                 mIngredients.child(ingredientName).child("Description").setValue(ingredientDescription);
                 mIngredients.child(ingredientName).child("Type").setValue(spinner_type.getSelectedItem().toString());
@@ -159,19 +156,10 @@ public class PersonalIngredient extends AppCompatActivity implements View.OnClic
                 mIngredients.child(ingredientName).child("Season").setValue(spinner_season.getSelectedItem().toString());
 
                 //Method 2
-                mType_Ingredients = mRoot.child("Type_Ingredients");
                 mType_Ingredients.child(spinner_type.getSelectedItem().toString()).child(ingredientName).setValue(ingredientName);
 
-                mStorage = FirebaseStorage.getInstance().getReference().child("Ingredients");
-                uploadFile();
-                mStorage.child(user.getEmail()).child(uid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        String url = uri.toString();
-                        mIngredients.child(ingredientName).child("Image").setValue(url);
-                    }
-                });
-                Toast.makeText(PersonalIngredient.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
+                //mStorage = FirebaseStorage.getInstance().getReference().child("Ingredients");
+                uploadFile(ingredientName);
                 break;
         }
 
@@ -220,19 +208,28 @@ public class PersonalIngredient extends AppCompatActivity implements View.OnClic
     }
 
 
-    private void uploadFile () {
+    private void uploadFile (String ingredientName) {
         if (selectedImage != null) {
-            Log.i(TAG, uid);
-            StorageReference uploadPath = mStorage.child(user.getEmail()).child(uid);
+            uploadPath = mStorage.child(user.getEmail()).child(uid);
+            Log.i(TAG, uploadPath.toString());
             uploadPath.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 //                    progressU.setVisibility(View.GONE);
-//                    Toast.makeText(PersonalRecipe.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
+                    Toast.makeText(PersonalIngredient.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
 
                 }
             });
 
+            mIngredients.child(ingredientName).child("Image").setValue(uploadPath.toString());
+//            uploadPath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                @Override
+//                public void onSuccess(Uri uri) {
+//                    String url = uri.toString();
+//                    mIngredients.child(ingredientName).child("Image").setValue(url);
+//                    Toast.makeText(PersonalIngredient.this, "URL Saved successfully", Toast.LENGTH_LONG).show();
+//                }
+//            });
         }
     }
 }

@@ -30,6 +30,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.UUID;
 import java.util.ArrayList;
+
+import static com.example.vincentzhu.testapplication.R.id.ingredientName;
 import static com.example.vincentzhu.testapplication.R.id.pic_btn;
 
 public class PersonalRecipe extends AppCompatActivity implements View.OnClickListener {
@@ -63,6 +65,7 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
     private DatabaseReference mRecipes;
     private DatabaseReference mType_Recipes;
     private String uid;
+    private StorageReference uploadPath;
 
 
     @Override
@@ -86,7 +89,7 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         //user-related display
-        mPicture = (Button) findViewById(pic_btn);
+        mPicture = (Button) findViewById(R.id.pic_btn);
         mFirebaseBtn = (Button) findViewById(R.id.firebase_btn);
         imageDisplay = (ImageView) findViewById(R.id.imageDisplay);
         spinner_recipe_type = (Spinner)findViewById(R.id.spinner_type);
@@ -106,7 +109,7 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
         //database-related
         userID = firebaseAuth.getCurrentUser().getUid();
         mRoot = FirebaseDatabase.getInstance().getReference().child(userID);
-        mStorage = FirebaseStorage.getInstance().getReference();
+        mStorage = FirebaseStorage.getInstance().getReference().child("Recipes");
         mRecipe_Ingredients = mRoot.child("Recipe_Ingredients");
         mIngredient_Recipes = mRoot.child("Ingredient_Recipes");
         mCuisine_Recipe = mRoot.child("Cuisine_Recipe");
@@ -152,13 +155,13 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
-            case pic_btn:
+            case R.id.pic_btn:
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 galleryIntent.setType("image/*");
                 startActivityForResult(galleryIntent, RESULT_IMAGE);
                 break;
             case R.id.firebase_btn:
-                final String recipeName = mNameField.getText().toString().trim();
+                String recipeName = mNameField.getText().toString().trim();
                 String recipeInstruction = mInstrField.getText().toString().trim();
                 String recipeIngredients = mIngField.getText().toString() + " "; //need to update later
                 ArrayList<String> parse = new ArrayList<String>();
@@ -180,16 +183,7 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
                     mIngredient_Recipes.child(word).child(recipeName).setValue(recipeName);
                 }
 
-                mStorage = FirebaseStorage.getInstance().getReference().child("Recipes");
-                uploadFile();
-                mStorage.child(user.getEmail()).child(uid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        String url = uri.toString();
-                        mRecipes.child(recipeName).child("Image").setValue(url);
-                    }
-                });
-                Toast.makeText(PersonalRecipe.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
+                uploadFile(recipeName);
                 break;
         }
 
@@ -204,19 +198,28 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void uploadFile () {
+    private void uploadFile (String recipeName) {
         if (selectedImage != null) {
-            StorageReference uploadPath = mStorage.child(user.getEmail()).child(uid);
-            Log.i(TAG, uid);
+            uploadPath = mStorage.child(user.getEmail()).child(uid);
+            Log.i(TAG, uploadPath.toString());
             uploadPath.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 //                    progressU.setVisibility(View.GONE);
-//                    Toast.makeText(PersonalRecipe.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
+                    Toast.makeText(PersonalRecipe.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
 
                 }
             });
 
+            mRecipes.child(recipeName).child("Image").setValue(uploadPath.toString());
+//            uploadPath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                @Override
+//                public void onSuccess(Uri uri) {
+//                    String url = uri.toString();
+//                    mRecipes.child(recipeName).child("Image").setValue(url);
+//                    Toast.makeText(PersonalRecipe.this, "URL Saved successfully", Toast.LENGTH_LONG).show();
+//                }
+//            });
         }
     }
 
