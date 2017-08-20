@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -68,6 +69,7 @@ public class Admin extends AppCompatActivity {
     private String userID;
     private FirebaseUser user;
     private String uid;
+    private StorageReference uploadPath;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -282,8 +284,8 @@ public class Admin extends AppCompatActivity {
 
     private void uploadFile (String recipeName, String ingredientName) {
         if (selectedImage != null) {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            StorageReference uploadPath = mStorage.child(user.getEmail()).child(selectedImage.getLastPathSegment());
+            uploadPath = mStorage.child(user.getEmail()).child(uid);
+            Log.i("Admin", uploadPath.toString());
             uploadPath.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -292,11 +294,12 @@ public class Admin extends AppCompatActivity {
                 }
             });
 
-            if(ingredientName.equals("null"))
+            if(ingredientName.equals("null")) {
                 mRecipes.child(recipeName).child("Image").setValue(uploadPath.toString());
-            else if(recipeName.equals("null"))
+            }
+            else if(recipeName.equals("null")) {
                 mIngredients.child(ingredientName).child("Image").setValue(uploadPath.toString());
-
+            }
         }
     }
 }

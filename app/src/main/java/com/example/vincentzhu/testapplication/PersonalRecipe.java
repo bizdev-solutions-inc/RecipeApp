@@ -198,7 +198,7 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void uploadFile (String recipeName) {
+    private void uploadFile (final String recipeName) {
         if (selectedImage != null) {
             uploadPath = mStorage.child(user.getEmail()).child(uid);
             Log.i(TAG, uploadPath.toString());
