@@ -148,6 +148,7 @@ public class Admin extends AppCompatActivity {
                 ArrayList<String> parse = new ArrayList<String>();
                 parseString(recipeIngredients, parse);
 
+                //Comment
                 //Method 3
                 mCuisine_Recipe.child(spinner_cuisine.getSelectedItem().toString()).child(recipeName).setValue(recipeName);
                 //Method 4
