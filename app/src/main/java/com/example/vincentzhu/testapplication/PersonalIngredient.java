@@ -210,7 +210,7 @@ public class PersonalIngredient extends AppCompatActivity implements View.OnClic
 
     private void uploadFile (String ingredientName) {
         if (selectedImage != null) {
-            uploadPath = mStorage.child(user.getEmail()).child(uid);
+            uploadPath = mStorage.child(user.getUid()).child(uid);
             Log.i(TAG, uploadPath.toString());
             uploadPath.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override

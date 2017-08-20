@@ -284,7 +284,7 @@ public class Admin extends AppCompatActivity {
 
     private void uploadFile (String recipeName, String ingredientName) {
         if (selectedImage != null) {
-            uploadPath = mStorage.child(user.getEmail()).child(uid);
+            uploadPath = mStorage.child(user.getUid()).child(uid);
             Log.i("Admin", uploadPath.toString());
             uploadPath.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
