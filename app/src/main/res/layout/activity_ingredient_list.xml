@@ -38,6 +38,7 @@
         android:id="@+id/btn_find_recipes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="findRecipes"
         android:text="@string/btn_find_recipes"
         app:layout_constraintLeft_toRightOf="@+id/btn_clear_list"
         android:layout_marginTop="15dp"

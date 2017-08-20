@@ -9,7 +9,7 @@
     <string name="action_settings">Settings</string>    <!-- Unused -->
 
     <!-- Text for the About Us activity -->
-    <string name="about_text">We are Software Kings</string>
+    <string name="about_text">We are The Software Kings</string>
 
     <string name="tv_search">Search recipes by: </string>
 
@@ -86,5 +86,6 @@
         <item>Year round</item>
     </string-array>
     <string name="title_activity_basic">BasicActivity</string>
+    <string name="IngredientListResultMessage">Recipes you can make with those ingredients:</string>
 
 </resources>

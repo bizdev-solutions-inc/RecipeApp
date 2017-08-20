@@ -117,6 +117,7 @@ public class IngredientList extends AppCompatActivity {
                 android.R.layout.simple_list_item_1, ingredient_list);
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);
+
     }
 
     /**
@@ -134,6 +135,8 @@ public class IngredientList extends AppCompatActivity {
     public void findRecipes(View view) {
         // TODO: Write findRecipes method
         // go to SearchResults activity
-        startActivity(new Intent(this, SearchResults.class));
+        Intent intent = new Intent(IngredientList.this, SearchResults.class);
+        intent.putExtra("ingredientlist", ingredient_list);
+        startActivity(intent);
     }
 }
