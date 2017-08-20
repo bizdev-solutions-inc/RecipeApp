@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -19,15 +18,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class SearchResults extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference mRef;
     private FirebaseUser user;
-    private DatabaseReference mRoot;
     private TextView result;
     private String query;
+    private ArrayList<String> ingredient_list;
+    private DatabaseReference mRoot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,8 @@ public class SearchResults extends AppCompatActivity {
         setSupportActionBar(myToolbar);
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        ingredient_list = (ArrayList<String>) getIntent().getSerializableExtra("ingredientlist");
 
         // Check if user is still logged in. If not, return to Login activity
         if (firebaseAuth.getCurrentUser() == null) {
@@ -60,7 +64,7 @@ public class SearchResults extends AppCompatActivity {
         mRef = mRoot.child("Recipes");
         result = (TextView)findViewById(R.id.queryResult);
 
-        mRef.addValueEventListener(new ValueEventListener() {
+        mRoot.child("Ingredient_Recipes").addListenerForSingleValueEvent (new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 showData(dataSnapshot);
@@ -74,21 +78,26 @@ public class SearchResults extends AppCompatActivity {
 
     }
 
-    private void showData(DataSnapshot dataSnapshot) {
-        ArrayList<String>array = new ArrayList<String>();
-        String concat = "";
-        for(DataSnapshot ds : dataSnapshot.getChildren())
-        {
-            Log.i("Test result:", ds.toString());
-            Log.i("Query", query);
-            if(ds.getKey().contains(query))
-            {
-                array.add(ds.getKey());
-                concat += ds.getKey() + "\n";
+    public void showData(DataSnapshot dataSnapshot) {
+
+        HashSet<String> recipes = new HashSet<>();
+        HashSet<String> ingredients = new HashSet<>(ingredient_list);
+
+        ArrayList<HashSet<String>> ingredientRecipes = new ArrayList<>();
+
+        for (String currentIngredient : ingredients) {
+
+            HashMap<String, Object> current = (HashMap) dataSnapshot.child(currentIngredient).getValue();
+
+            if(recipes.isEmpty())
+                recipes.addAll(current.keySet());
+            else {
+                HashSet<String> currentRecipes = new HashSet<>(current.keySet());
+                recipes.retainAll(currentRecipes);
             }
         }
 
-        result.setText(concat);
+        displayResult(recipes);
     }
 
     @Override
@@ -122,5 +131,16 @@ public class SearchResults extends AppCompatActivity {
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    /**
+     * Simple method for displaying search results in a TextView for testing
+     *
+     * @param result
+     */
+    private void displayResult(HashSet<String> result) {
+        TextView tv_result = (TextView) findViewById(R.id.tv_result);
+        for(String current : result)
+            tv_result.append(current);
     }
 }
