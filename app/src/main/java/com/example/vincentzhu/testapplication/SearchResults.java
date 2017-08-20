@@ -5,15 +5,29 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class SearchResults extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
+    private DatabaseReference mRef;
+    private FirebaseUser user;
+    private DatabaseReference mRoot;
+    private TextView result;
+    private String query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +53,42 @@ public class SearchResults extends AppCompatActivity {
 
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
-        String query = intent.getStringExtra(SearchByName.EXTRA_SEARCH_QUERY);
+        query = intent.getStringExtra(SearchByName.EXTRA_SEARCH_QUERY);
         // TODO: perform database search using this String
+        user = firebaseAuth.getCurrentUser();
+        mRoot = FirebaseDatabase.getInstance().getReference();
+        mRef = mRoot.child("Recipes");
+        result = (TextView)findViewById(R.id.queryResult);
 
-        // displayResult();
+        mRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                showData(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void showData(DataSnapshot dataSnapshot) {
+        ArrayList<String>array = new ArrayList<String>();
+        String concat = "";
+        for(DataSnapshot ds : dataSnapshot.getChildren())
+        {
+            Log.i("Test result:", ds.toString());
+            Log.i("Query", query);
+            if(ds.getKey().contains(query))
+            {
+                array.add(ds.getKey());
+                concat += ds.getKey() + "\n";
+            }
+        }
+
+        result.setText(concat);
     }
 
     @Override
@@ -76,15 +122,5 @@ public class SearchResults extends AppCompatActivity {
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    /**
-     * Simple method for displaying search results in a TextView for testing
-     *
-     * @param result
-     */
-    private void displayResult(String result) {
-        TextView tv_result = (TextView) findViewById(R.id.tv_result);
-        tv_result.setText(result);
     }
 }

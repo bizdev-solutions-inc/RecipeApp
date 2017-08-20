@@ -142,7 +142,7 @@ public class Admin extends AppCompatActivity {
         addRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String recipeName = recipe_name.getText().toString().trim();
+                String recipeName = recipe_name.getText().toString().trim();
                 String recipeInstruction = recipe_instruction.getText().toString().trim();
                 String recipeIngredients = recipe_ingredients.getText().toString() + " "; //need to update later
                 ArrayList<String> parse = new ArrayList<String>();
@@ -172,7 +172,7 @@ public class Admin extends AppCompatActivity {
         addIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String ingredientName = ingredient_name.getText().toString().trim();
+                String ingredientName = ingredient_name.getText().toString().trim();
                 String ingredientDescription = ingredient_description.getText().toString().trim();
                 String ingredientHistory = ingredient_history.getText().toString().trim();
 
@@ -256,12 +256,12 @@ public class Admin extends AppCompatActivity {
 
         for(int i=0; i<line.length(); i++)
         {
-            if(line.charAt(i)!= ' ' && found == false)
+            if(line.charAt(i)!= ',' && found == false)
             {
                 startIndex = i;
                 found = true;
             }
-            else if(line.charAt(i) == ' ' && found == true)
+            else if((line.charAt(i) == ',' || i == line.length()-1) && found == true)
             {
                 endIndex = i;
                 parse.add(line.substring(startIndex, endIndex));

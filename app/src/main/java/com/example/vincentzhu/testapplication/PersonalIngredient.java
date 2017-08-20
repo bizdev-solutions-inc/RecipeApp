@@ -106,7 +106,7 @@ public class PersonalIngredient extends AppCompatActivity implements View.OnClic
         userID = firebaseAuth.getCurrentUser().getUid();
         user = firebaseAuth.getCurrentUser();
         uid = UUID.randomUUID().toString();
-        mRoot = FirebaseDatabase.getInstance().getReference().child(userID);
+        mRoot = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Ingredients");;
         mStorage = FirebaseStorage.getInstance().getReference().child("Ingredients");
         mIngredients = mRoot.child("Ingredients");
         mType_Ingredients = mRoot.child("Type_Ingredients");

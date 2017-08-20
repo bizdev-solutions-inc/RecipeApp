@@ -108,7 +108,7 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
 
         //database-related
         userID = firebaseAuth.getCurrentUser().getUid();
-        mRoot = FirebaseDatabase.getInstance().getReference().child(userID);
+        mRoot = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Recipes");
         mStorage = FirebaseStorage.getInstance().getReference().child("Recipes");
         mRecipe_Ingredients = mRoot.child("Recipe_Ingredients");
         mIngredient_Recipes = mRoot.child("Ingredient_Recipes");
@@ -231,12 +231,12 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
 
         for(int i=0; i<line.length(); i++)
         {
-            if(line.charAt(i)!= ' ' && found == false)
+            if(line.charAt(i)!= ',' && found == false)
             {
                 startIndex = i;
                 found = true;
             }
-            else if(line.charAt(i) == ' ' && found == true)
+            else if((line.charAt(i) == ',' || i == line.length()-1) && found == true)
             {
                 endIndex = i;
                 parse.add(line.substring(startIndex, endIndex));
