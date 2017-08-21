@@ -18,15 +18,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 
 /**
- * This activity displays the list of ingredients entered by the user.
- * The user is able to add and remove ingredients from the list or
- * goToSearch for recipes that use the ingredients in the list.
+ * This activity displays the childNames of ingredients entered by the user.
+ * The user is able to add and remove ingredients from the childNames or
+ * goToSearch for recipes that use the ingredients in the childNames.
  */
 public class IngredientList extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
 
-    private ArrayList<String> ingredient_list; // list of ingredients entered by user
+    private ArrayList<String> ingredient_list; // childNames of ingredients entered by user
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +41,9 @@ public class IngredientList extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        ingredient_list = new ArrayList<String>(); // initialize list of ingredients
+        ingredient_list = new ArrayList<String>(); // initialize childNames of ingredients
 
-        // Set the ListView's OnItemClickListener to handle clicking to remove list items
+        // Set the ListView's OnItemClickListener to handle clicking to remove childNames items
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setOnItemClickListener(itemClickListener);
 
@@ -81,10 +81,10 @@ public class IngredientList extends AppCompatActivity {
         }
     }
 
-    // Create a list-item click-handling object as an anonymous class.
+    // Create a childNames-item click-handling object as an anonymous class.
     private AdapterView.OnItemClickListener itemClickListener =
             new AdapterView.OnItemClickListener() {
-                // When the user clicks on a list item, it is removed from the list.
+                // When the user clicks on a childNames item, it is removed from the childNames.
                 @Override
                 public void onItemClick(AdapterView adapterView, View view, int position, long id) {
                     ingredient_list.remove(position);
@@ -94,7 +94,7 @@ public class IngredientList extends AppCompatActivity {
 
     /**
      * Called when the user taps the Add button.
-     * Adds the ingredient entered by the user to the ingredients list.
+     * Adds the ingredient entered by the user to the ingredients childNames.
      */
     public void addIngredient(View view) {
         EditText et_search_ingr = (EditText) findViewById(R.id.et_search_ingr);
@@ -107,8 +107,8 @@ public class IngredientList extends AppCompatActivity {
     }
 
     /**
-     * Updates the ListView with entries from the ingredients list.
-     * Should be called every time an entry is added to or removed from the list.
+     * Updates the ListView with entries from the ingredients childNames.
+     * Should be called every time an entry is added to or removed from the childNames.
      * This method uses an ArrayAdapter to retrieve data from the ingredients ArrayList
      * and display each String entry as an item in the ListView.
      */
@@ -122,7 +122,7 @@ public class IngredientList extends AppCompatActivity {
 
     /**
      * Called when the user taps the Clear List button.
-     * Clears the ingredients list contained in the ListView.
+     * Clears the ingredients childNames contained in the ListView.
      */
     public void clearList(View view) {
         ingredient_list.clear();

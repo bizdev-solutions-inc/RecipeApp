@@ -7,13 +7,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class RecipeTypes extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
+
+    private ArrayList<String> recipe_types = new ArrayList<String>(Arrays.asList(
+                    "Breakfast", "Lunch", "Dinner", "Dessert", "Snack", "Anytime"));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +47,13 @@ public class RecipeTypes extends AppCompatActivity {
         // Get a support ActionBar corresponding to this toolbar and enable Up button
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        // Set ListView items by using an adapter
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, recipe_types);
+        ListView lv_recipe_types = (ListView) findViewById(R.id.lv_recipe_types);
+        lv_recipe_types.setAdapter(adapter);
+        lv_recipe_types.setOnItemClickListener(itemClickListener);
     }
 
     @Override
@@ -70,4 +87,12 @@ public class RecipeTypes extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    // Create a message handling object as an anonymous class.
+    private AdapterView.OnItemClickListener itemClickListener =
+            new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView parent, View v, int position, long id) {
+                    // TODO: Search for recipes based on recipe type chosen
+                }
+            };
 }

@@ -2,6 +2,7 @@ package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -40,7 +41,7 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.search_menu_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
+        // Specify the layout to use when the childNames of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
@@ -61,6 +62,7 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
                 startActivity(new Intent(Home.this, PersonalRecipe.class));
             }
         });
+
     }
 
     @Override
@@ -108,7 +110,7 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
                 startActivity(new Intent(Home.this, SearchByName.class));
                 break;
             case "Recipe Type":
-                // startActivity(new Intent(Home.this, RecipeType.class));
+                startActivity(new Intent(Home.this, RecipeTypes.class));
                 break;
             case "Recipe Cuisine":
                 // startActivity(new Intent(Home.this, RecipeCuisine.class));
@@ -143,6 +145,10 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
     public void displaySavedIngredients(View view)
     {
         startActivity(new Intent(Home.this, SavedIngredients.class));
+    }
+
+    public void goToRecipePage(View view) {
+        startActivity(new Intent(Home.this, RecipePage.class));
     }
 
 

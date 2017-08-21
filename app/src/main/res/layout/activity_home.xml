@@ -18,7 +18,6 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/Theme.AppCompat.Light"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -32,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="114dp"
         android:gravity="center"
-        android:text="Please make a selection below"
+        android:text="@string/text_selection"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@android:color/holo_green_dark"
         android:textSize="24sp"
@@ -60,7 +59,6 @@
         android:layout_width="160dp"
         android:layout_height="60dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
         android:text="@string/btn_add_recipe"
         app:layout_constraintBottom_toTopOf="@+id/btn_saved_recipes"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -71,8 +69,7 @@
         android:layout_width="160dp"
         android:layout_height="60dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginRight="8dp"
-        android:text="Add Ingredient"
+        android:text="@string/btn_add_ingredient"
         app:layout_constraintBottom_toTopOf="@+id/btn_saved_ingr"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginEnd="8dp" />
@@ -82,10 +79,9 @@
         android:layout_width="160dp"
         android:layout_height="60dp"
         android:layout_column="0"
-        android:layout_marginLeft="8dp"
         android:layout_row="1"
         android:onClick="displaySavedRecipe"
-        android:text="Saved Recipes"
+        android:text="@string/btn_saved_recipes"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="16dp"
@@ -96,10 +92,9 @@
         android:layout_width="160dp"
         android:layout_height="60dp"
         android:layout_column="1"
-        android:layout_marginRight="8dp"
         android:layout_row="1"
         android:onClick="displaySavedIngredients"
-        android:text="Saved Ingredients"
+        android:text="@string/btn_saved_ingredients"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
@@ -116,6 +111,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:srcCompat="@drawable/ic_dining_white" />
+
+    <Button
+        android:id="@+id/recipe_page"
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:onClick="goToRecipePage"
+        android:text="Recipe Page"
+        app:layout_constraintBottom_toTopOf="@+id/btn_add_ing"
+        app:layout_constraintRight_toRightOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>
