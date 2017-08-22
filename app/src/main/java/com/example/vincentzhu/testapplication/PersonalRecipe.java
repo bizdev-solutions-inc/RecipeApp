@@ -74,6 +74,7 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
 
         //user-related display
+        firebaseAuth = FirebaseAuth.getInstance();
         mPicture = (Button) findViewById(R.id.pic_btn);
         mFirebaseBtn = (Button) findViewById(R.id.firebase_btn);
         imageDisplay = (ImageView) findViewById(R.id.imageDisplay);

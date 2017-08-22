@@ -84,6 +84,7 @@ public class PersonalIngredient extends BaseActivity implements View.OnClickList
         mFirebaseBtn.setOnClickListener(this);
 
         //database-related
+        firebaseAuth = FirebaseAuth.getInstance();
         userID = firebaseAuth.getCurrentUser().getUid();
         user = firebaseAuth.getCurrentUser();
         uid = UUID.randomUUID().toString();

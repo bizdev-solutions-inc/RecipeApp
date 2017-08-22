@@ -39,6 +39,7 @@ public class SavedIngredients extends BaseActivity {
 
         expandableListView = (ExpandableListView)findViewById(R.id.expandableListView);
 
+        firebaseAuth = FirebaseAuth.getInstance();
         userID = firebaseAuth.getCurrentUser().getUid();
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child(userID).child("Ingredient");
