@@ -43,15 +43,18 @@ public class RecipePage extends BaseActivity {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                String recipe = (String) getIntent().getSerializableExtra("recipe");
+
                 // Get recipe name from database and display it in the TextView
                 TextView tv_recipe_name = (TextView) findViewById(R.id.tv_recipe_name);
                 tv_recipe_name.setText(dataSnapshot.child("Recipes")
-                        .child("Beef Lo Mein").getKey());
+                        .child(recipe).getKey());
 
                 // Get the recipe image url and display it in the ImageView
                 gs_url = dataSnapshot
                         .child("Recipes")
-                        .child("Beef Lo Mein")
+                        .child(recipe)
                         .child("Image").getValue(String.class);
                 storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(gs_url);
                 ImageView iv_recipe_image = findViewById(R.id.iv_recipe_image);
@@ -65,12 +68,12 @@ public class RecipePage extends BaseActivity {
                 info_labels = new ArrayList<String>(Arrays.asList("Ingredients", "Instructions"));
                 ArrayList<String> ingredients = new ArrayList<String>();
                 for (DataSnapshot ds : dataSnapshot.child("Recipe_Ingredients")
-                        .child("Beef Lo Mein").getChildren()) {
+                        .child(recipe).getChildren()) {
                     ingredients.add(ds.getValue(String.class));
                 }
                 ArrayList<String> instructions = new ArrayList<String>();
                 instructions.add(dataSnapshot.child("Recipes")
-                        .child("Beef Lo Mein")
+                        .child(recipe)
                         .child("Instructions")
                         .getValue(String.class));
                 info_contents = new ArrayList<ArrayList<String>>();

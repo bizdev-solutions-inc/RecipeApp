@@ -74,7 +74,6 @@ public class IngredientList extends BaseActivity {
                 android.R.layout.simple_list_item_1, ingredient_list);
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);
-
     }
 
     /**
