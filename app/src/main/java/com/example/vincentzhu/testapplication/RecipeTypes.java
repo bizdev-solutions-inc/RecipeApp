@@ -8,25 +8,37 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-public class Ingredient_Categories extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class RecipeTypes extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
 
+    private ArrayList<String> recipe_types = new ArrayList<String>(Arrays.asList(
+                    "Breakfast", "Lunch", "Dinner", "Dessert", "Snack", "Anytime"));
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ingredient_categories);
+        setContentView(R.layout.activity_recipe_types);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        if(firebaseAuth.getCurrentUser()==null){
+        // Check if user is still logged in. If not, return to Login activity.
+        if (firebaseAuth.getCurrentUser() == null) {
             //Profile activity here
             finish();
-            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
+        FirebaseUser user = firebaseAuth.getCurrentUser();
 
         // Create the toolbar and set it as the app bar for the activity
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -36,18 +48,12 @@ public class Ingredient_Categories extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        Button btn_meat_seafood = (Button) findViewById(R.id.btn_meat_seafood); //type cast
-
-        //..set what happens when the user clicks
-        btn_meat_seafood.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Log.i(TAG, "This is a magic log message!");
-                //Toast.makeText(getApplicationContext(), "It's magic!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(Ingredient_Categories.this, MeatScroll.class));
-                //setTitle("Ingredient Categories");
-            }
-        });
+        // Set ListView items by using an adapter
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, recipe_types);
+        ListView lv_recipe_types = (ListView) findViewById(R.id.lv_recipe_types);
+        lv_recipe_types.setAdapter(adapter);
+        lv_recipe_types.setOnItemClickListener(itemClickListener);
     }
 
     @Override
@@ -81,4 +87,12 @@ public class Ingredient_Categories extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    // Create a message handling object as an anonymous class.
+    private AdapterView.OnItemClickListener itemClickListener =
+            new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView parent, View v, int position, long id) {
+                    // TODO: Search for recipes based on recipe type chosen
+                }
+            };
 }

@@ -1,23 +1,44 @@
 package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class Introduction extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth firebaseAuth;
     private TextView textViewUserEmail;
+    private static final int RESULT_IMAGE = 1;
+
+    private ImageView imageDisplay;
+    private FirebaseUser user;
+    private StorageReference gsReference;
+    private DatabaseReference mRoot;
+    private String gs;
+    private String userID;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +76,31 @@ public class Introduction extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(Introduction.this, Home.class));
             }
         });
+
+        userID  = firebaseAuth.getCurrentUser().getUid();
+        imageDisplay = (ImageView)findViewById(R.id.imageDisplay);
+
+        /**
+         * Code below retrieves a gs URL from the database, and sends the URL to the storage to retrieve and display an image.
+         *
+         *
+         */
+//        mRoot = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Ingredients").child("Ingredients").child("Green Onion").child("Image");
+//        mRoot.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                gs = dataSnapshot.getValue().toString();
+//                Log.i("Introduction", gs);
+//                gsReference = FirebaseStorage.getInstance().getReferenceFromUrl(gs);
+//                Log.i("Introduction", gsReference.toString());
+//                Glide.with(Introduction.this).using(new FirebaseImageLoader()).load(gsReference).into(imageDisplay);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
     }
 
     // Create overflow menu
@@ -68,10 +114,6 @@ public class Introduction extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-//            case R.id.action_search:
-//                // User chose the "Search" item, show search dialog
-//                onSearchRequested();
-//                return true;
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
                 finish();

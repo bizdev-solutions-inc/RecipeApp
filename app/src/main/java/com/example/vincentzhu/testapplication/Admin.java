@@ -1,9 +1,12 @@
 package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,14 +18,17 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Admin extends AppCompatActivity {
 
@@ -35,9 +41,14 @@ public class Admin extends AppCompatActivity {
     private DatabaseReference mRecipes;
     private DatabaseReference mType_Recipes;
     private DatabaseReference mType_Ingredients;
+    private StorageReference mStorage;
 
     Button addRecipe;
     Button addIngredient;
+    Button mRecipeImg;
+    Button mIngredientImg;
+    private static final int RESULT_IMAGE = 1;
+    private Uri selectedImage;
 
     EditText recipe_name;
     EditText recipe_instruction;
@@ -56,6 +67,9 @@ public class Admin extends AppCompatActivity {
     ArrayAdapter<CharSequence>adapter_ing_season;
 
     private String userID;
+    private FirebaseUser user;
+    private String uid;
+    private StorageReference uploadPath;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,12 +88,15 @@ public class Admin extends AppCompatActivity {
 
         addRecipe = (Button)findViewById(R.id.save_recipe);
         addIngredient = (Button)findViewById(R.id.save_ingredient);
+        mRecipeImg = (Button) findViewById(R.id.recipe_img);
+        mIngredientImg = (Button) findViewById(R.id.ingredient_img);
         recipe_name = (EditText)findViewById(R.id.recipeName);
         recipe_instruction = (EditText)findViewById(R.id.recipeInstructions);
         recipe_ingredients = (EditText)findViewById(R.id.recipeIngredients);
         ingredient_name = (EditText)findViewById(R.id.ingredientName);
         ingredient_description = (EditText)findViewById(R.id.ingredientDescription);
         ingredient_history = (EditText)findViewById(R.id.ingredientHistory);
+
 
         spinner_recipe_type = (Spinner)findViewById(R.id.spinner_type);
         spinner_cuisine = (Spinner)findViewById(R.id.spinner_cuisine);
@@ -99,7 +116,9 @@ public class Admin extends AppCompatActivity {
         spinner_ing_season.setAdapter(adapter_ing_season);
 
         userID = firebaseAuth.getCurrentUser().getUid();
-        mRoot = FirebaseDatabase.getInstance().getReference().child(userID);
+        user = firebaseAuth.getCurrentUser();
+        uid = UUID.randomUUID().toString();
+        mRoot = FirebaseDatabase.getInstance().getReference();
 
         mIngredients = mRoot.child("Ingredients");
         mRecipe_Ingredients = mRoot.child("Recipe_Ingredients");
@@ -108,6 +127,7 @@ public class Admin extends AppCompatActivity {
         mRecipes = mRoot.child("Recipes");
         mType_Recipes = mRoot.child("Type_Recipes");
         mType_Ingredients = mRoot.child("Type_Ingredients");
+
 
         spinner_recipe_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -130,6 +150,7 @@ public class Admin extends AppCompatActivity {
                 ArrayList<String> parse = new ArrayList<String>();
                 parseString(recipeIngredients, parse);
 
+                //Comment
                 //Method 3
                 mCuisine_Recipe.child(spinner_cuisine.getSelectedItem().toString()).child(recipeName).setValue(recipeName);
                 //Method 4
@@ -145,6 +166,9 @@ public class Admin extends AppCompatActivity {
                     mRecipe_Ingredients.child(recipeName).child(word).setValue(word);
                     mIngredient_Recipes.child(word).child(recipeName).setValue(recipeName);
                 }
+
+                mStorage = FirebaseStorage.getInstance().getReference().child("Recipes");
+                uploadFile(recipeName, "null");
             }
         });
 
@@ -166,8 +190,31 @@ public class Admin extends AppCompatActivity {
                 mType_Ingredients = mRoot.child("Type_Ingredients");
                 mType_Ingredients.child(spinner_ing_type.getSelectedItem().toString()).child(ingredientName).setValue(ingredientName);
 
+                mStorage = FirebaseStorage.getInstance().getReference().child("Ingredients");
+                uploadFile("null", ingredientName);
             }
         });
+
+        mRecipeImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent, RESULT_IMAGE);
+
+            }
+        });
+
+        mIngredientImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent, RESULT_IMAGE);
+
+            }
+        });
+
     }
 
 
@@ -181,10 +228,6 @@ public class Admin extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-//            case R.id.action_search:
-//                // User chose the "Search" item, show search dialog
-//                onSearchRequested();
-//                return true;
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
                 finish();
@@ -214,18 +257,48 @@ public class Admin extends AppCompatActivity {
         int endIndex = 0;
         boolean found = false;
 
+        //separate ingredients by comma
         for(int i=0; i<line.length(); i++)
         {
-            if(line.charAt(i)!= ' ' && found == false)
+            if(line.charAt(i)!= ',' && found == false)
             {
                 startIndex = i;
                 found = true;
             }
-            else if(line.charAt(i) == ' ' && found == true)
+            else if((line.charAt(i) == ',' || i == line.length()-1) && found == true)
             {
                 endIndex = i;
                 parse.add(line.substring(startIndex, endIndex));
                 found = false;
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==RESULT_IMAGE && resultCode==RESULT_OK && data!=null){
+            selectedImage = data.getData();
+        }
+    }
+
+    private void uploadFile (String recipeName, String ingredientName) {
+        if (selectedImage != null) {
+            uploadPath = mStorage.child(user.getUid()).child(uid);
+            Log.i("Admin", uploadPath.toString());
+            uploadPath.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                    progressU.setVisibility(View.GONE);
+                    Toast.makeText(Admin.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
+                }
+            });
+
+            if(ingredientName.equals("null")) {
+                mRecipes.child(recipeName).child("Image").setValue(uploadPath.toString());
+            }
+            else if(recipeName.equals("null")) {
+                mIngredients.child(ingredientName).child("Image").setValue(uploadPath.toString());
             }
         }
     }

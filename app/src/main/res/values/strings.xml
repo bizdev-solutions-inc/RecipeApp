@@ -1,29 +1,46 @@
 <resources>
     <!-- Name of the app -->
-    <string name="app_label">bizdev Recipes</string>
+    <string name="app_label">Murder Journey Cookbook</string>
 
     <!-- Menu actions -->
     <string name="action_home">Home</string>
     <string name="action_about_us">About Us</string>
     <string name="action_logout">Log Out</string>
     <string name="action_settings">Settings</string>    <!-- Unused -->
-    <string name="action_search">Search</string>
 
     <!-- Text for the About Us activity -->
-    <string name="about_text">We are Software Kings</string>
+    <string name="about_text">We are the Software Kings</string>
 
-    <!-- Hint text for the search dialog -->
+    <string name="tv_search">Search recipes by: </string>
+
+    <string name="hint_search_by_name">Search by name</string>
+
+    <!-- Hint text for the goToSearch dialog in IngredientList activity-->
     <string name="hint_search_ingr">Search ingredients</string>
 
     <string name="btn_continue">Continue</string>
 
+    <string name="btn_search">Search</string>
+
+    <string name="btn_add_recipe">Add Recipe</string>
+
     <!-- Button for adding to ingredients list -->
-    <string name="btn_add_ingr">Add</string>
+    <string name="btn_add">Add</string>
 
     <string name="btn_find_recipes">Find Recipes</string>
     <string name="btn_clear_list">Clear List</string>
 
     <string name="hint_tap_remove_ingr">(Tap an entry to remove it from the list)</string>
+
+    <!-- Drop-down menu for "SearchByName recipes by..." in Home activity -->
+    <string-array name="search_menu_array">
+        <item>Search by...</item>
+        <item>Recipe/Ingredient Name</item>
+        <item>Recipe Type</item>
+        <item>Recipe Cuisine</item>
+        <item>Ingredient List</item>
+        <item>Ingredient Category</item>
+    </string-array>
 
     <!-- Drop down menu for admin home -->
     <string-array name="recipe_types">
@@ -68,5 +85,11 @@
         <item>Winter</item>
         <item>Year round</item>
     </string-array>
+    <string name="title_activity_basic">BasicActivity</string>
+    <string name="IngredientListResultMessage">Recipes you can make with those ingredients:</string>
+    <string name="btn_saved_ingredients">Saved Ingredients</string>
+    <string name="btn_saved_recipes">Saved Recipes</string>
+    <string name="btn_add_ingredient">Add Ingredient</string>
+    <string name="text_selection">Please make a selection below</string>
 
 </resources>

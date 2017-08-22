@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -10,212 +12,248 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
         android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/Theme.AppCompat.Light"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Welcome Admin"
-        android:textAlignment="center"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/toolbar" />
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView2"
-        android:text="Recipe Name" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
-    <EditText
-        android:id="@+id/recipeName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
-        android:layout_toEndOf="@+id/textView9"
-        android:ems="10"
-        android:hint="Enter name..."
-        android:inputType="textPersonName" />
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Welcome Admin"
+                android:textAlignment="center"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="60dp"/>
 
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/recipeName"
-        android:text="Recipe Type" />
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recipe Name"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginStart="16dp"
+                android:layout_alignTop="@+id/textView2"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="26dp" />
 
-    <Spinner
-        android:id="@+id/spinner_type"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/recipeName"
-        android:layout_below="@+id/recipeName" />
+            <EditText
+                android:id="@+id/recipeName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Enter name..."
+                android:inputType="textPersonName"
+                android:layout_alignTop="@+id/textView9"
+                android:layout_toEndOf="@+id/textView18" />
 
-    <TextView
-        android:id="@+id/textView11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/spinner_type"
-        android:text="Recipe Cuisine" />
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recipe Type"
+                android:layout_below="@+id/textView2"
+                android:layout_alignStart="@+id/textView11" />
 
-    <Spinner
-        android:id="@+id/spinner_cuisine"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/spinner_type"
-        android:layout_toEndOf="@+id/textView11" />
+            <Spinner
+                android:id="@+id/spinner_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView2"
+                android:layout_alignParentEnd="true"
+                android:layout_alignStart="@+id/textView2" />
 
-    <TextView
-        android:id="@+id/textView12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/spinner_cuisine"
-        android:text="Recipe Instructions" />
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recipe Cuisine"
+                android:layout_alignTop="@+id/spinner_cuisine"
+                android:layout_alignStart="@+id/textView9" />
 
-    <EditText
-        android:id="@+id/recipeInstructions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/spinner_cuisine"
-        android:layout_toEndOf="@+id/textView12"
-        android:ems="10"
-        android:hint="Multi-line Input..."
-        android:inputType="textMultiLine" />
+            <Spinner
+                android:id="@+id/spinner_cuisine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/spinner_type"
+                android:layout_toEndOf="@+id/textView11" />
 
-    <TextView
-        android:id="@+id/textView13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:text="Ingredient Name" />
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="     Recipe Instructions"
+                android:layout_alignBaseline="@+id/recipeInstructions"
+                android:layout_alignBottom="@+id/recipeInstructions"
+                android:layout_alignParentStart="true" />
 
-    <EditText
-        android:id="@+id/ingredientName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/textView13"
-        android:ems="10"
-        android:hint="Enter name..."
-        android:inputType="textPersonName" />
+            <EditText
+                android:id="@+id/recipeInstructions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Multi-line Input..."
+                android:inputType="textMultiLine"
+                android:layout_below="@+id/spinner_cuisine"
+                android:layout_alignStart="@+id/ingredientDescription" />
 
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/ingredientName"
-        android:layout_marginTop="15dp"
-        android:text="Ingredient Description" />
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="     Recipe Ingredients"
+                android:layout_below="@+id/recipeInstructions"
+                android:layout_alignParentStart="true" />
 
-    <EditText
-        android:id="@+id/ingredientDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Multi-line input..."
-        android:inputType="textMultiLine"
-        android:layout_alignBaseline="@+id/textView14"
-        android:layout_alignBottom="@+id/textView14"
-        android:layout_alignParentEnd="true" />
+            <EditText
+                android:id="@+id/recipeIngredients"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="separate by space"
+                android:inputType="textMultiLine"
+                android:layout_below="@+id/textView18"
+                android:layout_alignStart="@+id/recipeInstructions" />
 
-    <TextView
-        android:id="@+id/textView15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/ingredientDescription"
-        android:layout_marginTop="11dp"
-        android:text="Ingredient Type" />
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ingredient Name"
+                android:layout_alignBaseline="@+id/ingredientName"
+                android:layout_alignBottom="@+id/ingredientName"
+                android:layout_alignStart="@+id/textView11" />
 
-    <Spinner
-        android:id="@+id/spinner_ing_type"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/ingredientName"
-        android:layout_below="@+id/ingredientDescription" />
+            <EditText
+                android:id="@+id/ingredientName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Enter name..."
+                android:inputType="textPersonName"
+                android:layout_below="@+id/recipeIngredients"
+                android:layout_alignStart="@+id/recipeIngredients" />
 
-    <TextView
-        android:id="@+id/textView16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView15"
-        android:layout_marginTop="12dp"
-        android:text="Ingredient History" />
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Ingredient Description"
+                android:layout_below="@+id/ingredientName"
+                android:layout_alignStart="@+id/textView13" />
 
-    <TextView
-        android:id="@+id/textView17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView16"
-        android:layout_marginTop="21dp"
-        android:text="Ingredient Season" />
+            <EditText
+                android:id="@+id/ingredientDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Multi-line input..."
+                android:inputType="textMultiLine"
+                android:layout_alignBaseline="@+id/textView14"
+                android:layout_alignBottom="@+id/textView14"
+                android:layout_alignParentEnd="true" />
 
-    <EditText
-        android:id="@+id/ingredientHistory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/textView15"
-        android:ems="10"
-        android:hint="Multi-line input..."
-        android:inputType="textPersonName" />
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="Ingredient Type"
+                android:layout_below="@+id/ingredientDescription"
+                android:layout_alignStart="@+id/textView14" />
 
-    <Spinner
-        android:id="@+id/spinner_ing_season"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/recipeInstructions"
-        android:layout_below="@+id/ingredientHistory" />
+            <Spinner
+                android:id="@+id/spinner_ing_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/textView15"
+                android:layout_alignParentEnd="true"
+                android:layout_alignStart="@+id/spinner_type" />
 
-    <Button
-        android:id="@+id/save_recipe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:text="Save as Recipe"
-        android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/ingredientHistory"
-        android:layout_marginEnd="11dp" />
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="11dp"
+                android:text="Ingredient History"
+                android:layout_below="@+id/spinner_ing_type"
+                android:layout_alignStart="@+id/textView15" />
 
-    <TextView
-        android:id="@+id/textView18"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/recipeInstructions"
-        android:text="Recipe Ingredients" />
+            <EditText
+                android:id="@+id/ingredientHistory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/textView15"
+                android:ems="10"
+                android:hint="Multi-line input..."
+                android:inputType="textPersonName" />
 
-    <EditText
-        android:id="@+id/recipeIngredients"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/recipeInstructions"
-        android:layout_below="@+id/textView18"
-        android:ems="10"
-        android:hint="separate by space"
-        android:inputType="textMultiLine" />
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:text="Ingredient Season"
+                android:layout_below="@+id/ingredientHistory"
+                android:layout_alignStart="@+id/textView16" />
 
-    <Button
-        android:id="@+id/save_ingredient"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/save_recipe"
-        android:layout_alignBottom="@+id/save_recipe"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="15dp"
-        android:text="Save as Ingredient" />
+            <Spinner
+                android:id="@+id/spinner_ing_season"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/textView17"
+                android:layout_toEndOf="@+id/textView14" />
+
+            <Button
+                android:id="@+id/recipe_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recipe Image"
+                android:layout_below="@+id/spinner_ing_season"
+                android:layout_alignEnd="@+id/save_ingredient"
+                android:layout_alignStart="@+id/save_ingredient" />
+
+            <Button
+                android:id="@+id/ingredient_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ingredient Image"
+                android:layout_below="@+id/recipe_img"
+                android:layout_toEndOf="@+id/recipe_img" />
+
+            <Button
+                android:id="@+id/save_recipe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save as Recipe"
+                android:layout_below="@+id/spinner_ing_season"
+                android:layout_toEndOf="@+id/recipe_img"/>
+
+            <Button
+                android:id="@+id/save_ingredient"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save as Ingredient"
+                android:layout_below="@+id/recipe_img"
+                android:layout_alignStart="@+id/textView17" />
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

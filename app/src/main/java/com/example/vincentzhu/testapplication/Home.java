@@ -2,22 +2,22 @@ package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class Home extends AppCompatActivity {
+public class Home extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private FirebaseAuth firebaseAuth;
-
-    // Key for ingredient entered by user
-    public static final String EXTRA_INGREDIENT = "INGREDIENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,34 +37,31 @@ public class Home extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(),LoginActivity.class));
         }
 
-        //Wire up the button to do stuff
-        //..get the button
-        Button btn = (Button) findViewById(R.id.btn_ingr_categories); //type
-        Button addIng = (Button)findViewById(R.id.btn_add_ing); //add personal ingredient button
-        Button addRecipe = (Button) findViewById(R.id.btn_add_recipe);
-        //..set what happens when the user clicks
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Home.this, Ingredient_Categories.class));
-                //setTitle("Ingredient Categories");
-            }
-        });
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.search_menu_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the childNames of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
 
-        addIng.setOnClickListener(new View.OnClickListener() {
+        // onClick handlers for buttons
+        Button btn_add_ing = (Button) findViewById(R.id.btn_add_ing); //add personal ingredient button
+        btn_add_ing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Home.this, PersonalIngredient.class));
             }
         });
-
-        addRecipe.setOnClickListener(new View.OnClickListener(){
+        Button btn_add_recipe = (Button) findViewById(R.id.btn_add_recipe);
+        btn_add_recipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Home.this, PersonalRecipe.class));
             }
         });
-
 
     }
 
@@ -78,10 +75,6 @@ public class Home extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-//            case R.id.action_search:
-//                // User chose the "Search" item, show search dialog
-//                startActivity(new Intent(this, IngredientsList.class));
-//                return true;
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
                 finish();
@@ -106,18 +99,42 @@ public class Home extends AppCompatActivity {
     }
 
     /**
-     * Called when the user taps the Add button.
-     * Sends the ingredient entered by the user to the IngredientsList activity.
+     * Handler for selecting items from the spinner drop-down menu.
+     * Starts the activity for the corresponding item selected.
      */
-    public void addIngredient(View view) {
-        Intent intent = new Intent(this, IngredientsList.class);
-        EditText et_search_ingr = (EditText) findViewById(R.id.et_search_ingr);
-        String query = et_search_ingr.getText().toString();
-        if (!query.isEmpty()) { // Do nothing if query is an empty string
-            et_search_ingr.setText(""); // Clear text field when Add button is pressed
-            intent.putExtra(EXTRA_INGREDIENT, query);
-            startActivity(intent);
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        // retrieve item using parent.getItemAtPosition(pos)
+        String item = parent.getItemAtPosition(pos).toString();
+        switch (item) {
+            case "Recipe/Ingredient Name":
+                startActivity(new Intent(Home.this, SearchByName.class));
+                break;
+            case "Recipe Type":
+                startActivity(new Intent(Home.this, RecipeTypes.class));
+                break;
+            case "Recipe Cuisine":
+                // startActivity(new Intent(Home.this, RecipeCuisine.class));
+                break;
+            case "Ingredient List":
+                startActivity(new Intent(Home.this, IngredientList.class));
+                break;
+            case "Ingredient Category":
+                startActivity(new Intent(Home.this, Ingredient_Categories.class));
+                break;
+            default:
+                // Do nothing
+                break;
         }
+    }
+
+    /**
+     * Handler for selecting nothing from the spinner drop-down menu.
+     * Must be included when implementing AdapterView.OnItemSelectedListener interface.
+     *
+     * @param parent
+     */
+    public void onNothingSelected(AdapterView<?> parent) {
+        // Do nothing
     }
 
     public void displaySavedRecipe(View view)
@@ -128,6 +145,10 @@ public class Home extends AppCompatActivity {
     public void displaySavedIngredients(View view)
     {
         startActivity(new Intent(Home.this, SavedIngredients.class));
+    }
+
+    public void goToRecipePage(View view) {
+        startActivity(new Intent(Home.this, RecipePage.class));
     }
 
 

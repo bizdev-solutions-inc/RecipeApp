@@ -39,11 +39,11 @@ public class AboutUs extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        Button btn = (Button)findViewById(R.id.homePage);
-        btn.setOnClickListener(new View.OnClickListener() {
+        Button btn_homepage = (Button) findViewById(R.id.btn_homepage);
+        btn_homepage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(AboutUs.this, Introduction.class));
+                startActivity(new Intent(AboutUs.this, Home.class));
             }
         });
     }
@@ -57,11 +57,6 @@ public class AboutUs extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
-//            case R.id.action_search:
-//                // User chose the "Search" item, show search dialog
-//                onSearchRequested();
-//                return true;
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
                 finish();

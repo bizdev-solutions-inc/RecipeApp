@@ -1,21 +1,22 @@
 package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,49 +28,54 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.UUID;
+import java.util.ArrayList;
+
+import static com.example.vincentzhu.testapplication.R.id.ingredientName;
 import static com.example.vincentzhu.testapplication.R.id.pic_btn;
 
 public class PersonalRecipe extends AppCompatActivity implements View.OnClickListener {
 
-//    EditText nametext1;
-//    EditText nametext2;
-//    EditText nametext3;
+    private static final String TAG = "PersonalRecipe";
 
-    private FirebaseAuth firebaseAuth;
-
-    private Button mPicure;
+    //user-related widgets
+    private Button mPicture;
     private Button mFirebaseBtn;
-    private DatabaseReference mDatabase;
-    private DatabaseReference mRef;
     private EditText mNameField;
     private EditText mIngField;
     private EditText mInstrField;
-
-    private DatabaseReference mName;
-    private DatabaseReference mIng;
-    private DatabaseReference mInstr;
-    private DatabaseReference mCuisine;
-    private DatabaseReference mMealType;
-    private StorageReference mStorage;
-    private Uri selectedImage;
-    private ProgressBar progressU;
-
-
-    private String userID;
     private ImageView imageDisplay;
     private static final int RESULT_IMAGE = 1;
+    private Uri selectedImage;
+    private ProgressBar progressU;
+    Spinner spinner_recipe_type;
+    Spinner spinner_cuisine;
+    ArrayAdapter<CharSequence> adapter_recipe_type;
+    ArrayAdapter<CharSequence>adapter_cuisine;
 
-    //public static int index = 1;
+    //database-related objects
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
+    private StorageReference mStorage;
+    private String userID;
+    private DatabaseReference mRoot;
+    private DatabaseReference mRecipe_Ingredients;
+    private DatabaseReference mIngredient_Recipes;
+    private DatabaseReference mCuisine_Recipe;
+    private DatabaseReference mRecipes;
+    private DatabaseReference mType_Recipes;
+    private String uid;
+    private StorageReference uploadPath;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_recipe);
 
+        //check user is still logged in
         firebaseAuth = FirebaseAuth.getInstance();
-
         if(firebaseAuth.getCurrentUser()==null){
-            //Profile activity here
             finish();
             startActivity(new Intent(getApplicationContext(),LoginActivity.class));
         }
@@ -82,65 +88,36 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-//        nametext1 = (EditText)findViewById(R.id.editText1);
-//        nametext2 = (EditText)findViewById(R.id.editText2);
-//        nametext3 = (EditText)findViewById(R.id.editText3);
-
-        mPicure = (Button) findViewById(pic_btn);
+        //user-related display
+        mPicture = (Button) findViewById(R.id.pic_btn);
         mFirebaseBtn = (Button) findViewById(R.id.firebase_btn);
         imageDisplay = (ImageView) findViewById(R.id.imageDisplay);
-
-        userID = firebaseAuth.getCurrentUser().getUid();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child(userID).child("Recipe");
-
+        spinner_recipe_type = (Spinner)findViewById(R.id.spinner_type);
+        spinner_cuisine = (Spinner)findViewById(R.id.spinner_cuisine);
+        adapter_recipe_type = ArrayAdapter.createFromResource(this, R.array.recipe_types,android.R.layout.simple_spinner_item);
+        adapter_cuisine = ArrayAdapter.createFromResource(this, R.array.recipe_cuisines,android.R.layout.simple_spinner_item);
+        spinner_recipe_type.setAdapter(adapter_recipe_type);
+        spinner_cuisine.setAdapter(adapter_cuisine);
         mNameField = (EditText)findViewById(R.id.name_field);
         mIngField = (EditText)findViewById(R.id.ing_field);
         mInstrField = (EditText)findViewById(R.id.instr_field);
-
-        mStorage = FirebaseStorage.getInstance().getReference();
-        mPicure.setOnClickListener(this);
+        mPicture.setOnClickListener(this);
         mFirebaseBtn.setOnClickListener(this);
         progressU=(ProgressBar) findViewById(R.id.progressUpload);
         progressU.setVisibility(View.GONE);
 
-//               mFirebaseBtn.setOnClickListener(new View.OnClickListener() {
-//
-//            public void onClick(View view) {
-//                String name = mNameField.getText().toString().trim();
-//                String ing = mIngField.getText().toString().trim();
-//                String instr = mInstrField.getText().toString().trim()
-        //        String key = mDatabase.push().getKey();
-                //mDatabase.setValue(name);
-//                mRef = mDatabase.child(key);
-//                mName = mRef.child("name");
-//                mIng = mRef.child("ingredients");
-                //mCuisine = mRef.child("cuisine");
-                //mMealType = mRef.child("meal type");
-//                mInstr = mRef.child("instructions");
-//                mName.setValue(name);
-//                mIng.setValue(ing);
-//                mInstr.setValue(instr);
-//            }
-//        });
+        //database-related
+        userID = firebaseAuth.getCurrentUser().getUid();
+        mRoot = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Recipes");
+        mStorage = FirebaseStorage.getInstance().getReference().child("Recipes");
+        mRecipe_Ingredients = mRoot.child("Recipe_Ingredients");
+        mIngredient_Recipes = mRoot.child("Ingredient_Recipes");
+        mCuisine_Recipe = mRoot.child("Cuisine_Recipe");
+        mRecipes = mRoot.child("Recipes");
+        mType_Recipes = mRoot.child("Type_Recipes");
+        user  = firebaseAuth.getCurrentUser();
+        uid = UUID.randomUUID().toString();
 
-//        Button btn = (Button)findViewById(R.id.enter);
-
-
-//        btn.setOnClickListener(new View.OnClickListener(){
-//            int index = 0;
-//            Recipe[] array = new Recipe[10];
-//            view1 = (TextView)findViewById(R.id.textView4);
-//
-//            @Override
-//            public void onClick(View view) {
-//                if(index < 10) {
-//                    array[index] = new Recipe(nametext1.getText().toString(), nametext2.getText().toString(), nametext3.getText().toString());
-//
-//                    view1.setText("\nRecipe name: " + array[index].getRecipeName() + "\nIngredients: " + array[index].getQuantities() + "\nInstructions: " + array[index].getCookingInstruction());
-//                    index++;
-//                }
-//            }
-//        });
     }
 
     @Override
@@ -152,10 +129,6 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-//            case R.id.action_search:
-//                // User chose the "Search" item, show search dialog
-//                onSearchRequested();
-//                return true;
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
                 finish();
@@ -182,35 +155,35 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
-            case pic_btn:
+            case R.id.pic_btn:
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 galleryIntent.setType("image/*");
                 startActivityForResult(galleryIntent, RESULT_IMAGE);
                 break;
             case R.id.firebase_btn:
-                String name = mNameField.getText().toString().trim();
-                String ing = mIngField.getText().toString().trim();
-                String instr = mInstrField.getText().toString().trim();
-                String key = mDatabase.push().getKey();
-                mDatabase.setValue(name);
-                mRef = mDatabase.child(key);
-                mName = mRef.child("name");
-                mIng = mRef.child("ingredients");
-                mInstr = mRef.child("instructions");
-                mName.setValue(name);
-                mIng.setValue(ing);
-                mInstr.setValue(instr);
-                uploadFile();
-                Toast.makeText(PersonalRecipe.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
-//                FirebaseUser user= firebaseAuth.getCurrentUser();
-//                StorageReference uploadPath = mStorage.child(user.getEmail()).child(selectedImage.getLastPathSegment());
-//                uploadPath.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                        Toast.makeText(PersonalRecipe.this,"Upload Completed successfully",Toast.LENGTH_LONG).show();
-//                    }
-//                });
+                String recipeName = mNameField.getText().toString().trim();
+                String recipeInstruction = mInstrField.getText().toString().trim();
+                String recipeIngredients = mIngField.getText().toString() + " "; //need to update later
+                ArrayList<String> parse = new ArrayList<String>();
+                parseString(recipeIngredients, parse);
 
+                //Method 3
+                mCuisine_Recipe.child(spinner_cuisine.getSelectedItem().toString()).child(recipeName).setValue(recipeName);
+                //Method 4
+                mType_Recipes.child(spinner_recipe_type.getSelectedItem().toString()).child(recipeName).setValue(recipeName);
+                //Method 5
+                mRecipes.child(recipeName).child("Type").setValue(spinner_recipe_type.getSelectedItem().toString());
+                mRecipes.child(recipeName).child("Cuisine").setValue(spinner_cuisine.getSelectedItem().toString());
+                mRecipes.child(recipeName).child("Instructions").setValue(recipeInstruction);
+
+                //Method 6 & 7
+                for(String word : parse)
+                {
+                    mRecipe_Ingredients.child(recipeName).child(word).setValue(word);
+                    mIngredient_Recipes.child(word).child(recipeName).setValue(recipeName);
+                }
+
+                uploadFile(recipeName);
                 break;
         }
 
@@ -225,34 +198,51 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void uploadFile () {
+    private void uploadFile (final String recipeName) {
         if (selectedImage != null) {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            StorageReference uploadPath = mStorage.child(user.getEmail()).child(selectedImage.getLastPathSegment());
+            uploadPath = mStorage.child(user.getUid()).child(uid);
+            Log.i(TAG, uploadPath.toString());
             uploadPath.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 //                    progressU.setVisibility(View.GONE);
-//                    Toast.makeText(PersonalRecipe.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
+                    Toast.makeText(PersonalRecipe.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
 
                 }
             });
 
+            mRecipes.child(recipeName).child("Image").setValue(uploadPath.toString());
+//            uploadPath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                @Override
+//                public void onSuccess(Uri uri) {
+//                    String url = uri.toString();
+//                    mRecipes.child(recipeName).child("Image").setValue(url);
+//                    Toast.makeText(PersonalRecipe.this, "URL Saved successfully", Toast.LENGTH_LONG).show();
+//                }
+//            });
         }
+    }
 
+    public void parseString(String line, ArrayList<String> parse)
+    {
+        int startIndex = 0;
+        int endIndex = 0;
+        boolean found = false;
+
+        for(int i=0; i<line.length(); i++)
+        {
+            if(line.charAt(i)!= ',' && found == false)
+            {
+                startIndex = i;
+                found = true;
+            }
+            else if((line.charAt(i) == ',' || i == line.length()-1) && found == true)
+            {
+                endIndex = i;
+                parse.add(line.substring(startIndex, endIndex));
+                found = false;
+            }
+        }
     }
 }
-
-    //    public void saveRecipe(View view)
-//    {
-//        SharedPreferences sharedPref = getSharedPreferences("recipeInfo", Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPref.edit();
-//
-//        editor.putString("Favorite" + index, "\nRecipe Name:\n" + nametext1.getText().toString()
-//        + "\nIngredients List:\n" + nametext2.getText().toString() + "\nCooking Instructions:\n" + nametext3.getText().toString());
-//        editor.putInt("index", index);
-//        editor.commit();
-//        Toast.makeText(this, "Saved to Favorites!", Toast.LENGTH_LONG).show();
-//        index++;
-//    }
 
