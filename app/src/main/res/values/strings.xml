@@ -91,5 +91,6 @@
     <string name="btn_saved_recipes">Saved Recipes</string>
     <string name="btn_add_ingredient">Add Ingredient</string>
     <string name="text_selection">Please make a selection below</string>
+    <string name="btn_home">Home Page</string>
 
 </resources>

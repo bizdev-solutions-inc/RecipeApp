@@ -8,77 +8,67 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class Ingredient_Categories extends AppCompatActivity {
-
-    private FirebaseAuth firebaseAuth;
+public class Ingredient_Categories extends BaseActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_categories);
+        super.onCreate(savedInstanceState);
 
-        firebaseAuth = FirebaseAuth.getInstance();
+//        Button btn_meat_seafood = (Button) findViewById(R.id.btn_meat_seafood); //type cast
 
-        if(firebaseAuth.getCurrentUser()==null){
-            //Profile activity here
-            finish();
-            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
-        }
+//        //..set what happens when the user clicks
+//        btn_meat_seafood.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //Log.i(TAG, "This is a magic log message!");
+//                //Toast.makeText(getApplicationContext(), "It's magic!", Toast.LENGTH_SHORT).show();
+//                startActivity(new Intent(Ingredient_Categories.this, MeatScroll.class));
+//                //setTitle("Ingredient Categories");
+//            }
+//        });
 
-        // Create the toolbar and set it as the app bar for the activity
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
+        // Set ListView items by using an adapter
+        ArrayAdapter<CharSequence> adapter =
+                ArrayAdapter.createFromResource(Ingredient_Categories.this,
+                        R.array.ingredient_types,
+                        android.R.layout.simple_list_item_1);
+        ListView lv_recipe_types = (ListView) findViewById(R.id.lv_ingredient_types);
+        lv_recipe_types.setAdapter(adapter);
+        lv_recipe_types.setOnItemClickListener(itemClickListener);
 
-        // Get a support ActionBar corresponding to this toolbar and enable Up button
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        Button btn_meat_seafood = (Button) findViewById(R.id.btn_meat_seafood); //type cast
-
-        //..set what happens when the user clicks
-        btn_meat_seafood.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Log.i(TAG, "This is a magic log message!");
-                //Toast.makeText(getApplicationContext(), "It's magic!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(Ingredient_Categories.this, MeatScroll.class));
-                //setTitle("Ingredient Categories");
-            }
-        });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.my_menu, menu);
-        return true;
-    }
+    // Create a message handling object as an anonymous class.
+    private AdapterView.OnItemClickListener itemClickListener =
+            new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView parent, View v, int position, long id) {
+                    // TODO: Search for recipes based on ingredient type chosen
+                    String item = parent.getItemAtPosition(position).toString();
+                    switch (item) {
+                        case "Meat":
+                            startActivity(new Intent(Ingredient_Categories.this, MeatScroll.class));
+                            break;
+                        case "Vegetable":
+                            break;
+                        case "Fruit":
+                            break;
+                        case "Dairy":
+                            break;
+                        case "Grain":
+                            break;
+                        case "Miscellaneous":
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            };
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_home:
-                // User chose the "Home" item, show the Home activity
-                finish();
-                startActivity(new Intent(this, Home.class));
-                return true;
-            case R.id.action_about_us:
-                // User chose the "About Us" item, show the About Us activity
-                finish();
-                startActivity(new Intent(this, AboutUs.class));
-                return true;
-            case R.id.action_logout:
-                // User chose the "Log Out" item, log the user out and return to login activity
-                firebaseAuth.signOut();
-                finish();
-                startActivity(new Intent(this, LoginActivity.class));
-                return true;
-            default:
-                // The user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-        }
-    }
 }

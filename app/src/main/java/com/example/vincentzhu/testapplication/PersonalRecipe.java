@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import static com.example.vincentzhu.testapplication.R.id.ingredientName;
 import static com.example.vincentzhu.testapplication.R.id.pic_btn;
 
-public class PersonalRecipe extends AppCompatActivity implements View.OnClickListener {
+public class PersonalRecipe extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "PersonalRecipe";
 
@@ -70,23 +70,8 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_recipe);
-
-        //check user is still logged in
-        firebaseAuth = FirebaseAuth.getInstance();
-        if(firebaseAuth.getCurrentUser()==null){
-            finish();
-            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
-        }
-
-        // Create the toolbar and set it as the app bar for the activity
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
-
-        // Get a support ActionBar corresponding to this toolbar and enable Up button
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        super.onCreate(savedInstanceState);
 
         //user-related display
         mPicture = (Button) findViewById(R.id.pic_btn);
@@ -118,38 +103,6 @@ public class PersonalRecipe extends AppCompatActivity implements View.OnClickLis
         user  = firebaseAuth.getCurrentUser();
         uid = UUID.randomUUID().toString();
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.my_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_home:
-                // User chose the "Home" item, show the Home activity
-                finish();
-                startActivity(new Intent(this, Home.class));
-                return true;
-            case R.id.action_about_us:
-                // User chose the "About Us" item, show the About Us activity
-                finish();
-                startActivity(new Intent(this, AboutUs.class));
-                return true;
-            case R.id.action_logout:
-                // User chose the "Log Out" item, log the user out and return to login activity
-                firebaseAuth.signOut();
-                finish();
-                startActivity(new Intent(this, LoginActivity.class));
-                return true;
-            default:
-                // The user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     @Override

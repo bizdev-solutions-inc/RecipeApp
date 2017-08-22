@@ -16,9 +16,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class SavedRecipe extends AppCompatActivity {
+public class SavedRecipe extends BaseActivity {
 
-    private FirebaseAuth firebaseAuth;
     private DatabaseReference mDatabase;
 
     private ArrayList<String> mUsernames = new ArrayList<>();
@@ -29,19 +28,9 @@ public class SavedRecipe extends AppCompatActivity {
     ArrayList<String> parent = new ArrayList<String>();
 
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_recipe);
+        super.onCreate(savedInstanceState);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        if(firebaseAuth.getCurrentUser()==null){
-            //Profile activity here
-            finish();
-            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
-        }
-
-        //Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(myToolbar);
         expandableListView = (ExpandableListView)findViewById(R.id.expandableListView);
 
         userID = firebaseAuth.getCurrentUser().getUid();
@@ -79,38 +68,6 @@ public class SavedRecipe extends AppCompatActivity {
             child.add(recipe.getInstructions());
             listOfLists.add(child);
 
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.my_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_home:
-                // User chose the "Home" item, show the Home activity
-                finish();
-                startActivity(new Intent(this, Home.class));
-                return true;
-            case R.id.action_about_us:
-                // User chose the "About Us" item, show the About Us activity
-                finish();
-                startActivity(new Intent(this, AboutUs.class));
-                return true;
-            case R.id.action_logout:
-                // User chose the "Log Out" item, log the user out and return to login activity
-                firebaseAuth.signOut();
-                finish();
-                startActivity(new Intent(this, LoginActivity.class));
-                return true;
-            default:
-                // The user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
         }
     }
 }
