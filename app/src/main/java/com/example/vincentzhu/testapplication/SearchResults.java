@@ -172,4 +172,5 @@ public class SearchResults extends AppCompatActivity {
         intent.putExtra("recipe", recipe);
         startActivity(intent);
     }
+
 }

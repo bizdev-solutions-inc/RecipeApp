@@ -260,14 +260,17 @@ public class Admin extends AppCompatActivity {
         //separate ingredients by comma
         for(int i=0; i<line.length(); i++)
         {
-            if(line.charAt(i)!= ',' && found == false)
+            if(line.charAt(i)!= ',' && line.charAt(i)!= ' ' && found == false)
             {
                 startIndex = i;
                 found = true;
             }
             else if((line.charAt(i) == ',' || i == line.length()-1) && found == true)
             {
-                endIndex = i;
+                if(line.charAt(line.length()-1) == ' ')
+                    endIndex = i-1;
+                else
+                    endIndex = i;
                 parse.add(line.substring(startIndex, endIndex));
                 found = false;
             }
