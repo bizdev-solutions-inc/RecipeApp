@@ -133,8 +133,8 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
                 //Method 6 & 7
                 for(String word : parse)
                 {
-                    mRecipe_Ingredients.child(recipeName).child(word).setValue(word);
-                    mIngredient_Recipes.child(word).child(recipeName).setValue(recipeName);
+                    mRecipe_Ingredients.child(recipeName).child(word.toLowerCase()).setValue(word);
+                    mIngredient_Recipes.child(word.toLowerCase()).child(recipeName).setValue(recipeName);
                 }
 
                 uploadFile(recipeName);
