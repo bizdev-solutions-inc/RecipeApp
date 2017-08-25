@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -40,7 +41,6 @@ public class IngredientList extends BaseActivity {
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setOnItemClickListener(itemClickListener);
 
-
     }
 
     /**
@@ -53,15 +53,14 @@ public class IngredientList extends BaseActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 recipe_list = queryData(dataSnapshot);
+                Intent intent = new Intent(IngredientList.this, SearchResults.class);
+                intent.putExtra("RECIPE_RESULTS", recipe_list);
+                startActivity(intent);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) { }
         });
-
-        Intent intent = new Intent(IngredientList.this, SearchResults.class);
-        intent.putExtra("RECIPE_RESULTS", recipe_list);
-        startActivity(intent);
     }
 
     /**
