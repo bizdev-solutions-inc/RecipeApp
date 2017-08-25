@@ -23,29 +23,25 @@
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <Button
-        android:id="@+id/btn_clear_list"
+        android:id="@+id/btn_clear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
         android:onClick="clearList"
-        android:text="@string/btn_clear_list"
-        app:layout_constraintBaseline_toBaselineOf="@+id/btn_search"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/btn_search" />
+        android:text="@string/btn_clear"
+        app:layout_constraintRight_toLeftOf="@+id/btn_search"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <Button
         android:id="@+id/btn_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="15dp"
         android:onClick="search"
         android:text="@string/btn_search"
-        app:layout_constraintLeft_toRightOf="@+id/btn_clear_list"
+        android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/btn_clear" />
 
     <EditText
         android:id="@+id/et_search_ingr"
@@ -61,7 +57,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/btn_clear_list" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_clear" />
 
     <Button
         android:id="@+id/btn_add_ingr"
@@ -106,5 +102,17 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_tap_remove"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintVertical_bias="1.0" />
+
+    <Spinner
+        android:id="@+id/sp_favorites"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintHorizontal_bias="0.448"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/btn_clear"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
 </android.support.constraint.ConstraintLayout>
