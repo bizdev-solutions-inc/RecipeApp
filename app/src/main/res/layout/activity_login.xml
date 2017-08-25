@@ -62,6 +62,17 @@
             android:layout_height="wrap_content"
             android:indeterminate="true" />
 
+        <TextView
+            android:id="@+id/textViewResetPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/linearLayout"
+            android:layout_marginTop="30dp"
+            android:text="Forgot password? Reset Here"
+            android:textAlignment="center" />
+
 
     </LinearLayout>
+
 </RelativeLayout>

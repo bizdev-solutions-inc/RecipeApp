@@ -5,7 +5,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -19,55 +25,56 @@ import java.util.ArrayList;
 public class SavedRecipe extends BaseActivity {
 
     private DatabaseReference mDatabase;
-
     private ArrayList<String> mUsernames = new ArrayList<>();
     private String userID;
-    ExpandableListView expandableListView;
-
-    ArrayList<ArrayList<String>> listOfLists = new ArrayList<ArrayList<String>>();
-    ArrayList<String> parent = new ArrayList<String>();
+    private ListView lv;
+    ArrayList<String> str = new ArrayList<String>();
+    private String key;
+    public static final String EXTRA_SEARCH_QUERY = "SEARCH_QUERY";
 
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_saved_recipe);
         super.onCreate(savedInstanceState);
 
-        expandableListView = (ExpandableListView)findViewById(R.id.expandableListView);
+        //expandableListView = (ExpandableListView)findViewById(R.id.expandableListView);
 
         userID = firebaseAuth.getCurrentUser().getUid();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Recipes").child("Recipes");
+        lv = (ListView)findViewById(R.id.savedRecipeListView);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child(userID).child("Recipe");
+        if(mDatabase != null) {
+            mDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    showData(dataSnapshot);
+                    //ExpandableListViewAdapter adapter = new ExpandableListViewAdapter(SavedRecipe.this, parent, listOfLists);
+                    //expandableListView.setAdapter(adapter);
+                }
 
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                showData(dataSnapshot);
-                ExpandableListViewAdapter adapter = new ExpandableListViewAdapter(SavedRecipe.this, parent, listOfLists);
-                expandableListView.setAdapter(adapter);
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                }
+            });
 
-            }
-        });
-
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    key = lv.getItemAtPosition(i).toString();
+                    Intent intent = new Intent(SavedRecipe.this, RecipePage.class);
+                    intent.putExtra(EXTRA_SEARCH_QUERY, key);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
     private void showData(DataSnapshot dataSnapshot) {
         for(DataSnapshot ds : dataSnapshot.getChildren())
         {
-            Recipe recipe = new Recipe();
-
-            recipe.setName(ds.getValue(Recipe.class).getName());
-            recipe.setIngredients(ds.getValue(Recipe.class).getIngredients());
-            recipe.setInstructions(ds.getValue(Recipe.class).getInstructions());
-
-            ArrayList<String> child = new ArrayList<String>();
-            parent.add(recipe.getName());
-            child.add(recipe.getIngredients());
-            child.add(recipe.getInstructions());
-            listOfLists.add(child);
-
+            str.add(ds.getKey());
         }
+        ListAdapter la = new ArrayAdapter<String>(SavedRecipe.this, android.R.layout.simple_list_item_1, str);
+        lv.setAdapter(la);
     }
 }

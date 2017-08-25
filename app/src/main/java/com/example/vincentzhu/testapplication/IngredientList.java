@@ -137,7 +137,6 @@ public class IngredientList extends BaseActivity {
         HashSet<String> recipes = new HashSet<>(), ingredients = new HashSet<>(ingredient_list);
 
         for (String currentIngredient : ingredients) {
-
             try {
                 HashMap<String, Object> current =
                         (HashMap) dataSnapshot.child(currentIngredient).getValue();

@@ -123,10 +123,11 @@
                 android:value=".Home" />
         </activity>
         <activity android:name=".RecipePage">
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".Home" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home" />
         </activity>
+        <activity android:name=".ResetPassword"></activity>
     </application>
 
 </manifest>

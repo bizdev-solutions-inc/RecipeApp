@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +25,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText editTextEmail;
     private EditText editTextPassword;
     private TextView textViewSignup;
+    private TextView textViewResetPass;
     private ProgressBar progressB;
 
     private FirebaseAuth firebaseAuth;
@@ -44,11 +46,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         buttonSignIn = (Button) findViewById(R.id.buttonSignin);
         textViewSignup = (TextView) findViewById(R.id.textViewSignup);
+        textViewResetPass = (TextView) findViewById(R.id.textViewResetPass);
         progressB=(ProgressBar) findViewById(R.id.progressLogin);
         progressB.setVisibility(View.GONE);
 
         buttonSignIn.setOnClickListener(this);
         textViewSignup.setOnClickListener(this);
+        textViewResetPass.setOnClickListener(this);
 
     }
 
@@ -103,6 +107,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(new Intent(this, login.class));
         }
 
+        if (view==textViewResetPass){
+            finish();
+            startActivity(new Intent(this, ResetPassword.class));
+        }
     }
 
 }
