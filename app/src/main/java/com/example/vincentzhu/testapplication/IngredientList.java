@@ -8,9 +8,11 @@ import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -34,11 +36,13 @@ import java.util.HashSet;
  */
 public class IngredientList extends BaseActivity {
 
-    private ArrayList<String> ingredient_list, recipe_list, favorites_list;
+    private ArrayList<String> ingredient_list, recipe_list, favorites_list, all_ingredients, all_recipes;
     private DatabaseReference mRoot;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
     private String userid;
+//    private MultiAutoCompleteTextView mactv;
+    private AutoCompleteTextView actv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +51,11 @@ public class IngredientList extends BaseActivity {
 
         ingredient_list = new ArrayList<String>(); // initialize list of ingredients
         favorites_list = new ArrayList<String>();
+        all_ingredients = new ArrayList<String>();
+        all_recipes = new ArrayList<String>();
         ArrayList<String> real_favorites = new ArrayList<String>();
+
+        populateIngredients();
 
         favorites_list.add("Favorites");
         populateFavorites();
@@ -60,6 +68,34 @@ public class IngredientList extends BaseActivity {
         // Create an ArrayAdapter using the string array and a default spinner layout
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, favorites_list);
+        //MultiAutoCompleteTextView
+//        mactv = findViewById(R.id.multiAutoCompleteTextView);
+//        ArrayAdapter<String> mactvAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, all_recipes);
+//        mactv.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+//        mactv.setAdapter(mactvAdapter);
+//        mactv.requestFocus();
+
+        /**
+         * Autocompletetextview
+         */
+        actv = findViewById(R.id.autoCompleteTextView);
+        ArrayAdapter<String> actvAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, all_ingredients);
+        actv.setAdapter(actvAdapter);
+        actv.requestFocus();
+
+        actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String item = actv.getText().toString();
+                if (!item.isEmpty() && !ingredient_list.contains(item)) {
+                    ingredient_list.add(item);
+                    updateList();
+                    actv.setText("");
+                }
+            }
+        });
+
+
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
@@ -68,7 +104,7 @@ public class IngredientList extends BaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String item = adapterView.getItemAtPosition(i).toString();
-                if (!item.equals("Favorites")){
+                if (!item.equals("Favorites") && !ingredient_list.contains(item)){
                     ingredient_list.add(item);
                     updateList();
                 }
@@ -85,6 +121,28 @@ public class IngredientList extends BaseActivity {
     /**
      *
      */
+    private void populateIngredients(){
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+        userid = user.getUid();
+        mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredient_Recipes");
+        mRoot.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    all_ingredients.add(ds.getKey());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    /**
+     *
+     */
     private void populateFavorites() {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
@@ -95,9 +153,9 @@ public class IngredientList extends BaseActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     if (ds.child("Favorited").child(userid).exists()) {
-
                         favorites_list.add(ds.getKey());
                     }
+                    all_recipes.add(ds.getKey());
                 }
             }
 
@@ -166,20 +224,6 @@ public class IngredientList extends BaseActivity {
                 }
             };
 
-
-    /**
-     * Called when the user taps the Add button.
-     * Adds the ingredient entered by the user to the ingredients list.
-     */
-    public void addIngredient(View view) {
-        EditText et_search_ingr = (EditText) findViewById(R.id.et_search_ingr);
-        String query = et_search_ingr.getText().toString();
-        if (!query.isEmpty()) { // Do not append if query is an empty string
-            et_search_ingr.setText(""); // Clear text field when Add button is pressed
-            ingredient_list.add(query);
-            updateList();
-        }
-    }
 
     /**
      * Updates the ListView with entries from the ingredients list.

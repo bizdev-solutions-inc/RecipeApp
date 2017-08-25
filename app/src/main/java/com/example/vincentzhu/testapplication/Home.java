@@ -19,6 +19,8 @@ import com.sun.jersey.core.impl.provider.entity.Inflector;
 
 public class Home extends BaseActivity implements AdapterView.OnItemSelectedListener {
 
+    private Spinner spinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_home);
@@ -27,7 +29,7 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         // Do not display Up button since this is the Home menu
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        spinner = (Spinner) findViewById(R.id.spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.search_menu_array, android.R.layout.simple_spinner_item);
@@ -64,18 +66,23 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         String item = parent.getItemAtPosition(pos).toString();
         switch (item) {
             case "Recipe/Ingredient Name":
+                spinner.setSelection(0);
                 startActivity(new Intent(Home.this, SearchByName.class));
                 break;
             case "Recipe Type":
+                spinner.setSelection(0);
                 startActivity(new Intent(Home.this, RecipeTypes.class));
                 break;
             case "Recipe Cuisine":
-                 startActivity(new Intent(Home.this, RecipeCuisines.class));
+                spinner.setSelection(0);
+                startActivity(new Intent(Home.this, RecipeCuisines.class));
                 break;
             case "Ingredient List":
+                spinner.setSelection(0);
                 startActivity(new Intent(Home.this, IngredientList.class));
                 break;
             case "Ingredient Category":
+                spinner.setSelection(0);
                 startActivity(new Intent(Home.this, Ingredient_Categories.class));
                 break;
             default:

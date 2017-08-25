@@ -20,18 +20,21 @@
         android:layout_alignParentStart="true"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintLeft_creator="1" />
 
     <Button
         android:id="@+id/btn_clear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="clearList"
-        android:text="@string/btn_clear"
-        app:layout_constraintRight_toLeftOf="@+id/btn_search"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="7dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        android:onClick="clearList"
+        android:text="Clear"
+        app:layout_constraintRight_toLeftOf="@+id/btn_search"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:layout_marginEnd="7dp" />
 
     <Button
         android:id="@+id/btn_search"
@@ -41,67 +44,41 @@
         android:text="@string/btn_search"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBaseline_toBaselineOf="@+id/btn_clear" />
-
-    <EditText
-        android:id="@+id/et_search_ingr"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/hint_search_ingr"
-        android:inputType="text"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        app:layout_constraintRight_toLeftOf="@+id/btn_add_ingr"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/btn_clear" />
-
-    <Button
-        android:id="@+id/btn_add_ingr"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginStart="8dp"
-        android:onClick="addIngredient"
-        android:text="@string/btn_add"
-        app:layout_constraintBaseline_toBaselineOf="@+id/et_search_ingr"
-        app:layout_constraintLeft_toRightOf="@+id/et_search_ingr"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/btn_clear"
+        android:layout_marginEnd="8dp" />
 
     <TextView
         android:id="@+id/btn_tap_remove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:text="@string/hint_tap_remove_ingr"
         android:textAlignment="center"
         android:textAllCaps="false"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_search_ingr" />
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintLeft_creator="1"
+        android:layout_marginTop="13dp"
+        app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextView" />
 
     <ListView
         android:id="@+id/listView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="364dp"
+        android:layout_height="333dp"
         android:layout_marginBottom="8dp"
         android:scrollbars="none|vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="10dp"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="10dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/btn_tap_remove"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintLeft_creator="1" />
 
     <Spinner
         android:id="@+id/sp_favorites"
@@ -113,6 +90,22 @@
         app:layout_constraintHorizontal_bias="0.448"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/btn_clear"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        tools:layout_constraintRight_creator="1"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        tools:layout_constraintLeft_creator="1" />
+
+    <AutoCompleteTextView
+        android:id="@+id/autoCompleteTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="13dp"
+        android:hint="Enter ingredients"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_clear" />
 
 </android.support.constraint.ConstraintLayout>
