@@ -2,20 +2,23 @@ package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * This activity displays the list of ingredients entered by the user.
@@ -24,7 +27,8 @@ import java.util.ArrayList;
  */
 public class IngredientList extends BaseActivity {
 
-    private ArrayList<String> ingredient_list; // list of ingredients entered by user
+    private ArrayList<String> ingredient_list, recipe_list;
+    private DatabaseReference mRoot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +37,76 @@ public class IngredientList extends BaseActivity {
 
         ingredient_list = new ArrayList<String>(); // initialize list of ingredients
 
-        // Set the ListView's OnItemClickListener to handle clicking to remove childNames items
+        // Set the ListView's OnItemClickListener to handle clicking to remove list items
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setOnItemClickListener(itemClickListener);
+
     }
+
+    /**
+     *
+     */
+    public void search(View view) {
+        mRoot = FirebaseDatabase.getInstance().getReference();
+
+        mRoot.child("Ingredient_Recipes").addValueEventListener (new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                recipe_list = queryData(dataSnapshot);
+                Intent intent = new Intent(IngredientList.this, SearchResults.class);
+                intent.putExtra("RECIPE_RESULTS", recipe_list);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) { }
+        });
+    }
+
+    /**
+     *
+     * @param dataSnapshot
+     */
+    public ArrayList<String> queryData(DataSnapshot dataSnapshot) {
+
+        HashSet<String> recipes = new HashSet<>(), ingredients = new HashSet<>(ingredient_list);
+
+        for (String currentIngredient : ingredients) {
+
+            try {
+                HashMap<String, Object> current =
+                        (HashMap) dataSnapshot.child(currentIngredient).getValue();
+
+                if(recipes.isEmpty())
+                    recipes.addAll(current.keySet());
+                else {
+                    HashSet<String> currentRecipes = new HashSet<>(current.keySet());
+                    recipes.retainAll(currentRecipes);
+                }
+            }
+            catch(Exception e) {
+                Log.d("Ingredient not found: ", currentIngredient);
+            }
+        }
+//        this.recipe_list = new ArrayList<>(recipes);
+        return new ArrayList<String>(recipes);
+    }
+
+
+//    private void updateView() {
+//        if(recipe_list.isEmpty())
+//            return;
+//
+//        ArrayAdapter<String> adapter = null;
+//        ListView listView = null;
+//
+//        for(String recipe : recipe_list) {
+//            adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, recipe_list);
+//            listView = (ListView) findViewById(R.id.lv_search_results);
+//            listView.setAdapter(adapter);
+//        }
+//        listView.setOnItemClickListener(itemClickListener);
+//    }
 
     // Create a list-item click-handling object as an anonymous class.
     private AdapterView.OnItemClickListener itemClickListener =
@@ -85,15 +155,15 @@ public class IngredientList extends BaseActivity {
         updateList();
     }
 
-    /**
-     * Called when the user taps the Find Recipes button.
-     * Sends the list of ingredients entered by the user as an Extra
-     * to the SearchResults activity.
-     */
-    public void findRecipes(View view) {
-        // go to SearchResults activity
-        Intent intent = new Intent(IngredientList.this, SearchResults.class);
-        intent.putExtra("ingredientlist", ingredient_list);
-        startActivity(intent);
-    }
+//    /**
+//     * Called when the user taps the Find Recipes button.
+//     * Sends the list of ingredients entered by the user as an Extra
+//     * to the SearchResults activity.
+//     */
+//    public void findRecipes(View view) {
+//        // go to SearchResults activity
+//        Intent intent = new Intent(IngredientList.this, SearchResults.class);
+//        intent.putExtra("ingredientlist", ingredient_list);
+//        startActivity(intent);
+//    }
 }
