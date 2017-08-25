@@ -44,7 +44,7 @@ public class RecipePage extends BaseActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                String recipe = (String) getIntent().getSerializableExtra("recipe");
+                String recipe = (String) getIntent().getSerializableExtra("SELECTED_ITEM");
 
                 // Get recipe name from database and display it in the TextView
                 TextView tv_recipe_name = (TextView) findViewById(R.id.tv_recipe_name);
