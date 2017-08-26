@@ -97,5 +97,9 @@
     <string name="text_selection">Please make a selection below</string>
     <string name="btn_home">Home Page</string>
     <string name="action_favorite_recipe">Favorite</string>
+    <string name="title_activity_test">TestActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
 </resources>

@@ -1,7 +1,9 @@
 package com.example.vincentzhu.testapplication;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import org.apache.commons.text.WordUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +27,7 @@ import java.util.Arrays;
 /**
  * Display ingredient details upon selection in the Ingredients Catalog, and Recipe Page
  */
-public class IngredientPage extends AppCompatActivity {
+public class IngredientPage extends BaseActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
@@ -41,7 +44,7 @@ public class IngredientPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        setContentView(R.layout.activity_recipe_page);
+        setContentView(R.layout.activity_item_page);
         super.onCreate(savedInstanceState);
 
         //ingredient = new String();
@@ -56,6 +59,12 @@ public class IngredientPage extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ingredientLookup(dataSnapshot);
+
+                // Get the recipe name from the database and display it in the TextView
+                // Capitalize using WordUtils from org.apache library
+                String item_name = WordUtils.capitalize(dataSnapshot.getKey());
+                TextView tv_item_name = (TextView) findViewById(R.id.tv_item_name);
+                tv_item_name.setText(item_name);
 
                 // Get the recipe image url and display it in the ImageView
                 gs_url = dataSnapshot
@@ -106,9 +115,83 @@ public class IngredientPage extends AppCompatActivity {
         {
             if(ds.getKey().equals(ingredient))
             {
-                TextView tv_item_title = (TextView)findViewById(R.id.tv_item_title);
-                tv_item_title.setText(ds.getKey().toString());
+                TextView tv_item_name = (TextView)findViewById(R.id.tv_item_name);
+                tv_item_name.setText(ds.getKey().toString());
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.item_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        firebaseAuth = FirebaseAuth.getInstance();
+        final FirebaseUser user = firebaseAuth.getCurrentUser();
+        final String userID = user.getUid();
+        switch (item.getItemId()) {
+            case R.id.action_home:
+                // User chose the "Home" item, show the Home activity
+                finish();
+                startActivity(new Intent(this, Home.class));
+                return true;
+            case R.id.action_about_us:
+                // User chose the "About Us" item, show the About Us activity
+                finish();
+                startActivity(new Intent(this, AboutUs.class));
+                return true;
+            case R.id.action_logout:
+                // User chose the "Log Out" item, log the user out and return to login activity
+                firebaseAuth.signOut();
+                finish();
+                startActivity(new Intent(this, LoginActivity.class));
+                return true;
+            case R.id.action_favorite_item:
+                DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference();
+                final DatabaseReference mCurrent;
+                mCurrent = mRoot.child("Ingredients").child(ingredient).child("Favorited By");
+                if(mCurrent != null) { // "Favorited By" attribute exists
+                    mCurrent.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (!favoriteExists(dataSnapshot, userID)) {
+                                mCurrent.child(userID).setValue(userID);
+                                return;
+                            } else {
+                                mCurrent.child(userID).removeValue();
+                                return;
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                else // "Favorited By" attribute does not exist
+                {
+                    mCurrent.child(userID).setValue(userID);
+                }
+                return true;
+            default:
+                // The user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public boolean favoriteExists(DataSnapshot dataSnapshot, String userID)
+    {
+        for(DataSnapshot ds : dataSnapshot.getChildren())
+        {
+            if(ds.getKey().equals(userID))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

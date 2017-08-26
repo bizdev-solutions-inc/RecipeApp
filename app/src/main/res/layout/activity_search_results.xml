@@ -27,14 +27,13 @@
         android:id="@+id/queryResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="@string/IngredientListResultMessage"
-        tools:layout_constraintTop_creator="1"
-        android:layout_marginStart="29dp"
-        android:layout_marginTop="7dp"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        tools:layout_constraintLeft_creator="1"
+        android:textAlignment="center"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="34dp" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sp_filters"
+        tools:layout_constraintTop_creator="1" />
 
     <!--
         <TextView
@@ -49,17 +48,32 @@
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:layout_constraintHorizontal_bias="0.121" />
 
---> <ListView
-        android:id="@+id/lv_search_results"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+-->
+    <ListView
+            android:id="@+id/lv_search_results"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/queryResult"
+        app:layout_constraintTop_toBottomOf="@+id/queryResult" />
+
+    <Spinner
+        android:id="@+id/sp_filters"
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp" />
+        app:layout_constraintRight_toRightOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

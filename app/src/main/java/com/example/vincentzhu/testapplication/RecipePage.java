@@ -2,9 +2,6 @@ package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ExpandableListView;
@@ -38,7 +35,7 @@ public class RecipePage extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_recipe_page);
+        setContentView(R.layout.activity_item_page);
         super.onCreate(savedInstanceState);
 
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
@@ -50,8 +47,8 @@ public class RecipePage extends BaseActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 // Get recipe name from database and display it in the TextView
-                TextView tv_item_title = (TextView) findViewById(R.id.tv_item_title);
-                tv_item_title.setText(dataSnapshot.child("Recipes")
+                TextView tv_item_name = (TextView) findViewById(R.id.tv_item_name);
+                tv_item_name.setText(dataSnapshot.child("Recipes")
                         .child(recipe).getKey());
 
                 // Get the recipe image url and display it in the ImageView
@@ -101,18 +98,15 @@ public class RecipePage extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.recipe_menu, menu);
+        getMenuInflater().inflate(R.menu.item_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        final FirebaseUser user = firebaseAuth.getCurrentUser();
         final String userID = user.getUid();
-        DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference();
-        final DatabaseReference mCurrent;
-
         switch (item.getItemId()) {
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
@@ -130,30 +124,33 @@ public class RecipePage extends BaseActivity {
                 finish();
                 startActivity(new Intent(this, LoginActivity.class));
                 return true;
-            case R.id.action_favorite_recipe:
-//                mCurrent = mRoot.child(recipe).child("Favorited By");
-//                if(mCurrent != null) {
-//                    mCurrent.addValueEventListener(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(DataSnapshot dataSnapshot) {
-//                            if (!favoriteExists(dataSnapshot)) {
-//                                mCurrent.child(recipe).child("Favorited By").child(userID).setValue(userID);
-//                            } else {
-//                                mCurrent.child(recipe).child("Favorited By").child(userID).removeValue();
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(DatabaseError databaseError) {
-//
-//                        }
-//                    });
-//                }
-//                else
-//                {
-//                    mCurrent.child(recipe).child("Favorited By").child(userID).setValue(userID);
-//                }
-//                return true;
+            case R.id.action_favorite_item:
+                DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference();
+                final DatabaseReference mCurrent;
+                mCurrent = mRoot.child("Recipes").child(recipe).child("Favorited By");
+                if(mCurrent != null) { // "Favorited By" attribute exists
+                    mCurrent.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (!favoriteExists(dataSnapshot, userID)) {
+                                mCurrent.child(userID).setValue(userID);
+                                return;
+                            } else {
+                                mCurrent.child(userID).removeValue();
+                                return;
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                else // "Favorited By" attribute does not exist
+                {
+                    mCurrent.child(userID).setValue(userID);
+                }
+                return true;
             default:
                 // The user's action was not recognized.
                 // Invoke the superclass to handle it.
@@ -161,15 +158,15 @@ public class RecipePage extends BaseActivity {
         }
     }
 
-//    public boolean favoriteExists(DataSnapshot dataSnapshot)
-//    {
-//        for(DataSnapshot ds : dataSnapshot.getChildren())
-//        {
-//            if(ds.getKey().equals(recipe))
-//            {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
+    public boolean favoriteExists(DataSnapshot dataSnapshot, String userID)
+    {
+        for(DataSnapshot ds : dataSnapshot.getChildren())
+        {
+            if(ds.getKey().equals(userID))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

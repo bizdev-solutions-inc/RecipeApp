@@ -73,7 +73,8 @@
         <activity
             android:name=".PersonalRecipe"
             android:label="Add Recipe"
-            android:windowSoftInputMode="stateVisible|adjustNothing"> <!-- show keyboard -->>
+            android:windowSoftInputMode="stateVisible|adjustNothing"> <!-- show keyboard -->
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
@@ -131,7 +132,7 @@
                 android:value=".Home" />
         </activity>
         <activity android:name=".ResetPassword" />
-        <activity android:name=".IngredientPage"></activity>
+        <activity android:name=".IngredientPage" />
     </application>
 
 </manifest>
