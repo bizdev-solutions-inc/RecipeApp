@@ -53,7 +53,6 @@ public class IngredientList extends BaseActivity {
         favorites_list = new ArrayList<String>();
         all_ingredients = new ArrayList<String>();
         all_recipes = new ArrayList<String>();
-        ArrayList<String> real_favorites = new ArrayList<String>();
 
         populateIngredients();
 

@@ -44,6 +44,7 @@
 
     <!-- Drop down menu for admin home -->
     <string-array name="recipe_types">
+        <item>Meal Type</item>
         <item>Breakfast</item>
         <item>Lunch</item>
         <item>Dinner</item>
@@ -53,6 +54,7 @@
     </string-array>
 
     <string-array name="recipe_cuisines">
+        <item>Cuisine Type</item>
         <item>American</item>
         <item>Mexican</item>
         <item>Chinese</item>
@@ -70,6 +72,7 @@
     </string-array>
 
     <string-array name="ingredient_types">
+        <item>Ingredient Type</item>
         <item>Meat</item>
         <item>Vegetable</item>
         <item>Fruit</item>
@@ -79,6 +82,7 @@
     </string-array>
 
     <string-array name="ingredient_seasons">
+        <item>When in Season?</item>
         <item>Spring</item>
         <item>Summer</item>
         <item>Autumn</item>
