@@ -104,7 +104,6 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
         mCuisine_Recipe = mUser.child("Cuisine_Recipe");
         mRecipes = mUser.child("Recipes");
         mType_Recipes = mUser.child("Type_Recipes");
-        uid = UUID.randomUUID().toString();
 
         populateIngredients();
 
@@ -187,6 +186,7 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
     }
 
     private void uploadFile (final String recipeName) {
+        uid = UUID.randomUUID().toString();
         if (selectedImage != null) {
             uploadPath = mStorage.child(user.getUid()).child(uid);
             Log.i(TAG, uploadPath.toString());

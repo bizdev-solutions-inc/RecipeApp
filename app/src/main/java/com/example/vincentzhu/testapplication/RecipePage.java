@@ -2,6 +2,7 @@ package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ExpandableListView;
@@ -27,20 +28,40 @@ public class RecipePage extends BaseActivity {
 
     private StorageReference storageRef;
     private String gs_url; // URL for recipe image in Firebase storage
-
+    private String getActivity;
     private ArrayList<String> info_labels;
     private ArrayList<ArrayList<String>> info_contents;
 
     private String recipe;
+    private String userID;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
+    private DatabaseReference dbRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_item_page);
         super.onCreate(savedInstanceState);
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+        userID = user.getUid();
 
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+        getActivity = (String)getIntent().getSerializableExtra("GET_ACTIVITY");
+
+        if(getActivity != null) {
+            if (getActivity.equals("SavedRecipe")) {
+                Log.i("IN ONE", "IN ONE");
+                dbRef = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Recipes");
+            }
+        }
+        else
+        {
+            Log.i("IN TWO", "IN TWO");
+            dbRef = FirebaseDatabase.getInstance().getReference();
+        }
 
         recipe = (String) getIntent().getSerializableExtra("SELECTED_ITEM");
+        Log.i("RECIPE", recipe);
 
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
@@ -104,9 +125,6 @@ public class RecipePage extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        firebaseAuth = FirebaseAuth.getInstance();
-        final FirebaseUser user = firebaseAuth.getCurrentUser();
-        final String userID = user.getUid();
         switch (item.getItemId()) {
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity

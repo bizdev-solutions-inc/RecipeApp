@@ -117,7 +117,6 @@ public class Admin extends AppCompatActivity {
 
         userID = firebaseAuth.getCurrentUser().getUid();
         user = firebaseAuth.getCurrentUser();
-        uid = UUID.randomUUID().toString();
         mRoot = FirebaseDatabase.getInstance().getReference();
 
         mIngredients = mRoot.child("Ingredients");
@@ -286,6 +285,7 @@ public class Admin extends AppCompatActivity {
     }
 
     private void uploadFile (String recipeName, String ingredientName) {
+        uid = UUID.randomUUID().toString();
         if (selectedImage != null) {
             uploadPath = mStorage.child(user.getUid()).child(uid);
             Log.i("Admin", uploadPath.toString());

@@ -159,6 +159,7 @@ public class PersonalIngredient extends BaseActivity implements View.OnClickList
 
 
     private void uploadFile (String ingredientName) {
+        uid = UUID.randomUUID().toString();
         if (selectedImage != null) {
             uploadPath = mStorage.child(user.getUid()).child(uid);
             Log.i(TAG, uploadPath.toString());

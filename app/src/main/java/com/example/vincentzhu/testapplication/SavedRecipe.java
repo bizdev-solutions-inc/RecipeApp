@@ -27,28 +27,27 @@ public class SavedRecipe extends BaseActivity {
     private DatabaseReference mDatabase;
     private ArrayList<String> mUsernames = new ArrayList<>();
     private String userID;
+    private String activityName;
     private ListView lv;
-    ArrayList<String> str = new ArrayList<String>();
+    ArrayList<String> addedRecipes = new ArrayList<String>();
     private String key;
-    public static final String EXTRA_SEARCH_QUERY = "SEARCH_QUERY";
+    public static final String EXTRA_SEARCH_QUERY = "SELECTED_ITEM";
+    public static final String EXTRA_GET_ACTIVITY = "GET_ACTIVITY";
 
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_saved_recipe);
         super.onCreate(savedInstanceState);
 
-        //expandableListView = (ExpandableListView)findViewById(R.id.expandableListView);
-
+        activityName = this.getLocalClassName();
         userID = firebaseAuth.getCurrentUser().getUid();
         mDatabase = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Recipes").child("Recipes");
-        lv = (ListView)findViewById(R.id.savedRecipeListView);
+        lv = findViewById(R.id.savedRecipeListView);
 
         if(mDatabase != null) {
             mDatabase.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     showData(dataSnapshot);
-                    //ExpandableListViewAdapter adapter = new ExpandableListViewAdapter(SavedRecipe.this, parent, listOfLists);
-                    //expandableListView.setAdapter(adapter);
                 }
 
                 @Override
@@ -63,6 +62,7 @@ public class SavedRecipe extends BaseActivity {
                     key = lv.getItemAtPosition(i).toString();
                     Intent intent = new Intent(SavedRecipe.this, RecipePage.class);
                     intent.putExtra(EXTRA_SEARCH_QUERY, key);
+                    intent.putExtra(EXTRA_GET_ACTIVITY, activityName);
                     startActivity(intent);
                 }
             });
@@ -72,9 +72,9 @@ public class SavedRecipe extends BaseActivity {
     private void showData(DataSnapshot dataSnapshot) {
         for(DataSnapshot ds : dataSnapshot.getChildren())
         {
-            str.add(ds.getKey());
+            addedRecipes.add(ds.getKey());
         }
-        ListAdapter la = new ArrayAdapter<String>(SavedRecipe.this, android.R.layout.simple_list_item_1, str);
+        ListAdapter la = new ArrayAdapter<String>(SavedRecipe.this, android.R.layout.simple_list_item_1, addedRecipes);
         lv.setAdapter(la);
     }
 }
