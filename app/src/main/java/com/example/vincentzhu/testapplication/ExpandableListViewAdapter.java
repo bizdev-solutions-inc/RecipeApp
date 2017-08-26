@@ -105,7 +105,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                     Intent intent = new Intent(context.getApplicationContext(), IngredientPage.class);
                     intent.putExtra("SELECTED_INGREDIENT", item);
                     //Toast.makeText(context, textView.getText().toString(), Toast.LENGTH_SHORT).show();
-                    context.startActivity(new Intent(context.getApplicationContext(), IngredientPage.class));
+                    context.startActivity(intent);
                 }
             }
         });

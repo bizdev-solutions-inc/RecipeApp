@@ -44,11 +44,13 @@ public class IngredientPage extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_page);
         super.onCreate(savedInstanceState);
 
-        ingredient = getIntent().getStringExtra("SELECTED_INGREDIENT");
+        //ingredient = new String();
+        ingredient = (String)getIntent().getSerializableExtra("SELECTED_INGREDIENT");
+
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         userID = user.getUid();
-        mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredients");
+        mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredients").child(ingredient);
 
         mRoot.addValueEventListener(new ValueEventListener() {
             @Override
@@ -57,8 +59,6 @@ public class IngredientPage extends AppCompatActivity {
 
                 // Get the recipe image url and display it in the ImageView
                 gs_url = dataSnapshot
-                        .child("Ingredients")
-                        .child(ingredient)
                         .child("Image").getValue(String.class);
                 storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(gs_url);
                 ImageView iv_item_image = findViewById(R.id.iv_item_image);
