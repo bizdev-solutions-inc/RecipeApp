@@ -39,7 +39,7 @@
         <item>Recipe Type</item>
         <item>Recipe Cuisine</item>
         <item>Ingredient List</item>
-        <item>Ingredient Category</item>
+        <item>Ingredient Catalog</item>
     </string-array>
 
     <!-- Drop down menu for admin home -->
@@ -92,5 +92,6 @@
     <string name="btn_add_ingredient">Add Ingredient</string>
     <string name="text_selection">Please make a selection below</string>
     <string name="btn_home">Home Page</string>
+    <string name="action_favorite_recipe">Favorite</string>
 
 </resources>

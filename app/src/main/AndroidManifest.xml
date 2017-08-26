@@ -41,7 +41,9 @@
             android:name=".IngredientList"
             android:label="Ingredient List"
             android:launchMode="singleTop"
-            android:parentActivityName=".Home">
+            android:parentActivityName=".Home"
+            android:windowSoftInputMode="stateVisible|adjustNothing"> <!-- show keyboard -->
+            >
 
             <!--
             launchMode affects how instances of activities are created
@@ -54,8 +56,8 @@
                 android:value=".Home" />
         </activity>
         <activity
-            android:name=".Ingredient_Categories"
-            android:label="Ingredient Categories"
+            android:name=".IngredientCatalog"
+            android:label="Ingredient Catalog"
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -66,7 +68,7 @@
             android:label="Meat &amp; Seafood">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Ingredient_Categories" />
+                android:value=".IngredientCatalog" />
         </activity>
         <activity
             android:name=".PersonalRecipe"
@@ -127,7 +129,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
         </activity>
-        <activity android:name=".ResetPassword"></activity>
+        <activity android:name=".ResetPassword" />
+        <activity android:name=".IngredientPage"></activity>
     </application>
 
 </manifest>

@@ -2,20 +2,12 @@ package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
-import com.google.firebase.auth.FirebaseAuth;
-
-public class Ingredient_Categories extends BaseActivity {
+public class IngredientCatalog extends BaseActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_ingredient_categories);
@@ -29,14 +21,14 @@ public class Ingredient_Categories extends BaseActivity {
 //            public void onClick(View view) {
 //                //Log.i(TAG, "This is a magic log message!");
 //                //Toast.makeText(getApplicationContext(), "It's magic!", Toast.LENGTH_SHORT).show();
-//                startActivity(new Intent(Ingredient_Categories.this, MeatScroll.class));
+//                startActivity(new Intent(IngredientCatalog.this, MeatScroll.class));
 //                //setTitle("Ingredient Categories");
 //            }
 //        });
 
         // Set ListView items by using an adapter
         ArrayAdapter<CharSequence> adapter =
-                ArrayAdapter.createFromResource(Ingredient_Categories.this,
+                ArrayAdapter.createFromResource(IngredientCatalog.this,
                         R.array.ingredient_types,
                         android.R.layout.simple_list_item_1);
         ListView lv_recipe_types = (ListView) findViewById(R.id.lv_ingredient_types);
@@ -53,7 +45,7 @@ public class Ingredient_Categories extends BaseActivity {
                     String item = parent.getItemAtPosition(position).toString();
                     switch (item) {
                         case "Meat":
-                            startActivity(new Intent(Ingredient_Categories.this, MeatScroll.class));
+                            startActivity(new Intent(IngredientCatalog.this, MeatScroll.class));
                             break;
                         case "Vegetable":
                             break;

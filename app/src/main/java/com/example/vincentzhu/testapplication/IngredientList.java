@@ -152,7 +152,7 @@ public class IngredientList extends BaseActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    if (ds.child("Favorited").child(userid).exists()) {
+                    if (ds.child("Favorited By").child(userid).exists()) {
                         favorites_list.add(ds.getKey());
                     }
                     all_recipes.add(ds.getKey());

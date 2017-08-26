@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,6 +34,8 @@ public class RecipePage extends BaseActivity {
     private ArrayList<String> info_labels;
     private ArrayList<ArrayList<String>> info_contents;
 
+    private String recipe;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_recipe_page);
@@ -40,15 +43,15 @@ public class RecipePage extends BaseActivity {
 
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
 
+        recipe = (String) getIntent().getSerializableExtra("SELECTED_ITEM");
+
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                String recipe = (String) getIntent().getSerializableExtra("SELECTED_ITEM");
-
                 // Get recipe name from database and display it in the TextView
-                TextView tv_recipe_name = (TextView) findViewById(R.id.tv_recipe_name);
-                tv_recipe_name.setText(dataSnapshot.child("Recipes")
+                TextView tv_item_title = (TextView) findViewById(R.id.tv_item_title);
+                tv_item_title.setText(dataSnapshot.child("Recipes")
                         .child(recipe).getKey());
 
                 // Get the recipe image url and display it in the ImageView
@@ -57,11 +60,11 @@ public class RecipePage extends BaseActivity {
                         .child(recipe)
                         .child("Image").getValue(String.class);
                 storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(gs_url);
-                ImageView iv_recipe_image = findViewById(R.id.iv_recipe_image);
+                ImageView iv_item_image = findViewById(R.id.iv_item_image);
                 Glide.with(RecipePage.this)
                         .using(new FirebaseImageLoader())
                         .load(storageRef)
-                        .into(iv_recipe_image);
+                        .into(iv_item_image);
 
                 // Get recipe ingredients and instructions from the database and display them in
                 // the ExpandableListView
@@ -80,11 +83,11 @@ public class RecipePage extends BaseActivity {
                 info_contents.add(ingredients);
                 info_contents.add(instructions);
 
-                ExpandableListView elv_recipe_info =
-                        (ExpandableListView) findViewById(R.id.elv_recipe_info);
+                ExpandableListView elv_item_info =
+                        (ExpandableListView) findViewById(R.id.elv_item_info);
                 ExpandableListViewAdapter adapter = new ExpandableListViewAdapter(RecipePage.this,
                         info_labels, info_contents);
-                elv_recipe_info.setAdapter(adapter);
+                elv_item_info.setAdapter(adapter);
             }
 
             @Override
@@ -95,4 +98,78 @@ public class RecipePage extends BaseActivity {
 
         dbRef.addValueEventListener(valueEventListener);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.recipe_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        final String userID = user.getUid();
+        DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference mCurrent;
+
+        switch (item.getItemId()) {
+            case R.id.action_home:
+                // User chose the "Home" item, show the Home activity
+                finish();
+                startActivity(new Intent(this, Home.class));
+                return true;
+            case R.id.action_about_us:
+                // User chose the "About Us" item, show the About Us activity
+                finish();
+                startActivity(new Intent(this, AboutUs.class));
+                return true;
+            case R.id.action_logout:
+                // User chose the "Log Out" item, log the user out and return to login activity
+                firebaseAuth.signOut();
+                finish();
+                startActivity(new Intent(this, LoginActivity.class));
+                return true;
+            case R.id.action_favorite_recipe:
+//                mCurrent = mRoot.child(recipe).child("Favorited By");
+//                if(mCurrent != null) {
+//                    mCurrent.addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                            if (!favoriteExists(dataSnapshot)) {
+//                                mCurrent.child(recipe).child("Favorited By").child(userID).setValue(userID);
+//                            } else {
+//                                mCurrent.child(recipe).child("Favorited By").child(userID).removeValue();
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(DatabaseError databaseError) {
+//
+//                        }
+//                    });
+//                }
+//                else
+//                {
+//                    mCurrent.child(recipe).child("Favorited By").child(userID).setValue(userID);
+//                }
+//                return true;
+            default:
+                // The user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+//    public boolean favoriteExists(DataSnapshot dataSnapshot)
+//    {
+//        for(DataSnapshot ds : dataSnapshot.getChildren())
+//        {
+//            if(ds.getKey().equals(recipe))
+//            {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 }

@@ -41,25 +41,25 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_recipe_name"
+                android:id="@+id/tv_item_title"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="Recipe Name"
+                android:gravity="center_vertical"
+                android:text="Item Name"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textSize="24sp" />
 
             <ImageView
-                android:id="@+id/iv_recipe_image"
+                android:id="@+id/iv_item_image"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="3"
                 app:srcCompat="@mipmap/ic_launcher" />
 
             <ExpandableListView
-                android:id="@+id/elv_recipe_info"
+                android:id="@+id/elv_item_info"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="5" />

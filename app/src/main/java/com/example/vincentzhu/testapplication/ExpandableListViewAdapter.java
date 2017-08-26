@@ -1,9 +1,11 @@
 package com.example.vincentzhu.testapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,20 +88,27 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View view,
+    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View view,
                              ViewGroup parent) {
         final TextView textView = new TextView(context);
 //        textView.setText(childNames[groupPosition][childPosition]);
         textView.setText(childNames.get(groupPosition).get(childPosition));
         textView.setPadding(160, 8, 0, 8); // left, top, right, bottom
-        textView.setTextSize(20);
+        textView.setTextSize(16);
 
-//        textView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(context, textView.getText().toString(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(groupPosition == 0)
+                {
+                    String item = textView.getText().toString();
+                    Intent intent = new Intent(context.getApplicationContext(), IngredientPage.class);
+                    intent.putExtra("SELECTED_INGREDIENT", item);
+                    //Toast.makeText(context, textView.getText().toString(), Toast.LENGTH_SHORT).show();
+                    context.startActivity(new Intent(context.getApplicationContext(), IngredientPage.class));
+                }
+            }
+        });
 
         return textView;
     }

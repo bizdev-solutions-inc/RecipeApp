@@ -113,13 +113,12 @@
         app:srcCompat="@drawable/ic_dining_white" />
 
     <Button
-        android:id="@+id/recipe_page"
+        android:id="@+id/ingredient_page"
         android:layout_width="160dp"
         android:layout_height="60dp"
         android:layout_marginBottom="8dp"
         android:layout_marginRight="8dp"
-        android:onClick="goToRecipePage"
-        android:text="Recipe Page"
+        android:text="Ingredient Page"
         app:layout_constraintBottom_toTopOf="@+id/btn_add_ing"
         app:layout_constraintRight_toRightOf="parent" />
 
