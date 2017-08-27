@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.sun.jersey.core.impl.provider.entity.Inflector;
 
+//test
 public class AboutUs extends BaseActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
