@@ -2,25 +2,70 @@ package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-public class Home extends BaseActivity implements AdapterView.OnItemSelectedListener {
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.sun.jersey.core.impl.provider.entity.Inflector;
 
-    private Spinner spinner;
+public class Home extends BaseActivity implements AdapterView.OnItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_home);
         super.onCreate(savedInstanceState);
 
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.add_recipe:
+                        finish();
+                        startActivity(new Intent(Home.this, PersonalRecipe.class));
+                        return true;
+                    case R.id.add_ing:
+                        finish();
+                        startActivity(new Intent(Home.this, PersonalIngredient.class));
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        });
+
+        Window window = this.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
+
+        String mainAccount = "devbizrecipe@gmail.com";
+        FirebaseUser user= firebaseAuth.getCurrentUser();
+        if(user.getEmail().equals(mainAccount)){
+            //Profile activity here
+            finish();
+            startActivity(new Intent(getApplicationContext(),Admin.class));
+        }
+
         // Do not display Up button since this is the Home menu
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        spinner = (Spinner) findViewById(R.id.spinner);
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.search_menu_array, android.R.layout.simple_spinner_item);
@@ -31,28 +76,21 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         spinner.setOnItemSelectedListener(this);
 
         // onClick handlers for buttons
-        Button btn_add_ing = (Button) findViewById(R.id.btn_add_ing); //add personal ingredient button
-        btn_add_ing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Home.this, PersonalIngredient.class));
-            }
-        });
-        Button btn_add_recipe = (Button) findViewById(R.id.btn_add_recipe);
-        btn_add_recipe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Home.this, PersonalRecipe.class));
-            }
-        });
+//        Button btn_add_ing = (Button) findViewById(R.id.btn_add_ing); //add personal ingredient button
+//        btn_add_ing.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(Home.this, PersonalIngredient.class));
+//            }
+//        });
+//        Button btn_add_recipe = (Button) findViewById(R.id.btn_add_recipe);
+//        btn_add_recipe.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(Home.this, PersonalRecipe.class));
+//            }
+//        });
 
-        Button btn_view_ingredient = (Button) findViewById(R.id.ingredient_page);
-        btn_view_ingredient.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Home.this, IngredientPage.class));
-            }
-        });
     }
 
     /**
@@ -64,23 +102,18 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         String item = parent.getItemAtPosition(pos).toString();
         switch (item) {
             case "Recipe/Ingredient Name":
-                spinner.setSelection(0);
                 startActivity(new Intent(Home.this, SearchByName.class));
                 break;
             case "Recipe Type":
-                spinner.setSelection(0);
                 startActivity(new Intent(Home.this, RecipeTypes.class));
                 break;
             case "Recipe Cuisine":
-                spinner.setSelection(0);
                 startActivity(new Intent(Home.this, RecipeCuisines.class));
                 break;
             case "Ingredient List":
-                spinner.setSelection(0);
                 startActivity(new Intent(Home.this, IngredientList.class));
                 break;
             case "Ingredient Category":
-                spinner.setSelection(0);
                 startActivity(new Intent(Home.this, IngredientCatalog.class));
                 break;
             default:
@@ -111,6 +144,12 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
 
     public void goToRecipePage(View view) {
         startActivity(new Intent(Home.this, RecipePage.class));
+    }
+
+    public boolean onCreateOptionsMenu (Menu menu){
+
+        getMenuInflater().inflate(R.menu.my_menu,menu);
+        return true;
     }
 
 

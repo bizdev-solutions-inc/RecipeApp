@@ -54,6 +54,16 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.save_ing:
+                finish();
+                startActivity(new Intent(this, SavedIngredients.class));
+                return true;
+            case R.id.save_recipe:
+                finish();
+                startActivity(new Intent(this, SavedRecipe.class));
+                return true;
+            case R.id.recipe_favorites:
+                return true;
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
                 finish();

@@ -11,8 +11,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,11 +28,12 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class login extends AppCompatActivity implements View.OnClickListener {
 
-    private Button buttonRegister;
+    private ImageButton buttonRegister;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private TextView textViewSignin;
     private ProgressBar progressR;
+
 
     private FirebaseAuth mAuth;
 
@@ -37,12 +41,17 @@ public class login extends AppCompatActivity implements View.OnClickListener {
         super.onCreate (SavedInstanceState);
         setContentView(R.layout.login);
 
-        buttonRegister=(Button) findViewById(R.id.buttonRegister);
+        buttonRegister=(ImageButton) findViewById(R.id.buttonRegister);
         editTextEmail=(EditText) findViewById(R.id.editTextEmail);
         editTextPassword=(EditText) findViewById(R.id.editTextPassword);
         textViewSignin = (TextView) findViewById(R.id.textViewSignin);
         progressR=(ProgressBar) findViewById(R.id.progressReg);
         progressR.setVisibility(View.GONE);
+
+       Window window = this.getWindow();
+       window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+      window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+       window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
 
         buttonRegister.setOnClickListener(this);
         textViewSignin.setOnClickListener(this);
@@ -51,7 +60,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
         if(mAuth.getCurrentUser()!=null){
             //Profile activity here
             finish();
-            startActivity(new Intent(getApplicationContext(),Introduction.class));
+            startActivity(new Intent(getApplicationContext(),Home.class));
         }
     }
 
@@ -117,6 +126,5 @@ public class login extends AppCompatActivity implements View.OnClickListener {
             //Will open login activity here
             startActivity(new Intent(this,LoginActivity.class));
         }
-
     }
 }

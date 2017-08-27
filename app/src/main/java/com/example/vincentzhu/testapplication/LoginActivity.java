@@ -1,19 +1,23 @@
 package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,7 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener  {
 
-    private Button buttonSignIn;
+    private ImageButton buttonSignIn;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private TextView textViewSignup;
@@ -39,20 +43,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if(firebaseAuth.getCurrentUser()!=null){
             //Profile activity here
             finish();
-            startActivity(new Intent(getApplicationContext(),Introduction.class));
+            startActivity(new Intent(getApplicationContext(),Home.class));
         }
+
+        Window window = this.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+       window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
 
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
-        buttonSignIn = (Button) findViewById(R.id.buttonSignin);
+        buttonSignIn = (ImageButton) findViewById(R.id.buttonSignin);
         textViewSignup = (TextView) findViewById(R.id.textViewSignup);
         textViewResetPass = (TextView) findViewById(R.id.textViewResetPass);
         progressB=(ProgressBar) findViewById(R.id.progressLogin);
         progressB.setVisibility(View.GONE);
 
         buttonSignIn.setOnClickListener(this);
-        textViewSignup.setOnClickListener(this);
         textViewResetPass.setOnClickListener(this);
+        textViewSignup.setOnClickListener(this);
 
     }
 
@@ -74,13 +83,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-       firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful() && firebaseAuth.getCurrentUser().isEmailVerified()) {
                     progressB.setVisibility(View.GONE);
                     finish();
-                    startActivity(new Intent(LoginActivity.this, Introduction.class));
+                    startActivity(new Intent(LoginActivity.this, Home.class));
                     //start the profile activity
                 }
                 else if(task.isSuccessful() && !firebaseAuth.getCurrentUser().isEmailVerified())
@@ -93,8 +102,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     progressB.setVisibility(View.GONE);
                     Toast.makeText(LoginActivity.this, "Account does not exist or Email/Password is incorrect, Please try again", Toast.LENGTH_LONG).show();
                 }
-                }
-             });
+            }
+        });
     }
 
     public void onClick(View view) {
@@ -112,5 +121,4 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(new Intent(this, ResetPassword.class));
         }
     }
-
 }
