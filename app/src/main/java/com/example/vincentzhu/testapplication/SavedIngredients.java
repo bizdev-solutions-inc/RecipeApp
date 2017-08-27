@@ -27,10 +27,12 @@ public class SavedIngredients extends BaseActivity {
 
     //user-related
     private String userID;
+    private String activityName;
     private String key;
     private ListView lv;
-    ArrayList<String> str = new ArrayList<String>();
-    public static final String EXTRA_SEARCH_QUERY = "SEARCH_QUERY";
+    ArrayList<String> addedIngredients = new ArrayList<String>();
+    public static final String EXTRA_SEARCH_QUERY = "SELECTED_INGREDIENT";
+    public static final String EXTRA_GET_ACTIVITY = "GET_ACTIVITY";
 
     //database-related
     private DatabaseReference mDatabase;
@@ -40,12 +42,13 @@ public class SavedIngredients extends BaseActivity {
         setContentView(R.layout.activity_saved_ingredients);
         super.onCreate(savedInstanceState);
 
+        activityName = this.getLocalClassName();
         userID = firebaseAuth.getCurrentUser().getUid();
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child(userID)
                 .child("Added Ingredients")
                 .child("Ingredients");
-        lv = (ListView)findViewById(R.id.savedIngredientListView);
+        lv = findViewById(R.id.savedIngredientListView);
 
         if(mDatabase!=null) {
             mDatabase.addValueEventListener(new ValueEventListener() {
@@ -64,8 +67,9 @@ public class SavedIngredients extends BaseActivity {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     key = lv.getItemAtPosition(i).toString();
-                    Intent intent = new Intent(SavedIngredients.this, RecipePage.class);
+                    Intent intent = new Intent(SavedIngredients.this, IngredientPage.class);
                     intent.putExtra(EXTRA_SEARCH_QUERY, key);
+                    intent.putExtra(EXTRA_GET_ACTIVITY, activityName);
                     startActivity(intent);
                 }
             });
@@ -75,9 +79,9 @@ public class SavedIngredients extends BaseActivity {
     private void showData(DataSnapshot dataSnapshot) {
         for(DataSnapshot ds : dataSnapshot.getChildren())
         {
-            str.add(ds.getKey());
+            addedIngredients.add(ds.getKey());
         }
-        ListAdapter la = new ArrayAdapter<String>(SavedIngredients.this, android.R.layout.simple_list_item_1, str);
+        ListAdapter la = new ArrayAdapter<String>(SavedIngredients.this, android.R.layout.simple_list_item_1, addedIngredients);
         lv.setAdapter(la);
     }
 }

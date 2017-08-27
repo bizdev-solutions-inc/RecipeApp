@@ -38,6 +38,8 @@ public class IngredientList extends BaseActivity {
 
     private ArrayList<String> ingredient_list, recipe_list, favorites_list, all_ingredients, all_recipes;
     private DatabaseReference mRoot;
+    private DatabaseReference mCustom;
+    private DatabaseReference mFavorite;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
     private String userid;
@@ -124,12 +126,30 @@ public class IngredientList extends BaseActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         userid = user.getUid();
-        mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredient_Recipes");
+        mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredients");
         mRoot.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     all_ingredients.add(ds.getKey());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        mCustom = FirebaseDatabase.getInstance().getReference().child(userid).child("Added Ingredients").child("Ingredients");
+        mCustom.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren())
+                {
+                    if(!all_ingredients.contains(ds.getKey())) {
+                        all_ingredients.add(ds.getKey());
+                    }
                 }
             }
 
@@ -146,7 +166,7 @@ public class IngredientList extends BaseActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         userid = user.getUid();
-        mRoot = FirebaseDatabase.getInstance().getReference().child("Recipes");
+        mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredients");
         mRoot.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -154,7 +174,6 @@ public class IngredientList extends BaseActivity {
                     if (ds.child("Favorited By").child(userid).exists()) {
                         favorites_list.add(ds.getKey());
                     }
-                    all_recipes.add(ds.getKey());
                 }
             }
 
@@ -163,6 +182,25 @@ public class IngredientList extends BaseActivity {
 
             }
         });
+
+        mFavorite = FirebaseDatabase.getInstance().getReference().child(userid).child("Added Ingredients").child("Ingredients");
+        mFavorite.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren())
+                {
+                    if(!favorites_list.contains(ds.getKey()) && ds.child("Favorited By").child(userid).exists()){
+                        favorites_list.add(ds.getKey());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     /**

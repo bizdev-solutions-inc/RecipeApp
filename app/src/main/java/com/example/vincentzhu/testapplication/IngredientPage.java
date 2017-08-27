@@ -34,6 +34,7 @@ public class IngredientPage extends BaseActivity {
     private DatabaseReference mRoot;
     private String ingredient;
     private String userID;
+    private String getActivity;
 
     private StorageReference storageRef;
     private String gs_url; // URL for recipe image in Firebase storage
@@ -47,13 +48,28 @@ public class IngredientPage extends BaseActivity {
         setContentView(R.layout.activity_item_page);
         super.onCreate(savedInstanceState);
 
-        //ingredient = new String();
-        ingredient = (String)getIntent().getSerializableExtra("SELECTED_INGREDIENT");
-
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         userID = user.getUid();
-        mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredients").child(ingredient);
+        getActivity = (String)getIntent().getSerializableExtra("GET_ACTIVITY");
+
+        ingredient = (String)getIntent().getSerializableExtra("SELECTED_INGREDIENT");
+
+        if(getActivity!=null)
+        {
+            if(getActivity.equals("SavedIngredients"))
+            {
+                mRoot = FirebaseDatabase.getInstance().getReference()
+                        .child(userID).child("Added Ingredients")
+                        .child("Ingredients").child(ingredient);
+            }
+        }
+        else
+        {
+            mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredients").child(ingredient);
+        }
+
+        //ingredient = new String();
 
         mRoot.addValueEventListener(new ValueEventListener() {
             @Override
@@ -150,36 +166,51 @@ public class IngredientPage extends BaseActivity {
                 startActivity(new Intent(this, LoginActivity.class));
                 return true;
             case R.id.action_favorite_item:
-                DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference();
-                final DatabaseReference mCurrent;
-                mCurrent = mRoot.child("Ingredients").child(ingredient).child("Favorited By");
-                if(mCurrent != null) { // "Favorited By" attribute exists
-                    mCurrent.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (!favoriteExists(dataSnapshot, userID)) {
-                                mCurrent.child(userID).setValue(userID);
-                                return;
-                            } else {
-                                mCurrent.child(userID).removeValue();
-                                return;
-                            }
-                        }
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-                else // "Favorited By" attribute does not exist
+                final DatabaseReference mFavorite = FirebaseDatabase.getInstance().getReference();
+                if(getActivity!= null)
                 {
-                    mCurrent.child(userID).setValue(userID);
+                    if(getActivity.equals("SavedIngredients"))
+                    {
+                        final DatabaseReference mCurrent = mFavorite.child(userID).child("Added Ingredients").child("Ingredients").child(ingredient).child("Favorited By");
+                        setFavoriteIngredient(mCurrent);
+                    }
+                }
+                else
+                {
+                    final DatabaseReference mCurrent = mFavorite.child("Ingredients").child(ingredient).child("Favorited By");
+                    setFavoriteIngredient(mCurrent);
                 }
                 return true;
             default:
                 // The user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void setFavoriteIngredient(final DatabaseReference mCurrent)
+    {
+        if(mCurrent != null) { // "Favorited By" attribute exists
+            mCurrent.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (!favoriteExists(dataSnapshot, userID)) {
+                        mCurrent.child(userID).setValue(userID);
+                        return;
+                    } else {
+                        mCurrent.child(userID).removeValue();
+                        return;
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+        else // "Favorited By" attribute does not exist
+        {
+            mCurrent.child(userID).setValue(userID);
         }
     }
 

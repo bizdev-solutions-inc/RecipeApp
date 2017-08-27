@@ -25,7 +25,6 @@ import java.util.ArrayList;
 public class SavedRecipe extends BaseActivity {
 
     private DatabaseReference mDatabase;
-    private ArrayList<String> mUsernames = new ArrayList<>();
     private String userID;
     private String activityName;
     private ListView lv;
@@ -40,7 +39,10 @@ public class SavedRecipe extends BaseActivity {
 
         activityName = this.getLocalClassName();
         userID = firebaseAuth.getCurrentUser().getUid();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Recipes").child("Recipes");
+        mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child(userID)
+                .child("Added Recipes")
+                .child("Recipes");
         lv = findViewById(R.id.savedRecipeListView);
 
         if(mDatabase != null) {

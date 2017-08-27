@@ -2,6 +2,7 @@ package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,13 +51,15 @@ public class RecipePage extends BaseActivity {
 
         if(getActivity != null) {
             if (getActivity.equals("SavedRecipe")) {
-                Log.i("IN ONE", "IN ONE");
                 dbRef = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Recipes");
+            }
+            else if(getActivity.equals("SavedIngredients"))
+            {
+                dbRef = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Ingredients");
             }
         }
         else
         {
-            Log.i("IN TWO", "IN TWO");
             dbRef = FirebaseDatabase.getInstance().getReference();
         }
 
@@ -143,30 +146,20 @@ public class RecipePage extends BaseActivity {
                 startActivity(new Intent(this, LoginActivity.class));
                 return true;
             case R.id.action_favorite_item:
-                DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference();
-                final DatabaseReference mCurrent;
-                mCurrent = mRoot.child("Recipes").child(recipe).child("Favorited By");
-                if(mCurrent != null) { // "Favorited By" attribute exists
-                    mCurrent.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (!favoriteExists(dataSnapshot, userID)) {
-                                mCurrent.child(userID).setValue(userID);
-                                return;
-                            } else {
-                                mCurrent.child(userID).removeValue();
-                                return;
-                            }
-                        }
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                final DatabaseReference mFavorite = FirebaseDatabase.getInstance().getReference();
 
-                        }
-                    });
-                }
-                else // "Favorited By" attribute does not exist
+                if(getActivity!=null)
                 {
-                    mCurrent.child(userID).setValue(userID);
+                    if(getActivity.equals("SavedRecipe"))
+                    {
+                        final DatabaseReference mCurrent = mFavorite.child(userID).child("Added Recipes").child("Recipes").child(recipe).child("Favorited By");
+                        setFavoriteRecipe(mCurrent);
+                    }
+                }
+                else
+                {
+                    final DatabaseReference mCurrent = mFavorite.child("Recipes").child(recipe).child("Favorited By");
+                    setFavoriteRecipe(mCurrent);
                 }
                 return true;
             default:
@@ -174,6 +167,33 @@ public class RecipePage extends BaseActivity {
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void setFavoriteRecipe(final DatabaseReference mCurrent)
+    {
+        if(mCurrent != null) { // "Favorited By" attribute exists
+            mCurrent.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (!favoriteExists(dataSnapshot, userID)) {
+                        mCurrent.child(userID).setValue(userID);
+                        return;
+                    } else {
+                        mCurrent.child(userID).removeValue();
+                        return;
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+        else // "Favorited By" attribute does not exist
+        {
+            mCurrent.child(userID).setValue(userID);
+        }
+
     }
 
     public boolean favoriteExists(DataSnapshot dataSnapshot, String userID)
