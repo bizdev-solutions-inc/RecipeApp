@@ -106,7 +106,6 @@ public class IngredientList extends BaseActivity {
         });
     }
 
-
     /**
      *
      */

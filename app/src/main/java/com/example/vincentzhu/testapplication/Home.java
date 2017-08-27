@@ -2,13 +2,8 @@ package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,12 +11,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.sun.jersey.core.impl.provider.entity.Inflector;
 
 public class Home extends BaseActivity implements AdapterView.OnItemSelectedListener {
 
@@ -30,7 +22,7 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         setContentView(R.layout.activity_home);
         super.onCreate(savedInstanceState);
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -100,15 +92,21 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         // retrieve item using parent.getItemAtPosition() instead of getSelectedItem()
         String item = parent.getItemAtPosition(pos).toString();
+        Intent intent;
+
         switch (item) {
             case "Recipe/Ingredient Name":
                 startActivity(new Intent(Home.this, SearchByName.class));
                 break;
             case "Recipe Type":
-                startActivity(new Intent(Home.this, RecipeTypes.class));
+                intent = new Intent(Home.this, SearchByRecipeAttribute.class);
+                intent.putExtra("RECIPE_ATTRIBUTE", "Type_Recipes");
+                startActivity(intent);
                 break;
             case "Recipe Cuisine":
-                startActivity(new Intent(Home.this, RecipeCuisines.class));
+                intent = new Intent(Home.this, SearchByRecipeAttribute.class);
+                intent.putExtra("RECIPE_ATTRIBUTE", "Cuisine_Recipe");
+                startActivity(intent);
                 break;
             case "Ingredient List":
                 startActivity(new Intent(Home.this, IngredientList.class));

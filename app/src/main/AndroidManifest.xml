@@ -113,15 +113,8 @@
                 android:value=".SearchByName" />
         </activity>
         <activity
-            android:name=".RecipeTypes"
-            android:label="Recipe Types">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Home" />
-        </activity>
-        <activity
-            android:name=".RecipeCuisines"
-            android:label="Recipe Cuisines">
+            android:name=".SearchByRecipeAttribute"
+            android:label="Search by Attribute">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />

@@ -44,7 +44,6 @@
 
     <!-- Drop down menu for admin home -->
     <string-array name="recipe_types">
-        <item>Meal Type</item>
         <item>Breakfast</item>
         <item>Lunch</item>
         <item>Dinner</item>
@@ -54,7 +53,6 @@
     </string-array>
 
     <string-array name="recipe_cuisines">
-        <item>Cuisine Type</item>
         <item>American</item>
         <item>Mexican</item>
         <item>Chinese</item>
