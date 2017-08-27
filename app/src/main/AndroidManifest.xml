@@ -42,7 +42,7 @@
             android:label="Ingredient List"
             android:launchMode="singleTop"
             android:parentActivityName=".Home"
-            android:windowSoftInputMode="stateVisible|adjustNothing"> <!-- show keyboard -->
+            android:windowSoftInputMode="adjustPan|stateVisible"> <!-- show keyboard -->
             >
 
             <!--

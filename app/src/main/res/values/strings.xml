@@ -34,7 +34,7 @@
 
     <!-- Drop-down menu for "SearchByName recipes by..." in Home activity -->
     <string-array name="search_menu_array">
-        <item>Search by...</item>
+        <item>Search by…</item>
         <item>Recipe/Ingredient Name</item>
         <item>Recipe Type</item>
         <item>Recipe Cuisine</item>
@@ -97,9 +97,16 @@
     <string name="text_selection">Please make a selection below</string>
     <string name="btn_home">Home Page</string>
     <string name="action_favorite_recipe">Favorite</string>
-    <string name="title_activity_test">TestActivity</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <!-- Filter Results Dialog Strings -->
+    <string name="btn_filter_results">Filter Results</string>
+    <string name="msg_filter_results_by">Filter results by:</string>
+    <string name="filter">Filter</string>
+    <string name="cancel">Cancel</string>
+    <string-array name="filter_options">
+        <item>Type</item>
+        <item>Cuisine</item>
+        <item>Exclude Ingredient</item>
+    </string-array>
 
 </resources>

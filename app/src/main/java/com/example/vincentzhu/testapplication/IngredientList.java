@@ -2,19 +2,13 @@ package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,7 +19,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -67,20 +60,15 @@ public class IngredientList extends BaseActivity {
 
         Spinner sp_favorites = (Spinner) findViewById(R.id.sp_favorites);
         // Create an ArrayAdapter using the string array and a default spinner layout
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, favorites_list);
-        //MultiAutoCompleteTextView
-//        mactv = findViewById(R.id.multiAutoCompleteTextView);
-//        ArrayAdapter<String> mactvAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, all_recipes);
-//        mactv.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-//        mactv.setAdapter(mactvAdapter);
-//        mactv.requestFocus();
 
         /**
          * Autocompletetextview
          */
         actv = findViewById(R.id.autoCompleteTextView);
-        ArrayAdapter<String> actvAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, all_ingredients);
+        ArrayAdapter<String> actvAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, all_ingredients);
         actv.setAdapter(actvAdapter);
         actv.requestFocus();
 
@@ -126,7 +114,8 @@ public class IngredientList extends BaseActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         userid = user.getUid();
-        mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredients");
+//        mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredients");
+        mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredient_Recipes");
         mRoot.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
