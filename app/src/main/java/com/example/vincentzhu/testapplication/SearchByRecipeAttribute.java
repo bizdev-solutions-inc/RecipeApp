@@ -35,10 +35,14 @@ public class SearchByRecipeAttribute extends BaseActivity {
         Resources res = getResources();
 
         // Set arrayId based on which search, either recipe type or cuisine
-        if(attribute.equals("Type_Recipes"))
+        if(attribute.equals("Type_Recipes")) {
             arrayId = R.array.recipe_types;
-        else
+            setTitle("Select Recipe Type");
+        }
+        else {
             arrayId = R.array.recipe_cuisines;
+            setTitle("Select Cuisine");
+        }
 
         // Get respective array from strings.xml
         recipeAttributeList = res.getStringArray(arrayId);

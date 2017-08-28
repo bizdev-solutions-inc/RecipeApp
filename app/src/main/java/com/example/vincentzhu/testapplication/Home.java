@@ -80,9 +80,11 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         Intent intent;
 
         switch (item) {
-            case "Recipe/Ingredient Name":
+            case "Recipe Name":
                 parent.setSelection(0);
-                startActivity(new Intent(Home.this, SearchByName.class));
+                intent = new Intent(Home.this, SearchByName.class);
+                intent.putExtra("SEARCH_NAME", "Recipes");
+                startActivity(intent);
                 break;
             case "Recipe Type":
                 parent.setSelection(0);
@@ -99,6 +101,12 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
             case "Ingredient List":
                 parent.setSelection(0);
                 startActivity(new Intent(Home.this, IngredientList.class));
+                break;
+            case "Ingredient Name":
+                parent.setSelection(0);
+                intent = new Intent(Home.this, SearchByName.class);
+                intent.putExtra("SEARCH_NAME", "Ingredients");
+                startActivity(intent);
                 break;
             case "Ingredient Category":
                 parent.setSelection(0);
