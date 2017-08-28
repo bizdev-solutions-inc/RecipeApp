@@ -11,7 +11,7 @@
 
     <item
         android:id="@+id/firebase_ing_btn"
-        android:title="Save Recipe"
+        android:title="Save Ingredient"
         android:icon="@drawable/save_recipe"
         app:showAsAction="ifRoom"
         android:theme="@style/NavigationTheme"/>

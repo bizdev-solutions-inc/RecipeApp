@@ -48,6 +48,7 @@ public class PersonalIngredient extends BaseActivity implements View.OnClickList
     private EditText mIngHistory;
     private ImageView imageDisplay;
     private static final int RESULT_IMAGE = 1;
+    private static final int CAPTURE_CAMERA = 11;
     private Uri selectedImage;
     private ProgressBar progressU;
     Spinner spinner_type;
@@ -110,9 +111,9 @@ public class PersonalIngredient extends BaseActivity implements View.OnClickList
                         return true;
                     case R.id.take_photo:
                         Intent takePictureIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                            startActivityForResult(takePictureIntent, RESULT_IMAGE);
-                        }
+//                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                            startActivityForResult(takePictureIntent, CAPTURE_CAMERA);
+//                        }
                         return true;
                     default:
                         return true;
@@ -180,20 +181,21 @@ public class PersonalIngredient extends BaseActivity implements View.OnClickList
 
     }
 
-    protected void cameraActivityResult (int requestCode, int resultCode, Intent data) {
-        if (requestCode==RESULT_IMAGE && resultCode==RESULT_OK && data!=null){
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imageDisplay.setImageBitmap(imageBitmap);
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode==RESULT_IMAGE && resultCode==RESULT_OK && data!=null){
-            selectedImage = data.getData();
-            imageDisplay.setImageURI(selectedImage);
+           switch (requestCode){
+               case CAPTURE_CAMERA:
+                   Bundle extras = data.getExtras();
+                   Bitmap imageBitmap = (Bitmap) extras.get("data");
+                   imageDisplay.setImageBitmap(imageBitmap);
+                   break;
+               case  RESULT_IMAGE:
+                   selectedImage = data.getData();
+                   imageDisplay.setImageURI(selectedImage);
+                   break;
+           }
         }
     }
 
@@ -222,6 +224,12 @@ public class PersonalIngredient extends BaseActivity implements View.OnClickList
 //                }
 //            });
         }
+    }
+
+    public boolean onCreateOptionsMenu (Menu menu){
+
+        getMenuInflater().inflate(R.menu.my_menu,menu);
+        return true;
     }
 }
 
