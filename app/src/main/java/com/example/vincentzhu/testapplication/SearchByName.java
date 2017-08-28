@@ -1,5 +1,6 @@
 package com.example.vincentzhu.testapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,28 +24,30 @@ public class SearchByName extends BaseActivity {
     private String searchBy;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
-    private ArrayList<String> ingredient_list = new ArrayList<>(),
-                                all_ingredients= new ArrayList<>(),
-                                all_recipes= new ArrayList<>();
+    private ArrayList<String> all_results= new ArrayList<>();
     private AutoCompleteTextView actv;
+    private boolean isRecipe = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+;
         searchBy = (String) getIntent().getSerializableExtra("SEARCH_NAME");
         setTitle("Search " + searchBy);
+
+        if(searchBy.equals("Recipes"))
+            isRecipe = true;
 
         setContentView(R.layout.activity_search_by_name);
         super.onCreate(savedInstanceState);
 
-        populateIngredients();
+        populateResults();
 
         /**
-         * Autocompletetextview
+         * AutocompleteTextView for the searchsing functionality
          */
         actv = findViewById(R.id.autoCompleteTextView);
         ArrayAdapter<String> actvAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, all_ingredients);
+                android.R.layout.simple_list_item_1, all_results);
         actv.setAdapter(actvAdapter);
         actv.requestFocus();
 
@@ -52,42 +55,40 @@ public class SearchByName extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String item = actv.getText().toString();
-                if (!item.isEmpty() && !ingredient_list.contains(item)) {
-                    ingredient_list.add(item);
-                    updateList();
-                    actv.setText("");
-                }
+                if (!item.isEmpty())
+                    showResultPage(item, isRecipe);
             }
         });
     }
 
     /**
-     *
+     * Fills the autocomplete textView with results from the database that match the first
+     * few characters that are inputted
      */
-    private void populateIngredients(){
+    private void populateResults(){
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
 
-        mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredient_Recipes");
+        mRoot = FirebaseDatabase.getInstance().getReference().child(searchBy);
         mRoot.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren())
-                    all_ingredients.add(ds.getKey());
+                    all_results.add(ds.getKey());
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) { }
         });
 
-        mCustom = FirebaseDatabase.getInstance().getReference().child(user.getUid()).child("Added Ingredients").child("Ingredients");
+        mCustom = FirebaseDatabase.getInstance().getReference().child(user.getUid()).child("Added " + searchBy).child(searchBy);
         mCustom.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren())
-                    if(!all_ingredients.contains(ds.getKey()))
-                        all_ingredients.add(ds.getKey());
+                    if(!all_results.contains(ds.getKey()))
+                        all_results.add(ds.getKey());
             }
 
             @Override
@@ -95,25 +96,18 @@ public class SearchByName extends BaseActivity {
         });
     }
 
-    /**
-     * Updates the ListView with entries from the ingredients list.
-     * Should be called every time an entry is added to or removed from the list.
-     * This method uses an ArrayAdapter to retrieve data from the ingredients ArrayList
-     * and display each String entry as an item in the ListView.
-     */
-    private void updateList() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, ingredient_list);
-        ListView listView = findViewById(R.id.listView);
-        listView.setAdapter(adapter);
-    }
+    // Shows either the IngredientPage or the RecipePage depending on the selection
+    private void showResultPage(String item, boolean isRecipe) {
+        Intent intent;
+        if(isRecipe) {
+            intent = new Intent(SearchByName.this, RecipePage.class);
+            intent.putExtra("SELECTED_ITEM", item);
+        }
+        else {
+            intent = new Intent(SearchByName.this, IngredientPage.class);
+            intent.putExtra("SELECTED_INGREDIENT", item);
+        }
 
-    /**
-     * Called when the user taps the Clear List button.
-     * Clears the ingredients list contained in the ListView.
-     */
-    public void clearList(View view) {
-        ingredient_list.clear();
-        updateList();
+        startActivity(intent);
     }
 }
