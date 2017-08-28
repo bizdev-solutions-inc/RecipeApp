@@ -63,6 +63,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                 startActivity(new Intent(this, SavedRecipe.class));
                 return true;
             case R.id.recipe_favorites:
+                finish();
+                startActivity(new Intent(this, Favorites.class));
                 return true;
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity

@@ -1,11 +1,17 @@
 package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -33,15 +39,18 @@ import java.util.HashSet;
 import java.util.UUID;
 import java.util.ArrayList;
 
+import static com.example.vincentzhu.testapplication.R.id.imageDisplay;
+
 public class PersonalRecipe extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "PersonalRecipe";
 
     //user-related widgets
-    private Button mFirebaseBtn;
+//    private Button mFirebaseBtn;
     private EditText mNameField;
     private EditText mInstrField;
     private static final int RESULT_IMAGE = 1;
+    private static final int CAPTURE_CAMERA = 11;
     private Uri selectedImage;
     Spinner spinner_recipe_type;
     Spinner spinner_recipe_cuisine;
@@ -52,6 +61,7 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
     //database-related objects
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
+    private ImageView imageDisplayRec;
     private StorageReference mStorage;
     private String userID;
     private DatabaseReference mRoot;
@@ -72,7 +82,7 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
 
         //user-related display
-        mFirebaseBtn = findViewById(R.id.firebase_btn);
+//        mFirebaseBtn = findViewById(R.id.firebase_btn);
         spinner_recipe_type = findViewById(R.id.spinner_type);
         spinner_recipe_cuisine = findViewById(R.id.spinner_cuisine);
         adapter_recipe_type = ArrayAdapter.createFromResource(this, R.array.recipe_types,android.R.layout.simple_spinner_item);
@@ -81,7 +91,8 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
         spinner_recipe_cuisine.setAdapter(adapter_recipe_cuisine);
         mNameField = findViewById(R.id.name_field);
         mInstrField = findViewById(R.id.instr_field);
-        mFirebaseBtn.setOnClickListener(this);
+        imageDisplayRec = (ImageView) findViewById(imageDisplay);
+//        mFirebaseBtn.setOnClickListener(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
@@ -93,6 +104,39 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
         ingredient_list = new ArrayList<String>();
         ArrayAdapter<String> actvAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, all_ingredients);
         actv_ingredients.setAdapter(actvAdapter);
+
+        Window window = this.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.ing_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.pic_btn:
+                        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        galleryIntent.setType("image/*");
+                        startActivityForResult(galleryIntent, RESULT_IMAGE);
+                        return true;
+                    case R.id.add_ing:
+//                        finish();
+//                        startActivity(new Intent(Home.this, PersonalIngredient.class));
+                        saveIngData ();
+                        return true;
+                    case R.id.take_photo:
+                        Intent takePictureIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                        startActivityForResult(takePictureIntent, CAPTURE_CAMERA);
+//                        }
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        });
 
         //database-related
         firebaseAuth = FirebaseAuth.getInstance();
@@ -122,45 +166,72 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
         });
     }
 
+    public void saveIngData () {
+
+        String recipeName = mNameField.getText().toString().trim();
+        String recipeInstruction = mInstrField.getText().toString().trim();
+        String recipeCuisine = spinner_recipe_cuisine.getSelectedItem().toString();
+        String recipeType = spinner_recipe_type.getSelectedItem().toString();
+
+        if (spinner_recipe_cuisine.getSelectedItemPosition() == 0) {
+            Toast.makeText(this, "Please select a valid cuisine", Toast.LENGTH_SHORT).show();
+        } else if (spinner_recipe_type.getSelectedItemPosition() == 0) {
+            Toast.makeText(this, "Please select a valid type", Toast.LENGTH_SHORT).show();
+        } else {
+            mCuisine_Recipe.child(recipeCuisine).child(recipeName).setValue(recipeName);
+            mRecipes.child(recipeName).child("Cuisine").setValue(recipeCuisine);
+            mRecipes.child(recipeName).child("Instructions").setValue(recipeInstruction);
+            mType_Recipes.child(recipeType).child(recipeName).setValue(recipeName);
+            mRecipes.child(recipeName).child("Type").setValue(recipeType);
+
+            for (String word : ingredient_list) {
+                mRecipe_Ingredients.child(recipeName).child(word).setValue(word);
+                mIngredient_Recipes.child(word).child(recipeName).setValue(recipeName);
+            }
+            uploadFile(recipeName);
+
+        }
+    }
+
     @Override
     public void onClick(View v) {
-        switch(v.getId()) {
-            case R.id.pic_btn:
-                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                galleryIntent.setType("image/*");
-                startActivityForResult(galleryIntent, RESULT_IMAGE);
-                break;
-            case R.id.firebase_btn:
-                String recipeName = mNameField.getText().toString().trim();
-                String recipeInstruction = mInstrField.getText().toString().trim();
-                String recipeCuisine = spinner_recipe_cuisine.getSelectedItem().toString();
-                String recipeType = spinner_recipe_type.getSelectedItem().toString();
+//      switch(v.getId()) {
+//           case R.id.pic_btn:
+//      Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//              galleryIntent.setType("image/*");
+//               startActivityForResult(galleryIntent, RESULT_IMAGE);
+//               break;
+//          case R.id.firebase_btn:
+//               String recipeName = mNameField.getText().toString().trim();
+//              String recipeInstruction = mInstrField.getText().toString().trim();
+//               String recipeCuisine = spinner_recipe_cuisine.getSelectedItem().toString();
+//               String recipeType = spinner_recipe_type.getSelectedItem().toString();
+//
+//               if(spinner_recipe_cuisine.getSelectedItemPosition()==0)
+//                {
+//                    Toast.makeText(this, "Please select a valid cuisine", Toast.LENGTH_SHORT).show();
+//                }
+//                else if(spinner_recipe_type.getSelectedItemPosition()==0)
+//                {
+//                    Toast.makeText(this, "Please select a valid type", Toast.LENGTH_SHORT).show();
+//                }
+//                else
+//                {
+//                    mCuisine_Recipe.child(recipeCuisine).child(recipeName).setValue(recipeName);
+//                    mRecipes.child(recipeName).child("Cuisine").setValue(recipeCuisine);
+//                    mRecipes.child(recipeName).child("Instructions").setValue(recipeInstruction);
+//                    mType_Recipes.child(recipeType).child(recipeName).setValue(recipeName);
+//                    mRecipes.child(recipeName).child("Type").setValue(recipeType);
 
-                if(spinner_recipe_cuisine.getSelectedItemPosition()==0)
-                {
-                    Toast.makeText(this, "Please select a valid cuisine", Toast.LENGTH_SHORT).show();
-                }
-                else if(spinner_recipe_type.getSelectedItemPosition()==0)
-                {
-                    Toast.makeText(this, "Please select a valid type", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    mCuisine_Recipe.child(recipeCuisine).child(recipeName).setValue(recipeName);
-                    mRecipes.child(recipeName).child("Cuisine").setValue(recipeCuisine);
-                    mRecipes.child(recipeName).child("Instructions").setValue(recipeInstruction);
-                    mType_Recipes.child(recipeType).child(recipeName).setValue(recipeName);
-                    mRecipes.child(recipeName).child("Type").setValue(recipeType);
-
-                    for(String word : ingredient_list)
-                    {
-                        mRecipe_Ingredients.child(recipeName).child(word).setValue(word);
-                        mIngredient_Recipes.child(word).child(recipeName).setValue(recipeName);
-                    }
-                    uploadFile(recipeName);
-                }
-                break;
-        }
+//                    for(String word : ingredient_list)
+//                    {
+//                        mRecipe_Ingredients.child(recipeName).child(word).setValue(word);
+//                        mIngredient_Recipes.child(word).child(recipeName).setValue(recipeName);
+//                    }
+//                    uploadFile(recipeName);
+//                }
+//                break;
+//        }
     }
 
     private void populateIngredients() {
@@ -181,9 +252,18 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode==RESULT_IMAGE && resultCode==RESULT_OK && data!=null){
-            selectedImage = data.getData();
+            switch (requestCode){
+                case CAPTURE_CAMERA:
+                    Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    imageDisplayRec.setImageBitmap(imageBitmap);
+                    break;
+                case  RESULT_IMAGE:
+                    selectedImage = data.getData();
+                    imageDisplayRec.setImageURI(selectedImage);
+                    break;
+            }
         }
     }
 

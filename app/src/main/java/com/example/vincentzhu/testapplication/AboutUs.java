@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,14 +24,12 @@ public class AboutUs extends BaseActivity {
         setContentView(R.layout.activity_aboutus);
         super.onCreate(savedInstanceState);
 
-
-        Button btn_homepage = (Button) findViewById(R.id.btn_homepage);
-        btn_homepage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(AboutUs.this, Home.class));
-            }
-        });
+        Window window = this.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         /**
          * Inflector method to convert plural word form to singular.

@@ -43,13 +43,12 @@
                 android:id="@+id/ing_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="40dp"
                 android:hint="Description..."
                 android:ems="10"
                 android:backgroundTint="@color/colorPrimary"
-                android:layout_alignTop="@+id/ing_name"
-                android:maxLines="1"/>
+                android:maxLines="1"
+                android:layout_below="@+id/ing_name"
+                android:layout_alignStart="@+id/ing_name" />
 
             <EditText
                 android:id="@+id/ing_history"
@@ -75,8 +74,8 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 style="@style/spinner_style"
-                android:layout_marginTop="220dp"
-                android:layout_centerHorizontal="true"/>
+                android:layout_alignBottom="@+id/textView6"
+                android:layout_alignStart="@+id/spinner_ing_season" />
 
             <TextView
                 android:id="@+id/textView8"

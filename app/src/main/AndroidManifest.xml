@@ -132,6 +132,7 @@
         </activity>
         <activity android:name=".ResetPassword" />
         <activity android:name=".IngredientPage" />
+        <activity android:name=".Favorites" android:label="Favorites" />
     </application>
 
 </manifest>

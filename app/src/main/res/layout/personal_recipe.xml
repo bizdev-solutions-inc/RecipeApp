@@ -1,134 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.vincentzhu.testapplication.PersonalRecipe"
-    tools:layout_editor_absoluteY="25dp"
-    tools:layout_editor_absoluteX="0dp"
-    android:orientation="vertical"
-    >
+
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:isScrollContainer="false">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="0dp" />
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <EditText
         android:id="@+id/name_field"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:layout_gravity="center"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_weight="1"
-        android:ems="10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
         android:hint="Recipe Name..."
-        android:inputType="textMultiLine"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        android:ems="10"
+        android:backgroundTint="@color/colorPrimary"
+        android:maxLines="1"
+        android:maxLength="40"/>
 
     <EditText
         android:id="@+id/instr_field"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="0dp"
-        android:layout_weight="1"
-        android:ems="10"
         android:hint="Instructions..."
-        android:inputType="textMultiLine"
-        app:layout_constraintLeft_toLeftOf="@+id/ing_field"
-        app:layout_constraintRight_toRightOf="@+id/ing_field"
-        app:layout_constraintTop_toBottomOf="@+id/ing_field"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        android:ems="10"
+        android:backgroundTint="@color/colorPrimary"
+        android:maxLines="1"
+        android:layout_below="@+id/name_field"
+        android:layout_centerHorizontal="true" />
 
     <AutoCompleteTextView
         android:id="@+id/actv_ingredients"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/instr_field"
         android:layout_weight="1"
-        android:hint="Search ingredients to add here..." />
-
-    <Button
-        android:id="@+id/pic_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/ing_field"
-        android:layout_below="@+id/imageDisplay"
-        android:layout_gravity="center"
-        android:layout_marginBottom="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_weight="1"
-        android:onClick="onClick"
-        android:text="Browse Image"
-        app:layout_constraintBottom_toTopOf="@+id/progressUpload"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:hint="Search Ingredients ..."
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_centerHorizontal="true"
+        android:ems="10"/>
 
     <ListView
         android:id="@+id/lv_added_ingredients"
-        android:layout_width="match_parent"
-        android:layout_height="207dp" />
+        android:layout_width="220dp"
+        android:layout_height="150dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:divider="@color/colorPrimary"
+        android:dividerHeight="1dp"
+        android:layout_below="@+id/actv_ingredients"
+        android:layout_centerHorizontal="true" />
 
-    <Spinner
-        android:id="@+id/spinner_cuisine"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginStart="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/pic_btn"
-        app:layout_constraintLeft_toRightOf="@+id/imageDisplay"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/instr_field"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_constraintBottom_creator="1"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:text=" Type :"
+        android:layout_marginLeft="20dp"
+        android:layout_alignTop="@+id/spinner_type"
+        android:layout_alignEnd="@+id/textView19"
+        android:layout_marginTop="12dp" />
 
     <Spinner
         android:id="@+id/spinner_type"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        style="@style/spinner_style"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/lv_added_ingredients"
+        android:layout_centerHorizontal="true" />
+
+    <Spinner
+        android:id="@+id/spinner_cuisine"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        style="@style/spinner_style"
+        android:layout_below="@+id/textView3"
+        android:layout_alignStart="@+id/spinner_type" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:text=" Cuisine :"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/textView3"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="15dp" />
+
+     <ImageView
+         android:layout_width="100dp"
+         android:layout_height="70dp"
+         android:layout_centerHorizontal="true"
+         android:layout_below="@+id/spinner_cuisine"
+         android:id="@+id/imageDisplay"
+         android:layout_marginTop="6dp"/>
+
+    <android.support.design.widget.BottomNavigationView
+        android:theme="@style/NavigationTheme"
+        android:id="@+id/ing_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="0dp"
-        android:layout_marginStart="0dp"
-        android:layout_weight="1"
-        app:layout_constraintLeft_toRightOf="@+id/ing_field"
-        app:layout_constraintRight_toRightOf="@+id/textView19"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        android:layout_alignParentBottom="true"
+        app:itemBackground="@color/colorPrimary"
+        app:itemIconTint="@drawable/nav_item_color"
+        app:itemTextColor="@drawable/nav_item_color"
+        app:menu="@menu/ingredient_menu" />
 
-    <Button
-        android:id="@+id/firebase_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_weight="1"
-        android:onClick="saveRecipe"
-        android:text="Save"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pic_btn" />
 
-</LinearLayout>
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+</RelativeLayout>
