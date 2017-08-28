@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -97,6 +99,10 @@ public class Admin extends AppCompatActivity {
         ingredient_description = (EditText)findViewById(R.id.ingredientDescription);
         ingredient_history = (EditText)findViewById(R.id.ingredientHistory);
 
+        Window window = this.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
 
         spinner_recipe_type = (Spinner)findViewById(R.id.spinner_type);
         spinner_cuisine = (Spinner)findViewById(R.id.spinner_cuisine);
