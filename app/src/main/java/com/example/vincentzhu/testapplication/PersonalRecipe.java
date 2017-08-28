@@ -83,6 +83,8 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
         mInstrField = findViewById(R.id.instr_field);
         mFirebaseBtn.setOnClickListener(this);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
         ListView listView = findViewById(R.id.lv_added_ingredients);
         listView.setOnItemClickListener(itemClickListener);
 

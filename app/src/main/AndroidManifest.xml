@@ -36,7 +36,8 @@
         </activity>
         <activity
             android:name=".Home"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:label="Home"/>
         <activity android:name=".Introduction" />
 
         <!-- Shows the list of ingredients entered by the user -->
@@ -99,7 +100,9 @@
         <activity
             android:name=".Admin"
             android:label="Admin" />
-        <activity android:name=".PersonalIngredient" />
+        <activity android:name=".PersonalIngredient"
+            android:label="Add Ingredient"
+            />
         <activity
             android:name=".SearchByName"
             android:label="Search by Name"

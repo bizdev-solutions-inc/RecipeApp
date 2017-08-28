@@ -7,7 +7,8 @@
     tools:context="com.example.vincentzhu.testapplication.PersonalRecipe"
     tools:layout_editor_absoluteY="25dp"
     tools:layout_editor_absoluteX="0dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

@@ -88,6 +88,7 @@ public class PersonalIngredient extends BaseActivity implements View.OnClickList
         mIngHistory = (EditText) findViewById(R.id.ing_history);
 //        mPicture.setOnClickListener(this);
 //        mFirebaseBtn.setOnClickListener(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         Window window = this.getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
