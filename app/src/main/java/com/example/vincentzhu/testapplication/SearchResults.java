@@ -168,22 +168,21 @@ public class SearchResults extends BaseActivity
         DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference()
                 .child("Recipe_Ingredients");
         mRoot.addListenerForSingleValueEvent(new ValueEventListener() {
-            ArrayList<String> filtered_results = new ArrayList<>();
-            boolean containsIngredient = false;
+            ArrayList<String> contain_ingredient = new ArrayList<>();
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                // Check if recipe contains the ingredient to exclude.
+                // If it does, add it to the contain_ingredients ArrayList
                 for (DataSnapshot recipe : dataSnapshot.getChildren()) {
                     for (DataSnapshot ingredient : recipe.getChildren()) {
                         if (ingredient.getValue().equals(ingredient_to_exclude)) {
-                            containsIngredient = true;
+                            contain_ingredient.add(recipe.getKey());
+                            break;
                         }
                     }
-                    if (!containsIngredient) {
-                        filtered_results.add(recipe.getKey());
-                        containsIngredient = false;
-                    }
                 }
-                recipe_list.retainAll(filtered_results);
+                // Remove all recipes that contain the ingredient to be excluded
+                recipe_list.removeAll(contain_ingredient);
                 adapter.notifyDataSetChanged();
             }
 

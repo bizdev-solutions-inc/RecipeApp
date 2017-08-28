@@ -279,6 +279,7 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
         }
     }
 
+
 //    public void parseString(String line, ArrayList<String> parse)
 //    {
 //        int startIndex = 0;
