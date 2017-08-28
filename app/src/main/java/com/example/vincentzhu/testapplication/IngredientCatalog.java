@@ -12,18 +12,6 @@ public class IngredientCatalog extends BaseActivity {
         setContentView(R.layout.activity_ingredient_categories);
         super.onCreate(savedInstanceState);
 
-//        Button btn_meat_seafood = (Button) findViewById(R.id.btn_meat_seafood); //type cast
-
-//        //..set what happens when the user clicks
-//        btn_meat_seafood.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //Log.i(TAG, "This is a magic log message!");
-//                //Toast.makeText(getApplicationContext(), "It's magic!", Toast.LENGTH_SHORT).show();
-//                //setTitle("Ingredient Categories");
-//            }
-//        });
-
         // Set ListView items by using an adapter
         ArrayAdapter<CharSequence> adapter =
                 ArrayAdapter.createFromResource(IngredientCatalog.this,

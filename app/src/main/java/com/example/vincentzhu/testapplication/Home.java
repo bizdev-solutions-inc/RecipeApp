@@ -71,22 +71,6 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
-        // onClick handlers for buttons
-//        Button btn_add_ing = (Button) findViewById(R.id.btn_add_ing); //add personal ingredient button
-//        btn_add_ing.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(Home.this, PersonalIngredient.class));
-//            }
-//        });
-//        Button btn_add_recipe = (Button) findViewById(R.id.btn_add_recipe);
-//        btn_add_recipe.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(Home.this, PersonalRecipe.class));
-//            }
-//        });
-
     }
 
     /**

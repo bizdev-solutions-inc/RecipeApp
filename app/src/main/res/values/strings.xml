@@ -44,6 +44,7 @@
 
     <!-- Drop down menu for admin home -->
     <string-array name="recipe_types">
+        <!-- <item>Recipe Type…</item> -->
         <item>Breakfast</item>
         <item>Lunch</item>
         <item>Dinner</item>
@@ -53,6 +54,7 @@
     </string-array>
 
     <string-array name="recipe_cuisines">
+        <!--<item>Recipe Cuisine…</item>-->
         <item>American</item>
         <item>Mexican</item>
         <item>Chinese</item>
@@ -101,6 +103,8 @@
     <string name="msg_filter_results_by">Filter results by:</string>
     <string name="filter">Filter</string>
     <string name="cancel">Cancel</string>
+    <string name="tv_enter_ingredient">Enter ingredient</string>
+    <string name="tv_exclude_ingredient">Exclude Ingredient:</string>
     <string-array name="filter_options">
         <item>Type</item>
         <item>Cuisine</item>

@@ -64,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="Exclude Ingredient: "
+            android:text="@string/tv_exclude_ingredient"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:hint="Enter ingredient"
+        android:hint="@string/tv_enter_ingredient"
         android:textAlignment="center" />
 
 </LinearLayout>

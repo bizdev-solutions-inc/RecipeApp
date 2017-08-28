@@ -20,7 +20,7 @@
         android:title="@string/action_about_us"
         app:showAsAction="never" />
 
-    <!-- Log the user out and return to login activity-->
+    <!-- Log the user out and return to Registration activity-->
     <item
         android:id="@+id/action_logout"
         android:title="@string/action_logout"

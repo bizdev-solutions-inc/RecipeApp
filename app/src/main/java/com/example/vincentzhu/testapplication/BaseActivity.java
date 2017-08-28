@@ -55,32 +55,26 @@ public abstract class BaseActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save_ing:
-                finish();
                 startActivity(new Intent(this, SavedIngredients.class));
                 return true;
             case R.id.save_recipe:
-                finish();
                 startActivity(new Intent(this, SavedRecipe.class));
                 return true;
             case R.id.recipe_favorites:
-                finish();
                 startActivity(new Intent(this, Favorites.class));
                 return true;
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
-                finish();
                 startActivity(new Intent(this, Home.class));
                 return true;
             case R.id.action_about_us:
                 // User chose the "About Us" item, show the About Us activity
-                finish();
                 startActivity(new Intent(this, AboutUs.class));
                 return true;
             case R.id.action_logout:
                 // User chose the "Log Out" item, log the user out and return to activity_registration activity
                 firebaseAuth = FirebaseAuth.getInstance();
                 firebaseAuth.signOut();
-                finish();
                 startActivity(new Intent(this, LoginActivity.class));
                 return true;
             default:

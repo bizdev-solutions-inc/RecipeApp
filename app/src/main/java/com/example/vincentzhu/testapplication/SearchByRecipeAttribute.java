@@ -3,12 +3,10 @@ package com.example.vincentzhu.testapplication;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -66,7 +64,7 @@ public class SearchByRecipeAttribute extends BaseActivity {
                 }
             };
 
-    // Returns all recipes under the specified type or cuisine, determined by paramter
+    // Returns all recipes under the specified type or cuisine, determined by parameter
     private void search(String selection) {
 
         mRoot = FirebaseDatabase.getInstance().getReference();
