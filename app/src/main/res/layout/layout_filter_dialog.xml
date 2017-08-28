@@ -57,7 +57,7 @@
             android:id="@+id/chkbox_exclude"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"/>
 
         <TextView
             android:id="@+id/tv_exclude"
