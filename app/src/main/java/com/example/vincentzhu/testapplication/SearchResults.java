@@ -46,7 +46,6 @@ public class SearchResults extends BaseActivity
                 displayItem(recipe_list.get(i));
             }
         });
-
     }
 
     /**

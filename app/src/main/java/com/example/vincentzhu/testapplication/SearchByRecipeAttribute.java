@@ -3,6 +3,7 @@ package com.example.vincentzhu.testapplication;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,14 +22,15 @@ public class SearchByRecipeAttribute extends BaseActivity {
 
     private DatabaseReference mRoot;
     private String[] recipeAttributeList;
-    private ArrayList<String> recipe_list = new ArrayList<>();
+    private ArrayList<String> list = new ArrayList<>();
     private String attribute, attributeSelection;
+    private boolean isRecipe = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         // Get the string that determines if search is by type or cuisine
-        attribute = (String) getIntent().getSerializableExtra("RECIPE_ATTRIBUTE");
+        attribute = (String) getIntent().getSerializableExtra("ATTRIBUTE");
 
         // Prepares for retrieving an array from strings.xml
         int arrayId;
@@ -39,9 +41,14 @@ public class SearchByRecipeAttribute extends BaseActivity {
             arrayId = R.array.recipe_types;
             setTitle("Select Recipe Type");
         }
-        else {
+        else if(attribute.equals("Cuisine_Recipe")){
             arrayId = R.array.recipe_cuisines;
             setTitle("Select Cuisine");
+        }
+        else {
+            arrayId = R.array.ingredient_types;
+            setTitle("Select A Catalog");
+            isRecipe = false;
         }
 
         // Get respective array from strings.xml
@@ -68,7 +75,8 @@ public class SearchByRecipeAttribute extends BaseActivity {
                 }
             };
 
-    // Returns all recipes under the specified type or cuisine, determined by parameter
+    // Returns all recipes or ingredients under the specified type, cuisine, or catalog,
+    // the selection of which is determined by the String attribute and the boolean isRecipe
     private void search(String selection) {
 
         mRoot = FirebaseDatabase.getInstance().getReference();
@@ -77,15 +85,23 @@ public class SearchByRecipeAttribute extends BaseActivity {
         mRoot.child(attribute).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                recipe_list = queryData(dataSnapshot);
-                Intent intent = new Intent(SearchByRecipeAttribute.this, SearchResults.class);
-                intent.putExtra("RECIPE_RESULTS", recipe_list);
+
+                list = queryData(dataSnapshot);
+
+                Intent intent;
+                if(isRecipe) {
+                    intent = new Intent(SearchByRecipeAttribute.this, SearchResults.class);
+                    intent.putExtra("RECIPE_RESULTS", list);
+                }
+                else {
+                    intent = new Intent(SearchByRecipeAttribute.this, IngredientCatalog.class);
+                    intent.putExtra("INGREDIENT_RESULTS", list);
+                }
                 startActivity(intent);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
+            public void onCancelled(DatabaseError databaseError) { }
         });
     }
 
