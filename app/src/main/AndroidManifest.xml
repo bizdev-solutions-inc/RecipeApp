@@ -70,7 +70,6 @@
             android:name=".PersonalRecipe"
             android:label="Add Recipe"
             android:windowSoftInputMode="stateVisible|adjustNothing"> <!-- show keyboard -->
-            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
@@ -93,8 +92,11 @@
             android:name=".Admin"
             android:label="Admin" />
         <activity android:name=".PersonalIngredient"
-            android:label="Add Ingredient"
-            />
+            android:label="Add Ingredient">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home"/>
+        </activity>
         <activity
             android:name=".SearchByName"
             android:label="Search by Name"
@@ -122,8 +124,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
         </activity>
-        <activity android:name=".ResetPassword" />
-        <activity android:name=".IngredientPage" />
+        <activity android:name=".ResetPassword">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".Home"/>
+        </activity>
+
+        <activity android:name=".IngredientPage">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".Home" />
+        </activity>
         <activity android:name=".Favorites" android:label="Favorites" />
     </application>
 

@@ -118,7 +118,7 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
                         galleryIntent.setType("image/*");
                         startActivityForResult(galleryIntent, RESULT_IMAGE);
                         return true;
-                    case R.id.add_ing:
+                    case R.id.firebase_ing_btn:
 //                        finish();
 //                        startActivity(new Intent(Home.this, PersonalIngredient.class));
                         saveIngData ();
@@ -278,6 +278,7 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
             mRecipes.child(recipeName).child("Image").setValue(uploadPath.toString());
         }
     }
+
 
 //    public void parseString(String line, ArrayList<String> parse)
 //    {

@@ -56,6 +56,10 @@ public class RecipePage extends BaseActivity {
             {
                 dbRef = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Ingredients");
             }
+            else if(getActivity.equals("Favorites"))
+            {
+                dbRef = FirebaseDatabase.getInstance().getReference();
+            }
         }
         else
         {

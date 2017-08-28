@@ -33,6 +33,9 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
                     case R.id.add_ing:
                         startActivity(new Intent(Home.this, PersonalIngredient.class));
                         return true;
+                    case R.id.favorite_re:
+                        startActivity(new Intent(Home.this, Favorites.class));
+                        return true;
                     default:
                         return true;
                 }

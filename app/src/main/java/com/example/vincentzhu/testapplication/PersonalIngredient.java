@@ -105,7 +105,7 @@ public class PersonalIngredient extends BaseActivity implements View.OnClickList
                         galleryIntent.setType("image/*");
                         startActivityForResult(galleryIntent, RESULT_IMAGE);
                         return true;
-                    case R.id.add_ing:
+                    case R.id.firebase_ing_btn:
 //                        finish();
 //                        startActivity(new Intent(Home.this, PersonalIngredient.class));
                         saveIngData ();
