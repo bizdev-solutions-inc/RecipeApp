@@ -226,10 +226,5 @@ public class PersonalIngredient extends BaseActivity implements View.OnClickList
         }
     }
 
-    public boolean onCreateOptionsMenu (Menu menu){
-
-        getMenuInflater().inflate(R.menu.my_menu,menu);
-        return true;
-    }
 }
 
