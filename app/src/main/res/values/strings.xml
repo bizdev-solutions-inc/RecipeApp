@@ -1,6 +1,6 @@
 <resources>
     <!-- Name of the app -->
-    <string name="app_label">Murder Journey Cookbook</string>
+    <string name="app_label">Cook It Up</string>
 
     <!-- Menu actions -->
     <string name="action_home">Home</string>
@@ -28,57 +28,61 @@
     <string name="btn_add">Add</string>
 
     <string name="btn_find_recipes">Find Recipes</string>
-    <string name="btn_clear_list">Clear List</string>
+    <string name="btn_clear">Clear</string>
 
     <string name="hint_tap_remove_ingr">(Tap an entry to remove it from the list)</string>
 
     <!-- Drop-down menu for "SearchByName recipes by..." in Home activity -->
     <string-array name="search_menu_array">
-        <item>Search by...</item>
-        <item>Recipe/Ingredient Name</item>
+        <item>Search by…</item>
+        <item>Recipe Name</item>
         <item>Recipe Type</item>
         <item>Recipe Cuisine</item>
         <item>Ingredient List</item>
-        <item>Ingredient Category</item>
+        <item>Ingredient Name</item>
+        <item>Ingredient Catalog</item>
     </string-array>
 
     <!-- Drop down menu for admin home -->
     <string-array name="recipe_types">
-        <item>Breakfast</item>
-        <item>Lunch</item>
-        <item>Dinner</item>
-        <item>Dessert</item>
-        <item>Snack</item>
+        <!-- <item>Recipe Type…</item> -->
         <item>Anytime</item>
+        <item>Breakfast</item>
+        <item>Dessert</item>
+        <item>Dinner</item>
+        <item>Lunch</item>
+        <item>Snack</item>
     </string-array>
 
     <string-array name="recipe_cuisines">
+        <!--<item>Recipe Cuisine…</item>-->
         <item>American</item>
-        <item>Mexican</item>
         <item>Chinese</item>
+        <item>French</item>
+        <item>Greek</item>
+        <item>General</item>
+        <item>Indian</item>
         <item>Italian</item>
         <item>Japanese</item>
-        <item>Greek</item>
-        <item>French</item>
-        <item>Thai</item>
-        <item>Spanish</item>
-        <item>Indian</item>
-        <item>Mediterranean</item>
-        <item>Vietnamese</item>
         <item>Korean</item>
-        <item>General</item>
+        <item>Mediterranean</item>
+        <item>Mexican</item>
+        <item>Spanish</item>
+        <item>Thai</item>
+        <item>Vietnamese</item>
     </string-array>
 
     <string-array name="ingredient_types">
-        <item>Meat</item>
-        <item>Vegetable</item>
-        <item>Fruit</item>
         <item>Dairy</item>
+        <item>Fruit</item>
         <item>Grain</item>
+        <item>Meat</item>
         <item>Miscellaneous</item>
+        <item>Vegetable</item>
     </string-array>
 
     <string-array name="ingredient_seasons">
+        <item>When in Season?</item>
         <item>Spring</item>
         <item>Summer</item>
         <item>Autumn</item>
@@ -91,5 +95,20 @@
     <string name="btn_saved_recipes">Saved Recipes</string>
     <string name="btn_add_ingredient">Add Ingredient</string>
     <string name="text_selection">Please make a selection below</string>
+    <string name="btn_home">Home Page</string>
+    <string name="action_favorite_recipe">Favorite</string>
+
+    <!-- Filter Results Dialog Strings -->
+    <string name="btn_filter_results">Filter Results</string>
+    <string name="msg_filter_results_by">Filter results by:</string>
+    <string name="filter">Filter</string>
+    <string name="cancel">Cancel</string>
+    <string name="tv_enter_ingredient">Enter ingredient</string>
+    <string name="tv_exclude_ingredient">Exclude Ingredient:</string>
+    <string-array name="filter_options">
+        <item>Type</item>
+        <item>Cuisine</item>
+        <item>Exclude Ingredient</item>
+    </string-array>
 
 </resources>

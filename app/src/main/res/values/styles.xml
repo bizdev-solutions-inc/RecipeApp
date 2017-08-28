@@ -17,4 +17,21 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="NavigationTheme" parent="AppTheme">
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_marginBottom">02dp</item>
+    </style>
+
+    <style name="spinner_style">
+        <item name="android:background">@drawable/gradient_spinner</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+    </style>
+
 </resources>

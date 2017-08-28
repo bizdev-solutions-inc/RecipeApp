@@ -2,21 +2,24 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.vincentzhu.testapplication">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_label"
+        android:label=""
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-        <!-- The login activity -->
+        <!-- The activity_registration activity -->
         <activity android:name=".LoginActivity" />
         <activity
-            android:name=".login"
+            android:name=".Registration"
             android:label="@string/app_label">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,15 +36,17 @@
         </activity>
         <activity
             android:name=".Home"
-            android:launchMode="singleTop" />
-        <activity android:name=".Introduction" />
+            android:launchMode="singleTop"
+            android:label="Home"/>
 
         <!-- Shows the list of ingredients entered by the user -->
         <activity
             android:name=".IngredientList"
             android:label="Ingredient List"
             android:launchMode="singleTop"
-            android:parentActivityName=".Home">
+            android:parentActivityName=".Home"
+            android:windowSoftInputMode="adjustPan|stateVisible"> <!-- show keyboard -->
+            >
 
             <!--
             launchMode affects how instances of activities are created
@@ -54,23 +59,17 @@
                 android:value=".Home" />
         </activity>
         <activity
-            android:name=".Ingredient_Categories"
-            android:label="Ingredient Categories"
+            android:name=".IngredientCatalog"
+            android:label="Ingredient Catalog"
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
         </activity>
         <activity
-            android:name=".MeatScroll"
-            android:label="Meat &amp; Seafood">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Ingredient_Categories" />
-        </activity>
-        <activity
             android:name=".PersonalRecipe"
-            android:label="Add Recipe">
+            android:label="Add Recipe"
+            android:windowSoftInputMode="stateVisible|adjustNothing"> <!-- show keyboard -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
@@ -92,7 +91,12 @@
         <activity
             android:name=".Admin"
             android:label="Admin" />
-        <activity android:name=".PersonalIngredient" />
+        <activity android:name=".PersonalIngredient"
+            android:label="Add Ingredient">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Home"/>
+        </activity>
         <activity
             android:name=".SearchByName"
             android:label="Search by Name"
@@ -109,20 +113,29 @@
                 android:value=".SearchByName" />
         </activity>
         <activity
-            android:name=".RecipeTypes"
-            android:label="Recipe Types">
+            android:name=".SearchByRecipeAttribute"
+            android:label="Search by Attribute">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
         </activity>
-        <activity
-            android:name=".RecipeCuisines"
-            android:label="Recipe Cuisines">
+        <activity android:name=".RecipePage">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
         </activity>
-        <activity android:name=".RecipePage"></activity>
+        <activity android:name=".ResetPassword">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".Home"/>
+        </activity>
+
+        <activity android:name=".IngredientPage">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".Home" />
+        </activity>
+        <activity android:name=".Favorites" android:label="Favorites" />
     </application>
 
 </manifest>

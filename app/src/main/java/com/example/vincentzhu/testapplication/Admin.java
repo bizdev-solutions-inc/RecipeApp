@@ -117,7 +117,6 @@ public class Admin extends AppCompatActivity {
 
         userID = firebaseAuth.getCurrentUser().getUid();
         user = firebaseAuth.getCurrentUser();
-        uid = UUID.randomUUID().toString();
         mRoot = FirebaseDatabase.getInstance().getReference();
 
         mIngredients = mRoot.child("Ingredients");
@@ -163,8 +162,8 @@ public class Admin extends AppCompatActivity {
                 //Method 6 & 7
                 for(String word : parse)
                 {
-                    mRecipe_Ingredients.child(recipeName).child(word).setValue(word);
-                    mIngredient_Recipes.child(word).child(recipeName).setValue(recipeName);
+                    mRecipe_Ingredients.child(recipeName).child(word.toLowerCase()).setValue(word);
+                    mIngredient_Recipes.child(word.toLowerCase()).child(recipeName).setValue(recipeName);
                 }
 
                 mStorage = FirebaseStorage.getInstance().getReference().child("Recipes");
@@ -239,7 +238,7 @@ public class Admin extends AppCompatActivity {
                 startActivity(new Intent(this, AboutUs.class));
                 return true;
             case R.id.action_logout:
-                // User chose the "Log Out" item, log the user out and return to login activity
+                // User chose the "Log Out" item, log the user out and return to activity_registration activity
                 firebaseAuth.signOut();
                 finish();
                 startActivity(new Intent(this, LoginActivity.class));
@@ -260,14 +259,17 @@ public class Admin extends AppCompatActivity {
         //separate ingredients by comma
         for(int i=0; i<line.length(); i++)
         {
-            if(line.charAt(i)!= ',' && found == false)
+            if(line.charAt(i)!= ',' && line.charAt(i)!= ' ' && found == false)
             {
                 startIndex = i;
                 found = true;
             }
             else if((line.charAt(i) == ',' || i == line.length()-1) && found == true)
             {
-                endIndex = i;
+                if(line.charAt(line.length()-1) == ' ')
+                    endIndex = i-1;
+                else
+                    endIndex = i;
                 parse.add(line.substring(startIndex, endIndex));
                 found = false;
             }
@@ -283,6 +285,7 @@ public class Admin extends AppCompatActivity {
     }
 
     private void uploadFile (String recipeName, String ingredientName) {
+        uid = UUID.randomUUID().toString();
         if (selectedImage != null) {
             uploadPath = mStorage.child(user.getUid()).child(uid);
             Log.i("Admin", uploadPath.toString());

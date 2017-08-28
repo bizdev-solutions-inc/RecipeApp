@@ -1,16 +1,13 @@
 package com.example.vincentzhu.testapplication;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,58 +15,139 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 
-//I am Ashot!
+public class SearchResults extends BaseActivity
+        implements FilterResultsDialogFragment.FilterResultsDialogListener{
 
-public class SearchResults extends AppCompatActivity {
+    private ArrayList<String> recipe_list;
+    private ArrayList<String> filtered_results;
 
-    private FirebaseAuth firebaseAuth;
-    private DatabaseReference mRef;
-    private FirebaseUser user;
-    private TextView result;
-    private String query;
-    private ArrayList<String> ingredient_list;
-    private DatabaseReference mRoot;
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
+        super.onCreate(savedInstanceState);
 
-        // Create the toolbar and set it as the app bar for the activity
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
-
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        ingredient_list = (ArrayList<String>) getIntent().getSerializableExtra("ingredientlist");
-
-        // Check if user is still logged in. If not, return to Login activity
-        if (firebaseAuth.getCurrentUser() == null) {
-            //Profile activity here
-            finish();
-            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-        }
-
-        // Get a support ActionBar corresponding to this toolbar and enable Up button
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        // Get the Intent that started this activity and extract the string
+        // Get the recipe results from the activity that called this one
         Intent intent = getIntent();
-        query = intent.getStringExtra(SearchByName.EXTRA_SEARCH_QUERY);
-        // TODO: perform database search using this String
-        user = firebaseAuth.getCurrentUser();
-        mRoot = FirebaseDatabase.getInstance().getReference();
-        mRef = mRoot.child("Recipes");
-        result = (TextView)findViewById(R.id.queryResult);
+        recipe_list = (ArrayList<String>) intent.getSerializableExtra("RECIPE_RESULTS");
 
-        mRoot.child("Ingredient_Recipes").addListenerForSingleValueEvent (new ValueEventListener() {
+        // Initialize the adapter with the list of recipe results
+        adapter = new ArrayAdapter<>(SearchResults.this,
+                android.R.layout.simple_list_item_1, recipe_list);
+
+        // Set up the ListView, its adapter, and its OnItemClickListener
+        ListView lv_search_results = findViewById(R.id.lv_search_results);
+        lv_search_results.setAdapter(adapter);
+        lv_search_results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                displayItem(recipe_list.get(i));
+            }
+        });
+
+    }
+
+    /**
+     * Called when the user selects an item from the search results list.
+     * This takes the user to the RecipePage activity that displays information about
+     * the recipe or ingredient selected by the user.
+     * @param item
+     */
+    public void displayItem(String item) {
+        Intent intent = new Intent(SearchResults.this, RecipePage.class);
+        intent.putExtra("SELECTED_ITEM", item);
+        startActivity(intent);
+    }
+
+    /**
+     * Called when the user taps the Filter Results button to filter their search results.
+     * This shows the user a dialog with options to filter their results.
+     * @param view
+     */
+    public void showFiltersDialog(View view) {
+        FilterResultsDialogFragment filterDialog = new FilterResultsDialogFragment();
+        filterDialog.show(getFragmentManager(), "FilterDialog");
+    }
+
+    /**
+     * Called when user taps the Filter button in the Filter Results dialog.
+     * Filters the search results according to the options selected by the user.
+     * @param dialog
+     */
+    @Override
+    public void onDialogFilterClick(DialogFragment dialog, boolean [] filterOptionsChecked,
+                                    String recipe_type, String recipe_cuisine,
+                                    String ingredient_to_exclude) {
+        if (filterOptionsChecked[0]) { // Filter by recipe type
+            filterByType(recipe_type);
+        }
+        if (filterOptionsChecked[1]) { // Filter by recipe cuisine
+            filterByCuisine(recipe_cuisine);
+        }
+        if (filterOptionsChecked[2]) { // Filter by excluding an ingredient
+            excludeIngredient(ingredient_to_exclude);
+        }
+    }
+
+    /**
+     * Called when user taps the Cancel button in the Filter Results dialog.
+     * Closes the dialog and does nothing.
+     * @param dialog
+     */
+    @Override
+    public void onDialogCancelClick(DialogFragment dialog) {
+
+    }
+
+    /**
+     * Filter the search results by the type of recipe specified by the user's
+     * filter option choices. All search results that do not match the specified
+     * type of recipe are removed from the list.
+     */
+    private void filterByType(final String recipe_type) {
+        DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference().child("Recipes");
+        mRoot.addListenerForSingleValueEvent(new ValueEventListener() {
+            ArrayList<String> filtered_results = new ArrayList<>();
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                showData(dataSnapshot);
+                for (String recipe : recipe_list) {
+                    if (dataSnapshot.child(recipe).child("Type").getValue().equals(recipe_type)) {
+                        filtered_results.add(recipe);
+                    }
+                }
+                recipe_list.retainAll(filtered_results);
+                adapter.notifyDataSetChanged(); // Update the ListView
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /**
+     * Filter the search results by the type of recipe specified by the user's
+     * filter option choices. All search results that do not match the specified
+     * type of recipe are removed from the list.
+     * @param recipe_cuisine
+     */
+    private void filterByCuisine(final String recipe_cuisine) {
+        DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference().child("Recipes");
+        mRoot.addListenerForSingleValueEvent(new ValueEventListener() {
+            ArrayList<String> filtered_results = new ArrayList<>();
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (String recipe : recipe_list) {
+                    if (dataSnapshot.child(recipe).child("Cuisine").getValue()
+                            .equals(recipe_cuisine)) {
+                        filtered_results.add(recipe);
+                    }
+                }
+                recipe_list.retainAll(filtered_results);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -80,69 +158,38 @@ public class SearchResults extends AppCompatActivity {
 
     }
 
-    public void showData(DataSnapshot dataSnapshot) {
-
-        HashSet<String> recipes = new HashSet<>();
-        HashSet<String> ingredients = new HashSet<>(ingredient_list);
-
-        ArrayList<HashSet<String>> ingredientRecipes = new ArrayList<>();
-
-        for (String currentIngredient : ingredients) {
-
-            HashMap<String, Object> current = (HashMap) dataSnapshot.child(currentIngredient).getValue();
-
-            if(recipes.isEmpty())
-                recipes.addAll(current.keySet());
-            else {
-                HashSet<String> currentRecipes = new HashSet<>(current.keySet());
-                recipes.retainAll(currentRecipes);
-            }
-        }
-
-        displayResult(recipes);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.my_menu, menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_home:
-                // User chose the "Home" item, show the Home activity
-                finish();
-                startActivity(new Intent(this, Home.class));
-                return true;
-            case R.id.action_about_us:
-                // User chose the "About Us" item, show the About Us activity
-                finish();
-                startActivity(new Intent(this, AboutUs.class));
-                return true;
-            case R.id.action_logout:
-                // User chose the "Log Out" item, log the user out and return to login activity
-                firebaseAuth.signOut();
-                finish();
-                startActivity(new Intent(this, LoginActivity.class));
-                return true;
-            default:
-                // The user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
     /**
-     * Simple method for displaying search results in a TextView for testing
-     *
-     * @param result
+     * Filter the search results based on the ingredient specified by the user.
+     * All recipes in the search results containing the ingredient specified
+     * are removed from the search results.
+     * @param ingredient_to_exclude
      */
-    private void displayResult(HashSet<String> result) {
-        TextView tv_result = (TextView) findViewById(R.id.tv_result);
-        for(String current : result)
-            tv_result.append(current);
+    private void excludeIngredient(final String ingredient_to_exclude) {
+        DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference()
+                .child("Recipe_Ingredients");
+        mRoot.addListenerForSingleValueEvent(new ValueEventListener() {
+            ArrayList<String> contain_ingredient = new ArrayList<>();
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Check if recipe contains the ingredient to exclude.
+                // If it does, add it to the contain_ingredients ArrayList
+                for (DataSnapshot recipe : dataSnapshot.getChildren()) {
+                    for (DataSnapshot ingredient : recipe.getChildren()) {
+                        if (ingredient.getValue().equals(ingredient_to_exclude)) {
+                            contain_ingredient.add(recipe.getKey());
+                            break;
+                        }
+                    }
+                }
+                // Remove all recipes that contain the ingredient to be excluded
+                recipe_list.removeAll(contain_ingredient);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

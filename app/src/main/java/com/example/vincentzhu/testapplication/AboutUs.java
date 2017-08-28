@@ -5,80 +5,47 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.sun.jersey.core.impl.provider.entity.Inflector;
 
-public class AboutUs extends AppCompatActivity {
-
-    private FirebaseAuth firebaseAuth;
+//test
+public class AboutUs extends BaseActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aboutus);
+        super.onCreate(savedInstanceState);
 
-        firebaseAuth = FirebaseAuth.getInstance();
+        Window window = this.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        // Check if user is still logged in. If not, return to Login activity.
-        if(firebaseAuth.getCurrentUser()==null){
-            //Profile activity here
-            finish();
-            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
-        }
-        FirebaseUser user= firebaseAuth.getCurrentUser();
-
-        // Create the toolbar and set it as the app bar for the activity
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
-
-        // Get a support ActionBar corresponding to this toolbar and enable Up button
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        Button btn_homepage = (Button) findViewById(R.id.btn_homepage);
-        btn_homepage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(AboutUs.this, Home.class));
-            }
-        });
+        /**
+         * Inflector method to convert plural word form to singular.
+         * Note that a library is imported in order to use this.
+         */
+        String plural = "tomatoes";
+        Log.i("Test", Inflector.getInstance().singularize(plural));
+        plural = "potatoes";
+        Log.i("Test", Inflector.getInstance().singularize(plural));
+        plural = "juices";
+        Log.i("Test", Inflector.getInstance().singularize(plural));
+        plural = "cheeses";
+        Log.i("Test", Inflector.getInstance().singularize(plural));
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.my_menu, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_home:
-                // User chose the "Home" item, show the Home activity
-                finish();
-                startActivity(new Intent(this, Home.class));
-                return true;
-            case R.id.action_about_us:
-                // User chose the "About Us" item, show the About Us activity
-                finish();
-                startActivity(new Intent(this, AboutUs.class));
-                return true;
-            case R.id.action_logout:
-                // User chose the "Log Out" item, log the user out and return to login activity
-                firebaseAuth.signOut();
-                finish();
-                startActivity(new Intent(this, LoginActivity.class));
-                return true;
-            default:
-                // The user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-        }
-    }
 }
 
 

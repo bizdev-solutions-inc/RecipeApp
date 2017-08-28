@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/add_recipe"
+        android:title="Add Recipe"
+        android:icon="@drawable/recipe"
+        app:showAsAction="ifRoom"
+        android:theme="@style/NavigationTheme"/>
+
+    <item
+        android:id="@+id/favorite_re"
+        android:title="Favorites"
+        android:icon="@drawable/favorie"
+        app:showAsAction="ifRoom"
+        android:theme="@style/NavigationTheme"/>
+
+    <item
+        android:id="@+id/add_ing"
+        android:title="Add Ingredient"
+        android:icon="@drawable/ingredients"
+        app:showAsAction="ifRoom"
+        android:theme="@style/NavigationTheme"/>
+
+</menu>

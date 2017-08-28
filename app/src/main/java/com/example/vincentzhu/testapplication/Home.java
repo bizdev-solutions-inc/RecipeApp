@@ -2,40 +2,61 @@ package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-public class Home extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-
-    private FirebaseAuth firebaseAuth;
+public class Home extends BaseActivity implements AdapterView.OnItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        super.onCreate(savedInstanceState);
 
-        // Create the toolbar and set it as the app bar for the activity
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.add_recipe:
+                        startActivity(new Intent(Home.this, PersonalRecipe.class));
+                        return true;
+                    case R.id.add_ing:
+                        startActivity(new Intent(Home.this, PersonalIngredient.class));
+                        return true;
+                    case R.id.favorite_re:
+                        startActivity(new Intent(Home.this, Favorites.class));
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        });
 
-        firebaseAuth = FirebaseAuth.getInstance();
+        Window window = this.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
 
-        // Check if user is still logged in. If not, return to Login activity
-        if(firebaseAuth.getCurrentUser()==null){
+        String mainAccount = "devbizrecipe@gmail.com";
+        FirebaseUser user= firebaseAuth.getCurrentUser();
+        if(user.getEmail().equals(mainAccount)){
             //Profile activity here
             finish();
-            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+            startActivity(new Intent(getApplicationContext(),Admin.class));
         }
+
+        // Do not display Up button since this is the Home menu
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -47,55 +68,6 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
-        // onClick handlers for buttons
-        Button btn_add_ing = (Button) findViewById(R.id.btn_add_ing); //add personal ingredient button
-        btn_add_ing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Home.this, PersonalIngredient.class));
-            }
-        });
-        Button btn_add_recipe = (Button) findViewById(R.id.btn_add_recipe);
-        btn_add_recipe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Home.this, PersonalRecipe.class));
-            }
-        });
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.my_menu, menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_home:
-                // User chose the "Home" item, show the Home activity
-                finish();
-                startActivity(new Intent(this, Home.class));
-                return true;
-            case R.id.action_about_us:
-                // User chose the "About Us" item, show the About Us activity
-                finish();
-                startActivity(new Intent(this, AboutUs.class));
-                return true;
-            case R.id.action_logout:
-                // User chose the "Log Out" item, log the user out and return to login activity
-                firebaseAuth.signOut();
-                finish();
-                startActivity(new Intent(this, LoginActivity.class));
-                return true;
-            default:
-                // The user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     /**
@@ -103,23 +75,42 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
      * Starts the activity for the corresponding item selected.
      */
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        // retrieve item using parent.getItemAtPosition(pos)
+        // retrieve item using parent.getItemAtPosition() instead of getSelectedItem()
         String item = parent.getItemAtPosition(pos).toString();
+        Intent intent;
+
         switch (item) {
-            case "Recipe/Ingredient Name":
-                startActivity(new Intent(Home.this, SearchByName.class));
+            case "Recipe Name":
+                parent.setSelection(0);
+                intent = new Intent(Home.this, SearchByName.class);
+                intent.putExtra("SEARCH_NAME", "Recipes");
+                startActivity(intent);
                 break;
             case "Recipe Type":
-                startActivity(new Intent(Home.this, RecipeTypes.class));
+                parent.setSelection(0);
+                intent = new Intent(Home.this, SearchByRecipeAttribute.class);
+                intent.putExtra("RECIPE_ATTRIBUTE", "Type_Recipes");
+                startActivity(intent);
                 break;
             case "Recipe Cuisine":
-                // startActivity(new Intent(Home.this, RecipeCuisine.class));
+                parent.setSelection(0);
+                intent = new Intent(Home.this, SearchByRecipeAttribute.class);
+                intent.putExtra("RECIPE_ATTRIBUTE", "Cuisine_Recipe");
+                startActivity(intent);
                 break;
             case "Ingredient List":
+                parent.setSelection(0);
                 startActivity(new Intent(Home.this, IngredientList.class));
                 break;
+            case "Ingredient Name":
+                parent.setSelection(0);
+                intent = new Intent(Home.this, SearchByName.class);
+                intent.putExtra("SEARCH_NAME", "Ingredients");
+                startActivity(intent);
+                break;
             case "Ingredient Category":
-                startActivity(new Intent(Home.this, Ingredient_Categories.class));
+                parent.setSelection(0);
+                startActivity(new Intent(Home.this, IngredientCatalog.class));
                 break;
             default:
                 // Do nothing
@@ -149,6 +140,12 @@ public class Home extends AppCompatActivity implements AdapterView.OnItemSelecte
 
     public void goToRecipePage(View view) {
         startActivity(new Intent(Home.this, RecipePage.class));
+    }
+
+    public boolean onCreateOptionsMenu (Menu menu){
+
+        getMenuInflater().inflate(R.menu.my_menu,menu);
+        return true;
     }
 
 
