@@ -19,7 +19,7 @@
         <!-- The activity_registration activity -->
         <activity android:name=".LoginActivity" />
         <activity
-            android:name=".login"
+            android:name=".Registration"
             android:label="@string/app_label">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,7 +38,6 @@
             android:name=".Home"
             android:launchMode="singleTop"
             android:label="Home"/>
-        <activity android:name=".Introduction" />
 
         <!-- Shows the list of ingredients entered by the user -->
         <activity

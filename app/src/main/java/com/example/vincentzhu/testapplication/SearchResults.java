@@ -165,31 +165,32 @@ public class SearchResults extends BaseActivity
      * @param ingredient_to_exclude
      */
     private void excludeIngredient(final String ingredient_to_exclude) {
-//        DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference()
-//                .child("Recipe_Ingredients");
-//        mRoot.addListenerForSingleValueEvent(new ValueEventListener() {
-//            ArrayList<String> filtered_results = new ArrayList<>();
-//            boolean containsIngredient = false;
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for (String recipe : recipe_list) {
-//                    for (DataSnapshot ingredient : dataSnapshot.getChildren()) {
-//                        if (ingredient.getValue().equals(ingredient_to_exclude)) {
-//                            containsIngredient = true;
-//                        }
-//                    }
-//                    if (!containsIngredient) {
-//                        filtered_results.add(recipe);
-//                        containsIngredient = false;
-//                    }
-//                }
-//                recipe_list.retainAll(filtered_results);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+        DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference()
+                .child("Recipe_Ingredients");
+        mRoot.addListenerForSingleValueEvent(new ValueEventListener() {
+            ArrayList<String> filtered_results = new ArrayList<>();
+            boolean containsIngredient = false;
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot recipe : dataSnapshot.getChildren()) {
+                    for (DataSnapshot ingredient : recipe.getChildren()) {
+                        if (ingredient.getValue().equals(ingredient_to_exclude)) {
+                            containsIngredient = true;
+                        }
+                    }
+                    if (!containsIngredient) {
+                        filtered_results.add(recipe.getKey());
+                        containsIngredient = false;
+                    }
+                }
+                recipe_list.retainAll(filtered_results);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

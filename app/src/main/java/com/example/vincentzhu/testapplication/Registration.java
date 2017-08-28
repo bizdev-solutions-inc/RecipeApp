@@ -20,7 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class login extends AppCompatActivity implements View.OnClickListener {
+public class Registration extends AppCompatActivity implements View.OnClickListener {
 
     private ImageButton buttonRegister;
     private EditText editTextEmail;
@@ -84,29 +84,29 @@ public class login extends AppCompatActivity implements View.OnClickListener {
                 if (task.isSuccessful()) {
                     //User is successfully registered
                     progressR.setVisibility(View.GONE);
-                    Toast.makeText(login.this, "Registered successfully, please verify your Email to activity_registration", Toast.LENGTH_LONG).show();
-                    user.sendEmailVerification().addOnCompleteListener(login.this, new OnCompleteListener<Void>() {
+                    Toast.makeText(Registration.this, "Registered successfully, please verify your Email to activity_registration", Toast.LENGTH_LONG).show();
+                    user.sendEmailVerification().addOnCompleteListener(Registration.this, new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful())
                             {
                                 progressR.setVisibility(View.GONE);
-                                Toast.makeText(login.this, "Verification email sent to " + user.getEmail(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(Registration.this, "Verification email sent to " + user.getEmail(), Toast.LENGTH_LONG).show();
                             }
                             else
                             {
                                 progressR.setVisibility(View.GONE);
-                                Toast.makeText(login.this, "Failed to send verification email.",
+                                Toast.makeText(Registration.this, "Failed to send verification email.",
                                         Toast.LENGTH_LONG).show();
                             }
                         }
                     });
                     mAuth.signOut();
                     finish();
-                    startActivity(new Intent(login.this,LoginActivity.class));
+                    startActivity(new Intent(Registration.this,LoginActivity.class));
                 }else{
                     progressR.setVisibility(View.GONE);
-                    Toast.makeText(login.this, "Account already exists or Email is incorrect, Please try again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Registration.this, "Account already exists or Email is incorrect, Please try again", Toast.LENGTH_SHORT).show();
                 }
             }
         });
