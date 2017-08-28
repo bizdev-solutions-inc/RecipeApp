@@ -96,22 +96,27 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
 
         switch (item) {
             case "Recipe/Ingredient Name":
+                parent.setSelection(0);
                 startActivity(new Intent(Home.this, SearchByName.class));
                 break;
             case "Recipe Type":
+                parent.setSelection(0);
                 intent = new Intent(Home.this, SearchByRecipeAttribute.class);
                 intent.putExtra("RECIPE_ATTRIBUTE", "Type_Recipes");
                 startActivity(intent);
                 break;
             case "Recipe Cuisine":
+                parent.setSelection(0);
                 intent = new Intent(Home.this, SearchByRecipeAttribute.class);
                 intent.putExtra("RECIPE_ATTRIBUTE", "Cuisine_Recipe");
                 startActivity(intent);
                 break;
             case "Ingredient List":
+                parent.setSelection(0);
                 startActivity(new Intent(Home.this, IngredientList.class));
                 break;
             case "Ingredient Category":
+                parent.setSelection(0);
                 startActivity(new Intent(Home.this, IngredientCatalog.class));
                 break;
             default:

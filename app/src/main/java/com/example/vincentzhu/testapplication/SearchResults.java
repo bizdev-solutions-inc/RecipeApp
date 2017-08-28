@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -87,7 +86,6 @@ public class SearchResults extends BaseActivity
                                     String recipe_type, String recipe_cuisine, String ingredient) {
         if (filterOptionsChecked[0]) { // Filter by recipe type
             filterByAttribute(Attribute.TYPE, recipe_type);
-            Toast.makeText(this, "FILTER BY TYPE", Toast.LENGTH_SHORT).show();
         }
         if (filterOptionsChecked[1]) { // Filter by recipe cuisine
             filterByAttribute(Attribute.CUISINE, recipe_cuisine);
