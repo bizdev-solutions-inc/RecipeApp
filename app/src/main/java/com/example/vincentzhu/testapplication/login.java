@@ -1,19 +1,13 @@
 package com.example.vincentzhu.testapplication;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -39,7 +33,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
 
     protected void onCreate (Bundle SavedInstanceState) {
         super.onCreate (SavedInstanceState);
-        setContentView(R.layout.login);
+        setContentView(R.layout.activity_registration);
 
         buttonRegister=(ImageButton) findViewById(R.id.buttonRegister);
         editTextEmail=(EditText) findViewById(R.id.editTextEmail);
@@ -90,7 +84,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
                 if (task.isSuccessful()) {
                     //User is successfully registered
                     progressR.setVisibility(View.GONE);
-                    Toast.makeText(login.this, "Registered successfully, please verify your Email to login", Toast.LENGTH_LONG).show();
+                    Toast.makeText(login.this, "Registered successfully, please verify your Email to activity_registration", Toast.LENGTH_LONG).show();
                     user.sendEmailVerification().addOnCompleteListener(login.this, new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -123,7 +117,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
             registerUser();
         }
         if (view == textViewSignin){
-            //Will open login activity here
+            //Will open activity_registration activity here
             startActivity(new Intent(this,LoginActivity.class));
         }
     }

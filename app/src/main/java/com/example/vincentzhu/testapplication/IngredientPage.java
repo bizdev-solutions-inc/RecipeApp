@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
 import org.apache.commons.text.WordUtils;
 
 import java.util.ArrayList;
@@ -160,7 +161,7 @@ public class IngredientPage extends BaseActivity {
                 startActivity(new Intent(this, AboutUs.class));
                 return true;
             case R.id.action_logout:
-                // User chose the "Log Out" item, log the user out and return to login activity
+                // User chose the "Log Out" item, log the user out and return to activity_registration activity
                 firebaseAuth.signOut();
                 finish();
                 startActivity(new Intent(this, LoginActivity.class));

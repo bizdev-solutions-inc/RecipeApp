@@ -1,6 +1,5 @@
 package com.example.vincentzhu.testapplication;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,7 +20,6 @@ public class IngredientCatalog extends BaseActivity {
 //            public void onClick(View view) {
 //                //Log.i(TAG, "This is a magic log message!");
 //                //Toast.makeText(getApplicationContext(), "It's magic!", Toast.LENGTH_SHORT).show();
-//                startActivity(new Intent(IngredientCatalog.this, MeatScroll.class));
 //                //setTitle("Ingredient Categories");
 //            }
 //        });
@@ -45,7 +43,6 @@ public class IngredientCatalog extends BaseActivity {
                     String item = parent.getItemAtPosition(position).toString();
                     switch (item) {
                         case "Meat":
-                            startActivity(new Intent(IngredientCatalog.this, MeatScroll.class));
                             break;
                         case "Vegetable":
                             break;
