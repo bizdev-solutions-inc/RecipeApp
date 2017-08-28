@@ -1,6 +1,6 @@
 <resources>
     <!-- Name of the app -->
-    <string name="app_label">Murder Journey Cookbook</string>
+    <string name="app_label">Cook It Up</string>
 
     <!-- Menu actions -->
     <string name="action_home">Home</string>
