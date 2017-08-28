@@ -15,33 +15,39 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class SearchResults extends BaseActivity
         implements FilterResultsDialogFragment.FilterResultsDialogListener{
 
     private ArrayList<String> recipe_list;
-    private enum Attribute {TYPE, CUISINE};
+    private ArrayList<String> filtered_results;
+
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_search_results);
         super.onCreate(savedInstanceState);
 
+        // Get the recipe results from the activity that called this one
         Intent intent = getIntent();
         recipe_list = (ArrayList<String>) intent.getSerializableExtra("RECIPE_RESULTS");
 
-        updateList();
-    }
+        // Initialize the adapter with the list of recipe results
+        adapter = new ArrayAdapter<>(SearchResults.this,
+                android.R.layout.simple_list_item_1, recipe_list);
 
-    // Create a list-item click-handling object as an anonymous class.
-    private AdapterView.OnItemClickListener itemClickListener =
-            new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView adapterView, View view, int position, long id) {
-                    displayItem(recipe_list.get(position));
-                }
-            };
+        // Set up the ListView, its adapter, and its OnItemClickListener
+        ListView lv_search_results = findViewById(R.id.lv_search_results);
+        lv_search_results.setAdapter(adapter);
+        lv_search_results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                displayItem(recipe_list.get(i));
+            }
+        });
+
+    }
 
     /**
      * Called when the user selects an item from the search results list.
@@ -53,17 +59,6 @@ public class SearchResults extends BaseActivity
         Intent intent = new Intent(SearchResults.this, RecipePage.class);
         intent.putExtra("SELECTED_ITEM", item);
         startActivity(intent);
-    }
-
-    /**
-     * Updates the ListView with the search results entries.
-     * Should be called after changes to the entries, like after filtering.
-     */
-    private void updateList() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, recipe_list);
-        ListView lv_search_results = (ListView) findViewById(R.id.lv_search_results);
-        lv_search_results.setAdapter(adapter);
     }
 
     /**
@@ -83,15 +78,16 @@ public class SearchResults extends BaseActivity
      */
     @Override
     public void onDialogFilterClick(DialogFragment dialog, boolean [] filterOptionsChecked,
-                                    String recipe_type, String recipe_cuisine, String ingredient) {
+                                    String recipe_type, String recipe_cuisine,
+                                    String ingredient_to_exclude) {
         if (filterOptionsChecked[0]) { // Filter by recipe type
-            filterByAttribute(Attribute.TYPE, recipe_type);
+            filterByType(recipe_type);
         }
         if (filterOptionsChecked[1]) { // Filter by recipe cuisine
-            filterByAttribute(Attribute.CUISINE, recipe_cuisine);
+            filterByCuisine(recipe_cuisine);
         }
         if (filterOptionsChecked[2]) { // Filter by excluding an ingredient
-            excludeIngredient(ingredient);
+            excludeIngredient(ingredient_to_exclude);
         }
     }
 
@@ -106,73 +102,94 @@ public class SearchResults extends BaseActivity
     }
 
     /**
-     * Filter the search results by the attribute specified by the user's filter option choices.
-     * Can filter by either recipe type or recipe cuisine.
-     * @param attribute
-     * @param filter
+     * Filter the search results by the type of recipe specified by the user's
+     * filter option choices. All search results that do not match the specified
+     * type of recipe are removed from the list.
      */
-    private void filterByAttribute(Attribute attribute, final String filter) {
-        String childName = "";
-
-        if (attribute == Attribute.TYPE) {
-            childName = "Type";
-        } else if (attribute == Attribute.CUISINE) {
-            childName = "Cuisine";
-        }
+    private void filterByType(final String recipe_type) {
         DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference().child("Recipes");
-
-        final String attr = childName;
-        mRoot.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Iterator<String> iter = recipe_list.iterator();
-
-                    while (iter.hasNext()) {
-                        String recipe = iter.next();
-                        // If a recipe in the list does not match the attribute specified,
-                        // remove it from the search results
-                        if (!dataSnapshot.child(recipe).child(attr).getValue().equals(filter)) {
-                            iter.remove();
-                        }
+        mRoot.addListenerForSingleValueEvent(new ValueEventListener() {
+            ArrayList<String> filtered_results = new ArrayList<>();
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (String recipe : recipe_list) {
+                    if (dataSnapshot.child(recipe).child("Type").getValue().equals(recipe_type)) {
+                        filtered_results.add(recipe);
                     }
                 }
+                recipe_list.retainAll(filtered_results);
+                adapter.notifyDataSetChanged(); // Update the ListView
+            }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+    }
+
+    /**
+     * Filter the search results by the type of recipe specified by the user's
+     * filter option choices. All search results that do not match the specified
+     * type of recipe are removed from the list.
+     * @param recipe_cuisine
+     */
+    private void filterByCuisine(final String recipe_cuisine) {
+        DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference().child("Recipes");
+        mRoot.addListenerForSingleValueEvent(new ValueEventListener() {
+            ArrayList<String> filtered_results = new ArrayList<>();
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (String recipe : recipe_list) {
+                    if (dataSnapshot.child(recipe).child("Cuisine").getValue()
+                            .equals(recipe_cuisine)) {
+                        filtered_results.add(recipe);
+                    }
                 }
-            });
-        updateList();
+                recipe_list.retainAll(filtered_results);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     /**
      * Filter the search results based on the ingredient specified by the user.
      * All recipes in the search results containing the ingredient specified
      * are removed from the search results.
-     * @param ingredient
+     * @param ingredient_to_exclude
      */
-    private void excludeIngredient(final String ingredient) {
+    private void excludeIngredient(final String ingredient_to_exclude) {
 //        DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference()
 //                .child("Recipe_Ingredients");
-//        for (final String recipe : recipe_list) {
-//            mRoot.addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    // Any recipes in the search results containing the ingredient specified
-//                    // by the user are removed from the search results
-//                    for (DataSnapshot ds : dataSnapshot.child(recipe).getChildren()) {
-//                        if (ds.equals(ingredient)) {
-//                            recipe_list.remove(recipe);
+//        mRoot.addListenerForSingleValueEvent(new ValueEventListener() {
+//            ArrayList<String> filtered_results = new ArrayList<>();
+//            boolean containsIngredient = false;
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (String recipe : recipe_list) {
+//                    for (DataSnapshot ingredient : dataSnapshot.getChildren()) {
+//                        if (ingredient.getValue().equals(ingredient_to_exclude)) {
+//                            containsIngredient = true;
 //                        }
 //                    }
+//                    if (!containsIngredient) {
+//                        filtered_results.add(recipe);
+//                        containsIngredient = false;
+//                    }
 //                }
+//                recipe_list.retainAll(filtered_results);
+//            }
 //
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
 //
-//                }
-//            });
-//        }
-//        updateList(); // Update search results with filtered results
+//            }
+//        });
     }
 }
