@@ -1,13 +1,12 @@
 package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -16,9 +15,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-
-import static com.example.vincentzhu.testapplication.R.id.buttonRegister;
-import static com.example.vincentzhu.testapplication.R.id.textViewSignin;
 
 public class ResetPassword extends AppCompatActivity implements View.OnClickListener{
 
@@ -73,7 +69,7 @@ public class ResetPassword extends AppCompatActivity implements View.OnClickList
             resetPassWD();
         }
         if (view == loginPage){
-            //Will open login activity here
+            //Will open activity_registration activity here
             finish();
             startActivity(new Intent(this,LoginActivity.class));
         }

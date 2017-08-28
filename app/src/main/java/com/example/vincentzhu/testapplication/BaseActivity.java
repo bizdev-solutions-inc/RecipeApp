@@ -77,7 +77,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 startActivity(new Intent(this, AboutUs.class));
                 return true;
             case R.id.action_logout:
-                // User chose the "Log Out" item, log the user out and return to login activity
+                // User chose the "Log Out" item, log the user out and return to activity_registration activity
                 firebaseAuth = FirebaseAuth.getInstance();
                 firebaseAuth.signOut();
                 finish();

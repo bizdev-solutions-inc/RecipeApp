@@ -15,7 +15,6 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -34,10 +33,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.UUID;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import static com.example.vincentzhu.testapplication.R.id.imageDisplay;
 
@@ -78,7 +75,7 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.personal_recipe);
+        setContentView(R.layout.activity_personal_recipe);
         super.onCreate(savedInstanceState);
 
         //user-related display

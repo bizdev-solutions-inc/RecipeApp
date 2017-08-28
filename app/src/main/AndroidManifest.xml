@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-        <!-- The login activity -->
+        <!-- The activity_registration activity -->
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".login"
@@ -66,13 +66,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
-        </activity>
-        <activity
-            android:name=".MeatScroll"
-            android:label="Meat &amp; Seafood">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".IngredientCatalog" />
         </activity>
         <activity
             android:name=".PersonalRecipe"

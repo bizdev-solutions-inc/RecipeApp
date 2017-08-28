@@ -39,7 +39,7 @@
         app:showAsAction="never"
         android:theme="@style/NavigationTheme"/>
 
-    <!-- Log the user out and return to login activity-->
+    <!-- Log the user out and return to activity_registration activity-->
     <item
         android:id="@+id/action_logout"
         android:title="@string/action_logout"
