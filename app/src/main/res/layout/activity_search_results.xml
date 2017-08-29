@@ -51,20 +51,21 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_filter_results" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btn_filter_results"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_width="255dp"
+        android:layout_height="53dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginStart="8dp"
         android:onClick="showFiltersDialog"
         android:text="@string/btn_filter_results"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        android:src="@drawable/filter_results"/>
 
 </android.support.constraint.ConstraintLayout>
