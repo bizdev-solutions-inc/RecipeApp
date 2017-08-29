@@ -89,7 +89,7 @@
         <item>Year round</item>
     </string-array>
     <string name="title_activity_basic">BasicActivity</string>
-    <string name="IngredientListResultMessage">Recipes you can make with those ingredients:</string>
+    <string name="SearchResultsMessage">Tap an item for more information</string>
     <string name="btn_saved_ingredients">Saved Ingredients</string>
     <string name="btn_saved_recipes">Saved Recipes</string>
     <string name="btn_add_ingredient">Add Ingredient</string>
