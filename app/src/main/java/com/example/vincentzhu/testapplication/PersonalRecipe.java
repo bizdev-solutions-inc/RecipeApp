@@ -121,7 +121,7 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
                     case R.id.firebase_ing_btn:
 //                        finish();
 //                        startActivity(new Intent(Home.this, PersonalIngredient.class));
-                        saveIngData ();
+                        saveRecData();
                         return true;
                     case R.id.take_photo:
                         Intent takePictureIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -140,13 +140,6 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
         user  = firebaseAuth.getCurrentUser();
         userID = user.getUid();
         mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredient_Recipes");
-        mStorage = FirebaseStorage.getInstance().getReference().child("Recipes");
-        mUser = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Recipes");
-        mRecipe_Ingredients = mUser.child("Recipe_Ingredients");
-        mIngredient_Recipes = mUser.child("Ingredient_Recipes");
-        mCuisine_Recipe = mUser.child("Cuisine_Recipe");
-        mRecipes = mUser.child("Recipes");
-        mType_Recipes = mUser.child("Type_Recipes");
 
         populateIngredients();
 
@@ -163,31 +156,48 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
         });
     }
 
-    public void saveIngData () {
+    public void saveRecData() {
 
         String recipeName = mNameField.getText().toString().trim();
         String recipeInstruction = mInstrField.getText().toString().trim();
         String recipeCuisine = spinner_recipe_cuisine.getSelectedItem().toString();
         String recipeType = spinner_recipe_type.getSelectedItem().toString();
 
-        if (spinner_recipe_cuisine.getSelectedItemPosition() == 0) {
-            Toast.makeText(this, "Please select a valid cuisine", Toast.LENGTH_SHORT).show();
-        } else if (spinner_recipe_type.getSelectedItemPosition() == 0) {
-            Toast.makeText(this, "Please select a valid type", Toast.LENGTH_SHORT).show();
-        } else {
-            mCuisine_Recipe.child(recipeCuisine).child(recipeName).setValue(recipeName);
-            mRecipes.child(recipeName).child("Cuisine").setValue(recipeCuisine);
-            mRecipes.child(recipeName).child("Instructions").setValue(recipeInstruction);
-            mType_Recipes.child(recipeType).child(recipeName).setValue(recipeName);
-            mRecipes.child(recipeName).child("Type").setValue(recipeType);
+        //user tree
+        mUser = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Recipes");
+        mStorage = FirebaseStorage.getInstance().getReference().child("Recipes");
+        mRecipe_Ingredients = mUser.child("Recipe_Ingredients");
+        mIngredient_Recipes = mUser.child("Ingredient_Recipes");
+        mCuisine_Recipe = mUser.child("Cuisine_Recipe");
+        mRecipes = mUser.child("Recipes");
+        mType_Recipes = mUser.child("Type_Recipes");
 
-            for (String word : ingredient_list) {
-                mRecipe_Ingredients.child(recipeName).child(word).setValue(word);
-                mIngredient_Recipes.child(word).child(recipeName).setValue(recipeName);
-            }
-            uploadFile(recipeName);
+        saveRecipe(recipeName, recipeInstruction, recipeCuisine, recipeType, false);
 
+        //default tree
+        mUser = FirebaseDatabase.getInstance().getReference();
+        mRecipe_Ingredients = mUser.child("Recipe_Ingredients");
+        mIngredient_Recipes = mUser.child("Ingredient_Recipes");
+        mCuisine_Recipe = mUser.child("Cuisine_Recipe");
+        mRecipes = mUser.child("Recipes");
+        mType_Recipes = mUser.child("Type_Recipes");
+
+        saveRecipe(recipeName, recipeInstruction, recipeCuisine, recipeType, true);
+    }
+
+    public void saveRecipe(String recipeName, String recipeInstruction, String recipeCuisine, String recipeType, boolean admin)
+    {
+        mCuisine_Recipe.child(recipeCuisine).child(recipeName).setValue(recipeName);
+        mRecipes.child(recipeName).child("Cuisine").setValue(recipeCuisine);
+        mRecipes.child(recipeName).child("Instructions").setValue(recipeInstruction);
+        mType_Recipes.child(recipeType).child(recipeName).setValue(recipeName);
+        mRecipes.child(recipeName).child("Type").setValue(recipeType);
+
+        for (String word : ingredient_list) {
+            mRecipe_Ingredients.child(recipeName).child(word).setValue(word);
+            mIngredient_Recipes.child(word).child(recipeName).setValue(recipeName);
         }
+        uploadFile(recipeName, admin);
     }
 
     @Override
@@ -264,11 +274,17 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
         }
     }
 
-    private void uploadFile (final String recipeName) {
+    private void uploadFile (final String recipeName, boolean admin) {
         uid = UUID.randomUUID().toString();
         if (selectedImage != null) {
-            uploadPath = mStorage.child(user.getUid()).child(uid);
-            Log.i(TAG, uploadPath.toString());
+            if(!admin) {
+                uploadPath = mStorage.child(user.getUid()).child(uid);
+            }
+            else
+            {
+                uploadPath = mStorage.child("lRxFd3PSkGNfeUfZ3qOfpSRoaO12").child(uid);
+            }
+            //Log.i(TAG, uploadPath.toString());
             uploadPath.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

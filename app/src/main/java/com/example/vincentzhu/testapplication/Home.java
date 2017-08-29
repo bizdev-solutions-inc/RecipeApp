@@ -11,11 +11,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Home extends BaseActivity implements AdapterView.OnItemSelectedListener {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +45,10 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         });
 
         String mainAccount = "devbizrecipe@gmail.com";
-        FirebaseUser user= firebaseAuth.getCurrentUser();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
         if(user.getEmail().equals(mainAccount)){
             //Profile activity here
-            finish();
             startActivity(new Intent(getApplicationContext(),Admin.class));
         }
 

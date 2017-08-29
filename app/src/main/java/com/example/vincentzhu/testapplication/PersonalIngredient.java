@@ -74,8 +74,6 @@ public class PersonalIngredient extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
 
         //user-related display
-//        mPicture = (Button) findViewById(R.id.pic_btn);
-//        mFirebaseBtn = (Button) findViewById(R.id.firebase_ing_btn);
         imageDisplay = (ImageView) findViewById(R.id.imageDisplay_ing);
         spinner_type = (Spinner)findViewById(R.id.spinner_ing_type);
         spinner_season = (Spinner)findViewById(R.id.spinner_ing_season);
@@ -86,8 +84,6 @@ public class PersonalIngredient extends BaseActivity implements View.OnClickList
         mIngName = (EditText) findViewById(R.id.ing_name);
         mIngDescription = (EditText) findViewById(R.id.ing_description);
         mIngHistory = (EditText) findViewById(R.id.ing_history);
-//        mPicture.setOnClickListener(this);
-//        mFirebaseBtn.setOnClickListener(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         Window window = this.getWindow();
@@ -106,15 +102,11 @@ public class PersonalIngredient extends BaseActivity implements View.OnClickList
                         startActivityForResult(galleryIntent, RESULT_IMAGE);
                         return true;
                     case R.id.firebase_ing_btn:
-//                        finish();
-//                        startActivity(new Intent(Home.this, PersonalIngredient.class));
                         saveIngData ();
                         return true;
                     case R.id.take_photo:
                         Intent takePictureIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                             startActivityForResult(takePictureIntent, CAPTURE_CAMERA);
-//                        }
                         return true;
                     default:
                         return true;
@@ -126,11 +118,6 @@ public class PersonalIngredient extends BaseActivity implements View.OnClickList
         firebaseAuth = FirebaseAuth.getInstance();
         userID = firebaseAuth.getCurrentUser().getUid();
         user = firebaseAuth.getCurrentUser();
-        uid = UUID.randomUUID().toString();
-        mRoot = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Ingredients");;
-        mStorage = FirebaseStorage.getInstance().getReference().child("Ingredients");
-        mIngredients = mRoot.child("Ingredients");
-        mType_Ingredients = mRoot.child("Type_Ingredients");
 
         spinner_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -168,18 +155,28 @@ public class PersonalIngredient extends BaseActivity implements View.OnClickList
         String ingredientDescription = mIngDescription.getText().toString().trim();
         String ingredientHistory = mIngHistory.getText().toString().trim();
 
-        //Method 1
+        //user tree
+        mRoot = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Ingredients");;
+        mStorage = FirebaseStorage.getInstance().getReference().child("Ingredients");
+        mIngredients = mRoot.child("Ingredients");
+        mType_Ingredients = mRoot.child("Type_Ingredients");
+        saveIngredient(ingredientName, ingredientDescription, ingredientHistory, false);
+
+        //default tree
+        mRoot = FirebaseDatabase.getInstance().getReference();
+        mIngredients = mRoot.child("Ingredients");
+        mType_Ingredients = mRoot.child("Type_Ingredients");
+        saveIngredient(ingredientName, ingredientDescription, ingredientHistory, true);
+    }
+
+    public void saveIngredient(String ingredientName, String ingredientDescription, String ingredientHistory, boolean admin)
+    {
         mIngredients.child(ingredientName).child("Description").setValue(ingredientDescription);
         mIngredients.child(ingredientName).child("Type").setValue(spinner_type.getSelectedItem().toString());
         mIngredients.child(ingredientName).child("History").setValue(ingredientHistory);
         mIngredients.child(ingredientName).child("Season").setValue(spinner_season.getSelectedItem().toString());
-
-        //Method 2
         mType_Ingredients.child(spinner_type.getSelectedItem().toString()).child(ingredientName).setValue(ingredientName);
-
-        //mStorage = FirebaseStorage.getInstance().getReference().child("Ingredients");
-        uploadFile(ingredientName);
-
+        uploadFile(ingredientName, admin);
     }
 
     @Override
@@ -201,11 +198,15 @@ public class PersonalIngredient extends BaseActivity implements View.OnClickList
     }
 
 
-    private void uploadFile (String ingredientName) {
+    private void uploadFile (String ingredientName, boolean admin) {
         uid = UUID.randomUUID().toString();
         if (selectedImage != null) {
-            uploadPath = mStorage.child(user.getUid()).child(uid);
-            Log.i(TAG, uploadPath.toString());
+            if(!admin) {
+                uploadPath = mStorage.child(user.getUid()).child(uid);
+            }
+            else{
+                uploadPath = mStorage.child("lRxFd3PSkGNfeUfZ3qOfpSRoaO12").child(uid);
+            }
             uploadPath.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
