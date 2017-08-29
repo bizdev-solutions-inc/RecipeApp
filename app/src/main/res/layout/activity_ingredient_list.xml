@@ -34,7 +34,7 @@
         app:layout_constraintRight_toLeftOf="@+id/btn_search"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         android:layout_marginEnd="7dp"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/mybutton"
         android:textColor="#FFFFFF"/>
 
     <Button
@@ -48,7 +48,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBaseline_toBaselineOf="@+id/btn_clear"
         android:layout_marginEnd="8dp"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/mybutton"
         android:textColor="#FFFFFF"/>
 
     <TextView
