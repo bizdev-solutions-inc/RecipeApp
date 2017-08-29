@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,8 +28,9 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         setContentView(R.layout.activity_home);
         super.onCreate(savedInstanceState);
 
-        mImageView = (ImageView) findViewById(R.id.imageDisplay);
-
+        final TextView mTextView = findViewById(R.id.random_recipe);
+        mTextView.setText("Recipe Name");
+        mImageView = findViewById(R.id.imageDisplay);
         mImageView.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -78,9 +80,6 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
-
-
-
     }
 
     /**

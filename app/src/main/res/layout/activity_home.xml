@@ -46,7 +46,7 @@
         android:id="@+id/random_recipe_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Recipe of the Day"
+        android:text="Recipe of the Day:"
         android:textColor="@color/colorPrimary"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
@@ -58,7 +58,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/random_recipe_name"
         android:layout_centerHorizontal="true"
-        android:text="Recipe Name"
         android:layout_marginTop="10dp"
         android:textColor="@color/colorPrimary"/>
 
