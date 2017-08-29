@@ -134,12 +134,19 @@ public class RecipePage extends BaseActivity {
         switch (item.getItemId()) {
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
-                finish();
                 startActivity(new Intent(this, Home.class));
+                return true;
+            case R.id.save_ing:
+                startActivity(new Intent(this, SavedIngredients.class));
+                return true;
+            case R.id.save_recipe:
+                startActivity(new Intent(this, SavedRecipe.class));
+                return true;
+            case R.id.recipe_favorites:
+                startActivity(new Intent(this, Favorites.class));
                 return true;
             case R.id.action_about_us:
                 // User chose the "About Us" item, show the About Us activity
-                finish();
                 startActivity(new Intent(this, AboutUs.class));
                 return true;
             case R.id.action_logout:

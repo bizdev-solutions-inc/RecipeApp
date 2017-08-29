@@ -26,15 +26,12 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.add_recipe:
-                        finish();
                         startActivity(new Intent(Home.this, PersonalRecipe.class));
                         return true;
                     case R.id.add_ing:
-                        finish();
                         startActivity(new Intent(Home.this, PersonalIngredient.class));
                         return true;
                     case R.id.favorite_re:
-                        finish();
                         startActivity(new Intent(Home.this, Favorites.class));
                         return true;
                     default:

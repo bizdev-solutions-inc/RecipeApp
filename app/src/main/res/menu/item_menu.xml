@@ -14,6 +14,27 @@
         android:title="@string/action_home"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/save_ing"
+        android:title="Saved Ingredients"
+        android:icon="@drawable/ingredients_list"
+        app:showAsAction="never"
+        android:theme="@style/NavigationTheme"/>
+
+    <item
+        android:id="@+id/save_recipe"
+        android:title="Saved Recipes"
+        android:icon="@drawable/save"
+        app:showAsAction="never"
+        android:theme="@style/NavigationTheme"/>
+
+    <item
+        android:id="@+id/recipe_favorites"
+        android:title="Favorites"
+        android:icon="@drawable/save"
+        app:showAsAction="never"
+        android:theme="@style/NavigationTheme"/>
+
     <!-- Show the user the About Us activity -->
     <item
         android:id="@+id/action_about_us"

@@ -2,10 +2,13 @@ package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,12 +43,26 @@ public class SearchByName extends BaseActivity {
         setContentView(R.layout.activity_search_by_name);
         super.onCreate(savedInstanceState);
 
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
         populateResults();
 
         /**
          * AutocompleteTextView for the searchsing functionality
          */
         actv = findViewById(R.id.autoCompleteTextView);
+
+        actv.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_ENTER)
+                {
+                    return true;
+                }
+                return false;
+            }
+        });
+
         ArrayAdapter<String> actvAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, all_results);
         actv.setAdapter(actvAdapter);
@@ -110,4 +127,5 @@ public class SearchByName extends BaseActivity {
 
         startActivity(intent);
     }
+
 }
