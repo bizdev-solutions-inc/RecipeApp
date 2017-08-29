@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,14 +14,26 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Random;
 
 public class Home extends BaseActivity implements AdapterView.OnItemSelectedListener {
 
-
+    private DatabaseReference mRoot;
     private ImageView mImageView;
 
     @Override
@@ -28,17 +41,7 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         setContentView(R.layout.activity_home);
         super.onCreate(savedInstanceState);
 
-        final TextView mTextView = findViewById(R.id.random_recipe);
-        mTextView.setText("Recipe Name");
-        mImageView = findViewById(R.id.imageDisplay);
-        mImageView.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                // do stuff
-            }
-
-        });
+        getRecipeOfDay();
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -187,5 +190,61 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         }
     }
 
+    private void getRecipeOfDay() {
 
+        mRoot = FirebaseDatabase.getInstance().getReference();
+        mRoot.child("Recipes").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<String> result = new ArrayList<>(((HashMap) dataSnapshot.getValue()).keySet());
+                Calendar c = Calendar.getInstance();
+                int day = (c.get(c.DAY_OF_YEAR))%result.size();
+                String recipe = result.get(day);
+
+                displayRecipeImage(recipe, dataSnapshot);
+                displayRecipeOfDay(recipe);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) { }
+        });
+    }
+
+    private void displayRecipeOfDay(String r) {
+        final TextView mTextView = findViewById(R.id.random_recipe);
+        mTextView.setText(r);
+        mImageView = findViewById(R.id.imageDisplay);
+
+        final Intent intent = new Intent(Home.this, RecipePage.class);
+        intent.putExtra("SELECTED_ITEM", r);
+
+        mTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(intent);
+            }
+
+        });
+
+        mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(intent);
+            }
+
+        });
+    }
+
+    private void displayRecipeImage(String recipe, DataSnapshot dataSnapshot) {
+        // Get the recipe image url and display it in the ImageView
+        String gs_url = dataSnapshot
+                .child(recipe)
+                .child("Image").getValue(String.class);
+        StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(gs_url);
+        ImageView iv_item_image = findViewById(R.id.imageDisplay);
+        Glide.with(Home.this)
+                .using(new FirebaseImageLoader())
+                .load(storageRef)
+                .into(iv_item_image);
+    }
 }
