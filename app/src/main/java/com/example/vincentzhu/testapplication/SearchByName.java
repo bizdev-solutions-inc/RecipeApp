@@ -8,8 +8,6 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
-import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,24 +31,29 @@ public class SearchByName extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.activity_search_by_name);
+        super.onCreate(savedInstanceState);
 ;
         searchBy = (String) getIntent().getSerializableExtra("SEARCH_NAME");
         setTitle("Search " + searchBy);
 
-        if(searchBy.equals("Recipes"))
-            isRecipe = true;
+        /**
+         * AutocompleteTextView for the searching functionality
+         */
+        actv = findViewById(R.id.autoCompleteTextView);
 
-        setContentView(R.layout.activity_search_by_name);
-        super.onCreate(savedInstanceState);
+        if (searchBy.equals("Recipes")) {
+            isRecipe = true;
+            actv.setHint("Enter recipe name");
+        } else {
+            actv.setHint("Enter ingredient name");
+        }
+
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         populateResults();
 
-        /**
-         * AutocompleteTextView for the searchsing functionality
-         */
-        actv = findViewById(R.id.autoCompleteTextView);
 
         actv.setOnKeyListener(new View.OnKeyListener() {
             @Override
