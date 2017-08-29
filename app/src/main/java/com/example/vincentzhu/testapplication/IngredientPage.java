@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
@@ -178,13 +179,13 @@ public class IngredientPage extends BaseActivity {
                     if(getActivity.equals("SavedIngredients"))
                     {
                         final DatabaseReference mCurrent = mFavorite.child(userID).child("Added Ingredients").child("Ingredients").child(ingredient).child("Favorited By");
-                        setFavoriteIngredient(mCurrent);
+                        setFavoriteIngredient(mCurrent, item);
                     }
                 }
                 else
                 {
                     final DatabaseReference mCurrent = mFavorite.child("Ingredients").child(ingredient).child("Favorited By");
-                    setFavoriteIngredient(mCurrent);
+                    setFavoriteIngredient(mCurrent, item);
                 }
                 return true;
             default:
@@ -194,7 +195,7 @@ public class IngredientPage extends BaseActivity {
         }
     }
 
-    public void setFavoriteIngredient(final DatabaseReference mCurrent)
+    public void setFavoriteIngredient(final DatabaseReference mCurrent, final MenuItem favorite_button)
     {
         if(mCurrent != null) { // "Favorited By" attribute exists
             mCurrent.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -202,9 +203,15 @@ public class IngredientPage extends BaseActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (!favoriteExists(dataSnapshot, userID)) {
                         mCurrent.child(userID).setValue(userID);
+                        favorite_button.setIcon(R.drawable.ic_action_is_favorite);
+                        Toast.makeText(IngredientPage.this, "Added to Favorites",
+                                Toast.LENGTH_SHORT).show();
                         return;
                     } else {
                         mCurrent.child(userID).removeValue();
+                        favorite_button.setIcon((R.drawable.ic_action_is_not_favorite));
+                        Toast.makeText(IngredientPage.this, "Removed from Favorites",
+                                Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }

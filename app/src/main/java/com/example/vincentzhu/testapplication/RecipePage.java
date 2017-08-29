@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
@@ -167,14 +168,18 @@ public class RecipePage extends BaseActivity {
                 {
                     if(getActivity.equals("SavedRecipe"))
                     {
-                        final DatabaseReference mCurrent = mFavorite.child(userID).child("Added Recipes").child("Recipes").child(recipe).child("Favorited By");
-                        setFavoriteRecipe(mCurrent);
+                        final DatabaseReference mCurrent = mFavorite.child(userID)
+                                .child("Added Recipes")
+                                .child("Recipes")
+                                .child(recipe)
+                                .child("Favorited By");
+                        setFavoriteRecipe(mCurrent, item);
                     }
                 }
                 else
                 {
                     final DatabaseReference mCurrent = mFavorite.child("Recipes").child(recipe).child("Favorited By");
-                    setFavoriteRecipe(mCurrent);
+                    setFavoriteRecipe(mCurrent, item);
                 }
                 return true;
             default:
@@ -184,7 +189,7 @@ public class RecipePage extends BaseActivity {
         }
     }
 
-    public void setFavoriteRecipe(final DatabaseReference mCurrent)
+    public void setFavoriteRecipe(final DatabaseReference mCurrent, final MenuItem favorite_button)
     {
         if(mCurrent != null) { // "Favorited By" attribute exists
             mCurrent.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -192,9 +197,15 @@ public class RecipePage extends BaseActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (!favoriteExists(dataSnapshot, userID)) {
                         mCurrent.child(userID).setValue(userID);
+                        favorite_button.setIcon(R.drawable.ic_action_is_favorite);
+                        Toast.makeText(RecipePage.this, "Added to Favorites",
+                                Toast.LENGTH_SHORT).show();
                         return;
                     } else {
                         mCurrent.child(userID).removeValue();
+                        favorite_button.setIcon((R.drawable.ic_action_is_not_favorite));
+                        Toast.makeText(RecipePage.this, "Removed from Favorites",
+                                Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
