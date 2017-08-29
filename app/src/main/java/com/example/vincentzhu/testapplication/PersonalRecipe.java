@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -90,8 +89,6 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
         mInstrField = findViewById(R.id.instr_field);
         imageDisplayRec = (ImageView) findViewById(imageDisplay);
 //        mFirebaseBtn.setOnClickListener(this);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         ListView listView = findViewById(R.id.lv_added_ingredients);
         listView.setOnItemClickListener(itemClickListener);

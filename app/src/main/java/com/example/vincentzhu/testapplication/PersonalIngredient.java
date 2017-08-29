@@ -7,10 +7,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -32,9 +28,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import java.util.UUID;
 
-import java.util.ArrayList;
+import java.util.UUID;
 
 public class PersonalIngredient extends BaseActivity implements View.OnClickListener {
 
@@ -84,7 +79,6 @@ public class PersonalIngredient extends BaseActivity implements View.OnClickList
         mIngName = (EditText) findViewById(R.id.ing_name);
         mIngDescription = (EditText) findViewById(R.id.ing_description);
         mIngHistory = (EditText) findViewById(R.id.ing_history);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         Window window = this.getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
