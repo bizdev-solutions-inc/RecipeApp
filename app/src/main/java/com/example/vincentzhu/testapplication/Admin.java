@@ -265,7 +265,7 @@ public class Admin extends AppCompatActivity {
         //separate ingredients by comma
         for(int i=0; i<line.length(); i++)
         {
-            if(line.charAt(i)!= ',' && line.charAt(i)!= ' ' && found == false)
+            if(line.charAt(i)!= ' ' && found == false)
             {
                 startIndex = i;
                 found = true;
