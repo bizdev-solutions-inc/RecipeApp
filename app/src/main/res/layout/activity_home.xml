@@ -46,19 +46,29 @@
         android:id="@+id/random_recipe_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Random Recipe"
+        android:text="Recipe of the Day"
         android:textColor="@color/colorPrimary"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp" />
+
+    <TextView
+        android:id="@+id/random_recipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/random_recipe_name"
+        android:layout_centerHorizontal="true"
+        android:text="Recipe Name"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/colorPrimary"/>
 
     <ImageView
         android:id="@+id/imageDisplay"
         android:layout_width="250dp"
         android:layout_height="200dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="290dp"
-        android:src="@drawable/sample"/>
+        android:layout_marginTop="300dp"
+        android:src="@drawable/sample" />
 
     <android.support.design.widget.BottomNavigationView
         android:theme="@style/NavigationTheme"

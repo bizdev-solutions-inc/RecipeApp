@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,10 +20,23 @@ import com.google.firebase.database.FirebaseDatabase;
 public class Home extends BaseActivity implements AdapterView.OnItemSelectedListener {
 
 
+    private ImageView mImageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_home);
         super.onCreate(savedInstanceState);
+
+        mImageView = (ImageView) findViewById(R.id.imageDisplay);
+
+        mImageView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                // do stuff
+            }
+
+        });
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -64,6 +78,8 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+
+
 
     }
 
