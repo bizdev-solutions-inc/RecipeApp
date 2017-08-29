@@ -38,6 +38,7 @@ public class IngredientPage extends BaseActivity {
     private String ingredient;
     private String userID;
     private String getActivity;
+    private boolean isFavorite;
 
     private StorageReference storageRef;
     private String gs_url; // URL for recipe image in Firebase storage
@@ -46,33 +47,30 @@ public class IngredientPage extends BaseActivity {
     private ArrayList<ArrayList<String>> info_contents;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_item_page);
         super.onCreate(savedInstanceState);
+
+        isFavorite = false; // Initialize boolean
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         userID = user.getUid();
-        getActivity = (String)getIntent().getSerializableExtra("GET_ACTIVITY");
+        getActivity = (String) getIntent().getSerializableExtra("GET_ACTIVITY");
 
-        ingredient = (String)getIntent().getSerializableExtra("SELECTED_INGREDIENT");
+        ingredient = (String) getIntent().getSerializableExtra("SELECTED_INGREDIENT");
 
         // Hide the text hint "(Tap an ingredient for more info)" from the layout
         TextView tv_hint = findViewById(R.id.tv_hint);
         tv_hint.setVisibility(View.GONE);
 
-        if(getActivity!=null)
-        {
-            if(getActivity.equals("SavedIngredients"))
-            {
+        if (getActivity != null) {
+            if (getActivity.equals("SavedIngredients")) {
                 mRoot = FirebaseDatabase.getInstance().getReference()
                         .child(userID).child("Added Ingredients")
                         .child("Ingredients").child(ingredient);
             }
-        }
-        else
-        {
+        } else {
             mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredients").child(ingredient);
         }
 
@@ -131,13 +129,10 @@ public class IngredientPage extends BaseActivity {
         });
     }
 
-    public void ingredientLookup(DataSnapshot dataSnapshot)
-    {
-        for(DataSnapshot ds : dataSnapshot.getChildren())
-        {
-            if(ds.getKey().equals(ingredient))
-            {
-                TextView tv_item_name = (TextView)findViewById(R.id.tv_item_name);
+    public void ingredientLookup(DataSnapshot dataSnapshot) {
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+            if (ds.getKey().equals(ingredient)) {
+                TextView tv_item_name = (TextView) findViewById(R.id.tv_item_name);
                 tv_item_name.setText(ds.getKey().toString());
             }
         }
@@ -146,6 +141,12 @@ public class IngredientPage extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.item_menu, menu);
+        MenuItem favorite_button = menu.findItem(R.id.action_favorite);
+        if (favorite_button != null) { // TODO: favorite button icon
+            if (checkIfFavorite()) {
+                favorite_button.setIcon(R.drawable.ic_action_is_favorite);
+            }
+        }
         return true;
     }
 
@@ -167,24 +168,27 @@ public class IngredientPage extends BaseActivity {
                 startActivity(new Intent(this, AboutUs.class));
                 return true;
             case R.id.action_logout:
-                // User chose the "Log Out" item, log the user out and return to activity_registration activity
+                // User chose the "Log Out" item,
+                // log the user out and return to Registration activity
                 firebaseAuth.signOut();
                 finish();
                 startActivity(new Intent(this, LoginActivity.class));
                 return true;
-            case R.id.action_favorite_item:
+            case R.id.action_favorite:
                 final DatabaseReference mFavorite = FirebaseDatabase.getInstance().getReference();
-                if(getActivity!= null)
-                {
-                    if(getActivity.equals("SavedIngredients"))
-                    {
-                        final DatabaseReference mCurrent = mFavorite.child(userID).child("Added Ingredients").child("Ingredients").child(ingredient).child("Favorited By");
+                if (getActivity != null) {
+                    if (getActivity.equals("SavedIngredients")) {
+                        final DatabaseReference mCurrent = mFavorite.child(userID)
+                                .child("Added Ingredients")
+                                .child("Ingredients")
+                                .child(ingredient)
+                                .child("Favorited By");
                         setFavoriteIngredient(mCurrent, item);
                     }
-                }
-                else
-                {
-                    final DatabaseReference mCurrent = mFavorite.child("Ingredients").child(ingredient).child("Favorited By");
+                } else {
+                    final DatabaseReference mCurrent = mFavorite.child("Ingredients")
+                            .child(ingredient)
+                            .child("Favorited By");
                     setFavoriteIngredient(mCurrent, item);
                 }
                 return true;
@@ -195,9 +199,9 @@ public class IngredientPage extends BaseActivity {
         }
     }
 
-    public void setFavoriteIngredient(final DatabaseReference mCurrent, final MenuItem favorite_button)
-    {
-        if(mCurrent != null) { // "Favorited By" attribute exists
+    public void setFavoriteIngredient(final DatabaseReference mCurrent,
+                                      final MenuItem favorite_button) {
+        if (mCurrent != null) { // "Favorited By" attribute exists
             mCurrent.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -215,27 +219,60 @@ public class IngredientPage extends BaseActivity {
                         return;
                     }
                 }
+
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 
                 }
             });
-        }
-        else // "Favorited By" attribute does not exist
+        } else // "Favorited By" attribute does not exist
         {
             mCurrent.child(userID).setValue(userID);
         }
     }
 
-    public boolean favoriteExists(DataSnapshot dataSnapshot, String userID)
-    {
-        for(DataSnapshot ds : dataSnapshot.getChildren())
-        {
-            if(ds.getKey().equals(userID))
-            {
+    public boolean favoriteExists(DataSnapshot dataSnapshot, String userID) {
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+            if (ds.getKey().equals(userID)) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Checks if the ingredient has been added to the user's favorite ingredients.
+     * Used for determining the appearance of the Favorite (heart) action button.
+     *
+     * @return true if the ingredient is a favorite, false otherwise
+     */
+    private boolean checkIfFavorite() {
+//        final DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference()
+//                .child("Ingredients");
+//        mRoot.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                DataSnapshot favorited_by = dataSnapshot.child(ingredient).child("Favorited By");
+//                if (favorited_by.exists()) { // "Favorited By" attribute exists
+//                    for (DataSnapshot user : favorited_by.getChildren()) {
+//                        if (userID.equals(user.getKey())) {
+//                            isFavorite = true;
+//                            break;
+//                        }
+//                    }
+//                } else {
+//                    // "Favorited By" attribute does not exist, therefore is not possible
+//                    // for user to have already set as favorite
+//                    isFavorite = false;
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+        return isFavorite;
     }
 }

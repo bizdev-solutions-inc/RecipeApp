@@ -161,7 +161,7 @@ public class RecipePage extends BaseActivity {
                 finish();
                 startActivity(new Intent(this, LoginActivity.class));
                 return true;
-            case R.id.action_favorite_item:
+            case R.id.action_favorite:
                 final DatabaseReference mFavorite = FirebaseDatabase.getInstance().getReference();
 
                 if(getActivity!=null)
