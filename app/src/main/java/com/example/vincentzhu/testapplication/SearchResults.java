@@ -20,7 +20,6 @@ public class SearchResults extends BaseActivity
         implements FilterResultsDialogFragment.FilterResultsDialogListener{
 
     private ArrayList<String> recipe_list;
-    private ArrayList<String> filtered_results;
 
     private ArrayAdapter<String> adapter;
 

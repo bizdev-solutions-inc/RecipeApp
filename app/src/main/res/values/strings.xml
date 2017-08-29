@@ -105,6 +105,9 @@
     <string name="cancel">Cancel</string>
     <string name="tv_enter_ingredient">Enter ingredient</string>
     <string name="tv_exclude_ingredient">Exclude Ingredient:</string>
+    <string name="tv_hint">(Tap an ingredient for more info)</string>
+    <string name="tv_item_name">Item Name</string>
+    <string name="desc_item">Picture of selected recipe/ingredient</string>
     <string-array name="filter_options">
         <item>Type</item>
         <item>Cuisine</item>
