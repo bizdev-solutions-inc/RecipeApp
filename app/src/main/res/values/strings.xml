@@ -38,6 +38,7 @@
         <item>Recipe Name</item>
         <item>Recipe Type</item>
         <item>Recipe Cuisine</item>
+        <item>Recipe Catalog</item>
         <item>Ingredient List</item>
         <item>Ingredient Name</item>
         <item>Ingredient Catalog</item>

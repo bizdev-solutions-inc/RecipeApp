@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,8 +27,8 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Random;
 
 public class Home extends BaseActivity implements AdapterView.OnItemSelectedListener {
 
@@ -44,7 +43,8 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         getRecipeOfDay();
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
@@ -97,35 +97,39 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         switch (item) {
             case "Recipe Name":
                 parent.setSelection(0);
-                intent = new Intent(Home.this, SearchByName.class);
+                intent = new Intent(this, SearchByName.class);
                 intent.putExtra("SEARCH_NAME", "Recipes");
                 startActivity(intent);
                 break;
             case "Recipe Type":
                 parent.setSelection(0);
-                intent = new Intent(Home.this, SearchByAttribute.class);
+                intent = new Intent(this, SearchByAttribute.class);
                 intent.putExtra("ATTRIBUTE", "Type_Recipes");
                 startActivity(intent);
                 break;
             case "Recipe Cuisine":
                 parent.setSelection(0);
-                intent = new Intent(Home.this, SearchByAttribute.class);
+                intent = new Intent(this, SearchByAttribute.class);
                 intent.putExtra("ATTRIBUTE", "Cuisine_Recipe");
                 startActivity(intent);
                 break;
+            case "Recipe Catalog":
+                parent.setSelection(0);
+                displayAllRecipes();
+                break;
             case "Ingredient List":
                 parent.setSelection(0);
-                startActivity(new Intent(Home.this, IngredientList.class));
+                startActivity(new Intent(this, IngredientList.class));
                 break;
             case "Ingredient Name":
                 parent.setSelection(0);
-                intent = new Intent(Home.this, SearchByName.class);
+                intent = new Intent(this, SearchByName.class);
                 intent.putExtra("SEARCH_NAME", "Ingredients");
                 startActivity(intent);
                 break;
             case "Ingredient Catalog":
                 parent.setSelection(0);
-                intent = new Intent(Home.this, SearchByAttribute.class);
+                intent = new Intent(this, SearchByAttribute.class);
                 intent.putExtra("ATTRIBUTE", "Type_Ingredients");
                 startActivity(intent);
                 break;
@@ -143,16 +147,6 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
      */
     public void onNothingSelected(AdapterView<?> parent) {
         // Do nothing
-    }
-
-    public void displaySavedRecipe(View view)
-    {
-        startActivity(new Intent(Home.this, SavedRecipe.class));
-    }
-
-    public void displaySavedIngredients(View view)
-    {
-        startActivity(new Intent(Home.this, SavedIngredients.class));
     }
 
     public boolean onCreateOptionsMenu (Menu menu){
@@ -190,6 +184,9 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         }
     }
 
+    /**
+     * Gets a recipe from the database based on the current day of the year
+     */
     private void getRecipeOfDay() {
 
         mRoot = FirebaseDatabase.getInstance().getReference();
@@ -210,12 +207,17 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         });
     }
 
+    /**
+     *  Displays the name of the recipe of the day and when clicking on
+     *  either the name or the image the recipe page for the recipe of
+     *  the day is displayed
+     */
     private void displayRecipeOfDay(String r) {
         final TextView mTextView = findViewById(R.id.random_recipe);
         mTextView.setText(r);
         mImageView = findViewById(R.id.imageDisplay);
 
-        final Intent intent = new Intent(Home.this, RecipePage.class);
+        final Intent intent = new Intent(this, RecipePage.class);
         intent.putExtra("SELECTED_ITEM", r);
 
         mTextView.setOnClickListener(new View.OnClickListener() {
@@ -235,6 +237,9 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         });
     }
 
+    /**
+     * Gets the image of the recipe of the day from the database and sets the ImageView to it
+     */
     private void displayRecipeImage(String recipe, DataSnapshot dataSnapshot) {
         // Get the recipe image url and display it in the ImageView
         String gs_url = dataSnapshot
@@ -242,9 +247,29 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
                 .child("Image").getValue(String.class);
         StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(gs_url);
         ImageView iv_item_image = findViewById(R.id.imageDisplay);
-        Glide.with(Home.this)
+        Glide.with(this)
                 .using(new FirebaseImageLoader())
                 .load(storageRef)
                 .into(iv_item_image);
+    }
+
+    /**
+     * Displays all recipes currently in the database.
+     */
+    private void displayAllRecipes() {
+        mRoot = FirebaseDatabase.getInstance().getReference();
+        mRoot.child("Recipes").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<String> recipes = new ArrayList<>(((HashMap) dataSnapshot.getValue()).keySet());
+                Collections.sort(recipes);
+                Intent intent = new Intent(Home.this, SearchResults.class);
+                intent.putExtra("RECIPE_RESULTS", recipes);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) { }
+        });
     }
 }
