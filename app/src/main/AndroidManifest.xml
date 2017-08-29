@@ -120,7 +120,7 @@
                 android:value=".SearchByName" />
         </activity>
         <activity
-            android:name=".SearchByRecipeAttribute"
+            android:name=".SearchByAttribute"
             android:label="Search by Attribute">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

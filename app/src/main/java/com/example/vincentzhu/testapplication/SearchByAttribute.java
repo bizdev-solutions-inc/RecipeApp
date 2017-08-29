@@ -18,7 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SearchByRecipeAttribute extends BaseActivity {
+public class SearchByAttribute extends BaseActivity {
 
     private DatabaseReference mRoot;
     private String[] recipeAttributeList;
@@ -59,7 +59,7 @@ public class SearchByRecipeAttribute extends BaseActivity {
 
         // Set ListView items by using an adapter
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                SearchByRecipeAttribute.this, arrayId, android.R.layout.simple_list_item_1);
+                SearchByAttribute.this, arrayId, android.R.layout.simple_list_item_1);
         ListView lv_recipe_types = findViewById(R.id.lv_recipe_types);
         lv_recipe_types.setAdapter(adapter);
         lv_recipe_types.setOnItemClickListener(itemClickListener);
@@ -90,11 +90,11 @@ public class SearchByRecipeAttribute extends BaseActivity {
 
                 Intent intent;
                 if(isRecipe) {
-                    intent = new Intent(SearchByRecipeAttribute.this, SearchResults.class);
+                    intent = new Intent(SearchByAttribute.this, SearchResults.class);
                     intent.putExtra("RECIPE_RESULTS", list);
                 }
                 else {
-                    intent = new Intent(SearchByRecipeAttribute.this, IngredientCatalog.class);
+                    intent = new Intent(SearchByAttribute.this, IngredientCatalog.class);
                     intent.putExtra("INGREDIENT_RESULTS", list);
                 }
                 startActivity(intent);
