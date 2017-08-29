@@ -108,6 +108,7 @@ public class IngredientList extends BaseActivity {
                 if (!item.equals("Favorites") && !ingredient_list.contains(item)){
                     ingredient_list.add(item);
                     updateList();
+                    adapterView.setSelection(0);
                 }
             }
 
