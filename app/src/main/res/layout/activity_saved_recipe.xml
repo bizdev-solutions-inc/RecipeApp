@@ -21,7 +21,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="Search Product"
-        android:inputType="textVisiblePassword" />
+        android:inputType="textVisiblePassword"
+        android:backgroundTint="@color/colorPrimary"/>
 
     <ListView
         android:id="@+id/savedRecipeListView"

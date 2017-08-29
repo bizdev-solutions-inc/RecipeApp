@@ -3,6 +3,7 @@ package com.example.vincentzhu.testapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -67,6 +68,17 @@ public class IngredientList extends BaseActivity {
          * Autocompletetextview
          */
         actv = findViewById(R.id.autoCompleteTextView);
+        actv.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_ENTER)
+                {
+                    return true;
+                }
+                return false;
+            }
+        });
+
         ArrayAdapter<String> actvAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, all_ingredients);
         actv.setAdapter(actvAdapter);

@@ -12,6 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Home extends BaseActivity implements AdapterView.OnItemSelectedListener {
 
@@ -139,8 +141,37 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
 
     public boolean onCreateOptionsMenu (Menu menu){
 
-        getMenuInflater().inflate(R.menu.my_menu,menu);
+        getMenuInflater().inflate(R.menu.home_menu,menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.save_ing:
+                startActivity(new Intent(this, SavedIngredients.class));
+                return true;
+            case R.id.save_recipe:
+                startActivity(new Intent(this, SavedRecipe.class));
+                return true;
+            case R.id.recipe_favorites:
+                startActivity(new Intent(this, Favorites.class));
+                return true;
+            case R.id.action_about_us:
+                // User chose the "About Us" item, show the About Us activity
+                startActivity(new Intent(this, AboutUs.class));
+                return true;
+            case R.id.action_logout:
+                // User chose the "Log Out" item, log the user out and return to activity_registration activity
+                firebaseAuth.signOut();
+                finish();
+                startActivity(new Intent(this, LoginActivity.class));
+                return true;
+            default:
+                // The user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 
