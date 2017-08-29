@@ -5,33 +5,21 @@ import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.lang.reflect.Array;
+import org.apache.commons.lang3.text.WordUtils;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
-
-//    String [] groupNames = { "Ingredients", "Instructions" };
-//    String [][] childNames = {{"Ingredients go here"}, {"Instructions go here"}};
-
-//    ArrayList<String> groupNames =
-//            new ArrayList<String>(Arrays.asList("Ingredients", "Instructions"));
-//    ArrayList<ArrayList<String>> childNames = new ArrayList<ArrayList<String>>();
-//
-//    ArrayList<String> ingredients = new ArrayList<String>(Arrays.asList("Ingredients go here"));
-//    ArrayList<String> instructions = new ArrayList<String>(Arrays.asList("Instructions go here"));
 
     private ArrayList<String> groupNames;
     private ArrayList<ArrayList<String>> childNames;
 
-    Context context;
+    private Context context;
 
-    public ExpandableListViewAdapter(Context context, ArrayList<String> groupNames,
-                                     ArrayList<ArrayList<String>> childNames) {
+    ExpandableListViewAdapter(Context context, ArrayList<String> groupNames,
+                              ArrayList<ArrayList<String>> childNames) {
         this.context = context;
         this.groupNames = groupNames;
         this.childNames = childNames;
@@ -79,7 +67,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View view, ViewGroup parent) {
         TextView textView = new TextView(context);
-//        textView.setText(groupNames[groupPosition]);
         textView.setText(groupNames.get(groupPosition));
         textView.setPadding(0, 8, 0, 8); // left, top, right, bottom
         textView.setTextSize(24);
@@ -91,17 +78,21 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View view,
                              ViewGroup parent) {
         final TextView textView = new TextView(context);
-//        textView.setText(childNames[groupPosition][childPosition]);
-        textView.setText(childNames.get(groupPosition).get(childPosition));
+        String text = childNames.get(groupPosition).get(childPosition);
+        if (groupPosition == 0 && groupNames.get(0).equals("Ingredients")) {
+            textView.setText(WordUtils.capitalize(text));
+        } else {
+            textView.setText(text);
+        }
         textView.setPadding(160, 8, 0, 8); // left, top, right, bottom
-        textView.setTextSize(16);
+        textView.setTextSize(20);
 
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(groupPosition == 0)
+                if (groupPosition == 0 && groupNames.get(0).equals("Ingredients"))
                 {
-                    String item = textView.getText().toString();
+                    String item = textView.getText().toString().toLowerCase();
                     Intent intent = new Intent(context.getApplicationContext(), IngredientPage.class);
                     intent.putExtra("SELECTED_INGREDIENT", item);
                     //Toast.makeText(context, textView.getText().toString(), Toast.LENGTH_SHORT).show();

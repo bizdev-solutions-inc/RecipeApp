@@ -74,7 +74,7 @@ public class RecipePage extends BaseActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 // Get recipe name from database and display it in the TextView
-                TextView tv_item_name = (TextView) findViewById(R.id.tv_item_name);
+                TextView tv_item_name = findViewById(R.id.tv_item_name);
                 tv_item_name.setText(dataSnapshot.child("Recipes")
                         .child(recipe).getKey());
 
@@ -92,23 +92,23 @@ public class RecipePage extends BaseActivity {
 
                 // Get recipe ingredients and instructions from the database and display them in
                 // the ExpandableListView
-                info_labels = new ArrayList<String>(Arrays.asList("Ingredients", "Instructions"));
-                ArrayList<String> ingredients = new ArrayList<String>();
+                info_labels = new ArrayList<>(Arrays.asList("Ingredients", "Instructions"));
+                ArrayList<String> ingredients = new ArrayList<>();
                 for (DataSnapshot ds : dataSnapshot.child("Recipe_Ingredients")
                         .child(recipe).getChildren()) {
                     ingredients.add(ds.getValue(String.class));
                 }
-                ArrayList<String> instructions = new ArrayList<String>();
+                ArrayList<String> instructions = new ArrayList<>();
                 instructions.add(dataSnapshot.child("Recipes")
                         .child(recipe)
                         .child("Instructions")
                         .getValue(String.class));
-                info_contents = new ArrayList<ArrayList<String>>();
+                info_contents = new ArrayList<>();
                 info_contents.add(ingredients);
                 info_contents.add(instructions);
 
                 ExpandableListView elv_item_info =
-                        (ExpandableListView) findViewById(R.id.elv_item_info);
+                        findViewById(R.id.elv_item_info);
                 ExpandableListViewAdapter adapter = new ExpandableListViewAdapter(RecipePage.this,
                         info_labels, info_contents);
                 elv_item_info.setAdapter(adapter);

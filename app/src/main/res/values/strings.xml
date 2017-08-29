@@ -35,50 +35,50 @@
     <!-- Drop-down menu for "SearchByName recipes by..." in Home activity -->
     <string-array name="search_menu_array">
         <item>Search by…</item>
-        <item>Recipe/Ingredient Name</item>
+        <item>Recipe Name</item>
         <item>Recipe Type</item>
         <item>Recipe Cuisine</item>
         <item>Ingredient List</item>
+        <item>Ingredient Name</item>
         <item>Ingredient Catalog</item>
     </string-array>
 
     <!-- Drop down menu for admin home -->
     <string-array name="recipe_types">
         <!-- <item>Recipe Type…</item> -->
-        <item>Breakfast</item>
-        <item>Lunch</item>
-        <item>Dinner</item>
-        <item>Dessert</item>
-        <item>Snack</item>
         <item>Anytime</item>
+        <item>Breakfast</item>
+        <item>Dessert</item>
+        <item>Dinner</item>
+        <item>Lunch</item>
+        <item>Snack</item>
     </string-array>
 
     <string-array name="recipe_cuisines">
         <!--<item>Recipe Cuisine…</item>-->
         <item>American</item>
-        <item>Mexican</item>
         <item>Chinese</item>
+        <item>French</item>
+        <item>Greek</item>
+        <item>General</item>
+        <item>Indian</item>
         <item>Italian</item>
         <item>Japanese</item>
-        <item>Greek</item>
-        <item>French</item>
-        <item>Thai</item>
-        <item>Spanish</item>
-        <item>Indian</item>
-        <item>Mediterranean</item>
-        <item>Vietnamese</item>
         <item>Korean</item>
-        <item>General</item>
+        <item>Mediterranean</item>
+        <item>Mexican</item>
+        <item>Spanish</item>
+        <item>Thai</item>
+        <item>Vietnamese</item>
     </string-array>
 
     <string-array name="ingredient_types">
-        <item>Ingredient Type</item>
-        <item>Meat</item>
-        <item>Vegetable</item>
-        <item>Fruit</item>
         <item>Dairy</item>
+        <item>Fruit</item>
         <item>Grain</item>
+        <item>Meat</item>
         <item>Miscellaneous</item>
+        <item>Vegetable</item>
     </string-array>
 
     <string-array name="ingredient_seasons">
@@ -105,6 +105,9 @@
     <string name="cancel">Cancel</string>
     <string name="tv_enter_ingredient">Enter ingredient</string>
     <string name="tv_exclude_ingredient">Exclude Ingredient:</string>
+    <string name="tv_hint">(Tap an ingredient for more info)</string>
+    <string name="tv_item_name">Item Name</string>
+    <string name="desc_item">Picture of selected recipe/ingredient</string>
     <string-array name="filter_options">
         <item>Type</item>
         <item>Cuisine</item>

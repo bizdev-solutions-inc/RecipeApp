@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -56,6 +57,10 @@ public class IngredientPage extends BaseActivity {
 
         ingredient = (String)getIntent().getSerializableExtra("SELECTED_INGREDIENT");
 
+        // Hide the text hint "(Tap an ingredient for more info)" from the layout
+        TextView tv_hint = findViewById(R.id.tv_hint);
+        tv_hint.setVisibility(View.GONE);
+
         if(getActivity!=null)
         {
             if(getActivity.equals("SavedIngredients"))
@@ -70,7 +75,6 @@ public class IngredientPage extends BaseActivity {
             mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredients").child(ingredient);
         }
 
-        //ingredient = new String();
 
         mRoot.addValueEventListener(new ValueEventListener() {
             @Override
@@ -79,9 +83,9 @@ public class IngredientPage extends BaseActivity {
 
                 // Get the recipe name from the database and display it in the TextView
                 // Capitalize using WordUtils from org.apache library
-                String item_name = WordUtils.capitalize(dataSnapshot.getKey());
-                TextView tv_item_name = (TextView) findViewById(R.id.tv_item_name);
-                tv_item_name.setText(item_name);
+                String item_name = dataSnapshot.getKey();
+                TextView tv_item_name = findViewById(R.id.tv_item_name);
+                tv_item_name.setText(WordUtils.capitalize(item_name));
 
                 // Get the recipe image url and display it in the ImageView
                 gs_url = dataSnapshot
@@ -95,27 +99,27 @@ public class IngredientPage extends BaseActivity {
 
                 // Get recipe ingredients and instructions from the database and display them in
                 // the ExpandableListView
-                info_labels = new ArrayList<String>(Arrays.asList("Type", "Season", "Description", "History"));
-                ArrayList<String> ingredientType = new ArrayList<String>();
-                ArrayList<String> ingredientSeason = new ArrayList<String>();
-                ArrayList<String> ingredientDescription = new ArrayList<String>();
-                ArrayList<String> ingredientHistory = new ArrayList<String>();
+                info_labels = new ArrayList<>
+                        (Arrays.asList("Type", "Season", "Description", "History"));
+                ArrayList<String> ingredientType = new ArrayList<>();
+                ArrayList<String> ingredientSeason = new ArrayList<>();
+                ArrayList<String> ingredientDescription = new ArrayList<>();
+                ArrayList<String> ingredientHistory = new ArrayList<>();
 
-                ingredientType.add(dataSnapshot.child("Type").getValue().toString());
-                ingredientSeason.add(dataSnapshot.child("Season").getValue().toString());
-                ingredientDescription.add(dataSnapshot.child("Description").getValue().toString());
-                ingredientHistory.add(dataSnapshot.child("History").getValue().toString());
+                ingredientType.add(dataSnapshot.child("Type").getValue(String.class));
+                ingredientSeason.add(dataSnapshot.child("Season").getValue(String.class));
+                ingredientDescription.add(dataSnapshot.child("Description").getValue(String.class));
+                ingredientHistory.add(dataSnapshot.child("History").getValue(String.class));
 
-                info_contents = new ArrayList<ArrayList<String>>();
+                info_contents = new ArrayList<>();
                 info_contents.add(ingredientType);
                 info_contents.add(ingredientSeason);
                 info_contents.add(ingredientDescription);
                 info_contents.add(ingredientHistory);
 
-                ExpandableListView elv_item_info =
-                        (ExpandableListView) findViewById(R.id.elv_item_info);
-                ExpandableListViewAdapter adapter = new ExpandableListViewAdapter(IngredientPage.this,
-                        info_labels, info_contents);
+                ExpandableListView elv_item_info = findViewById(R.id.elv_item_info);
+                ExpandableListViewAdapter adapter = new ExpandableListViewAdapter
+                        (IngredientPage.this, info_labels, info_contents);
                 elv_item_info.setAdapter(adapter);
             }
 

@@ -83,29 +83,39 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         Intent intent;
 
         switch (item) {
-            case "Recipe/Ingredient Name":
+            case "Recipe Name":
                 parent.setSelection(0);
-                startActivity(new Intent(Home.this, SearchByName.class));
+                intent = new Intent(Home.this, SearchByName.class);
+                intent.putExtra("SEARCH_NAME", "Recipes");
+                startActivity(intent);
                 break;
             case "Recipe Type":
                 parent.setSelection(0);
                 intent = new Intent(Home.this, SearchByRecipeAttribute.class);
-                intent.putExtra("RECIPE_ATTRIBUTE", "Type_Recipes");
+                intent.putExtra("ATTRIBUTE", "Type_Recipes");
                 startActivity(intent);
                 break;
             case "Recipe Cuisine":
                 parent.setSelection(0);
                 intent = new Intent(Home.this, SearchByRecipeAttribute.class);
-                intent.putExtra("RECIPE_ATTRIBUTE", "Cuisine_Recipe");
+                intent.putExtra("ATTRIBUTE", "Cuisine_Recipe");
                 startActivity(intent);
                 break;
             case "Ingredient List":
                 parent.setSelection(0);
                 startActivity(new Intent(Home.this, IngredientList.class));
                 break;
-            case "Ingredient Category":
+            case "Ingredient Name":
                 parent.setSelection(0);
-                startActivity(new Intent(Home.this, IngredientCatalog.class));
+                intent = new Intent(Home.this, SearchByName.class);
+                intent.putExtra("SEARCH_NAME", "Ingredients");
+                startActivity(intent);
+                break;
+            case "Ingredient Catalog":
+                parent.setSelection(0);
+                intent = new Intent(Home.this, SearchByRecipeAttribute.class);
+                intent.putExtra("ATTRIBUTE", "Type_Ingredients");
+                startActivity(intent);
                 break;
             default:
                 // Do nothing

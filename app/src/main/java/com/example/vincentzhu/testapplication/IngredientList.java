@@ -44,10 +44,10 @@ public class IngredientList extends BaseActivity {
         setContentView(R.layout.activity_ingredient_list);
         super.onCreate(savedInstanceState);
 
-        ingredient_list = new ArrayList<String>(); // initialize list of ingredients
-        favorites_list = new ArrayList<String>();
-        all_ingredients = new ArrayList<String>();
-        all_recipes = new ArrayList<String>();
+        ingredient_list = new ArrayList<>(); // initialize list of ingredients
+        favorites_list = new ArrayList<>();
+        all_ingredients = new ArrayList<>();
+        all_recipes = new ArrayList<>();
 
         populateIngredients();
 
@@ -55,19 +55,19 @@ public class IngredientList extends BaseActivity {
         populateFavorites();
 
         // Set the ListView's OnItemClickListener to handle clicking to remove list items
-        ListView listView = (ListView) findViewById(R.id.listView);
+        ListView listView = findViewById(R.id.listView);
         listView.setOnItemClickListener(itemClickListener);
 
-        Spinner sp_favorites = (Spinner) findViewById(R.id.sp_favorites);
+        Spinner sp_favorites = findViewById(R.id.sp_favorites);
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, favorites_list);
 
         /**
          * Autocompletetextview
          */
         actv = findViewById(R.id.autoCompleteTextView);
-        ArrayAdapter<String> actvAdapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> actvAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, all_ingredients);
         actv.setAdapter(actvAdapter);
         actv.requestFocus();
@@ -113,7 +113,7 @@ public class IngredientList extends BaseActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         userid = user.getUid();
-//        mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredients");
+
         mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredient_Recipes");
         mRoot.addValueEventListener(new ValueEventListener() {
             @Override
@@ -272,15 +272,4 @@ public class IngredientList extends BaseActivity {
         updateList();
     }
 
-//    /**
-//     * Called when the user taps the Find Recipes button.
-//     * Sends the list of ingredients entered by the user as an Extra
-//     * to the SearchResults activity.
-//     */
-//    public void findRecipes(View view) {
-//        // go to SearchResults activity
-//        Intent intent = new Intent(IngredientList.this, SearchResults.class);
-//        intent.putExtra("ingredientlist", ingredient_list);
-//        startActivity(intent);
-//    }
 }
