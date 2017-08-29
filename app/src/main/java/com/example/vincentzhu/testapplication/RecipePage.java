@@ -90,6 +90,8 @@ public class RecipePage extends BaseActivity {
                         .load(storageRef)
                         .into(iv_item_image);
 
+                // TODO: crashing at line 88
+
                 // Get recipe ingredients and instructions from the database and display them in
                 // the ExpandableListView
                 info_labels = new ArrayList<>(Arrays.asList("Ingredients", "Instructions"));
@@ -132,6 +134,9 @@ public class RecipePage extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
                 startActivity(new Intent(this, Home.class));
@@ -150,7 +155,7 @@ public class RecipePage extends BaseActivity {
                 startActivity(new Intent(this, AboutUs.class));
                 return true;
             case R.id.action_logout:
-                // User chose the "Log Out" item, log the user out and return to activity_registration activity
+                // User chose the "Log Out" item, log the user out and return to Registration activity
                 firebaseAuth.signOut();
                 finish();
                 startActivity(new Intent(this, LoginActivity.class));

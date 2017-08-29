@@ -127,9 +127,6 @@
                 android:value=".Home" />
         </activity>
         <activity android:name=".RecipePage">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Home" />
         </activity>
         <activity android:name=".ResetPassword">
         <meta-data
@@ -138,9 +135,6 @@
         </activity>
 
         <activity android:name=".IngredientPage">
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".Home" />
         </activity>
         <activity android:name=".Favorites" android:label="Favorites" />
     </application>

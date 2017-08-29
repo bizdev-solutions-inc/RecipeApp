@@ -2,11 +2,12 @@ package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,10 @@ public class IngredientCatalog extends BaseActivity {
         Intent intent = getIntent();
         ingredient_list = (ArrayList<String>) intent.getSerializableExtra("INGREDIENT_RESULTS");
 
+        for (int i = 0; i < ingredient_list.size(); i++) {
+            ingredient_list.set(i, WordUtils.capitalize(ingredient_list.get(i)));
+        }
+
         // Initialize the adapter with the list of ingredient results
         adapter = new ArrayAdapter<>(IngredientCatalog.this,
                 android.R.layout.simple_list_item_1, ingredient_list);
@@ -33,7 +38,7 @@ public class IngredientCatalog extends BaseActivity {
         lv_search_results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                displayItem(ingredient_list.get(i));
+                displayItem(ingredient_list.get(i).toLowerCase());
             }
         });
     }

@@ -154,14 +154,15 @@ public class IngredientPage extends BaseActivity {
         final FirebaseUser user = firebaseAuth.getCurrentUser();
         final String userID = user.getUid();
         switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
-                finish();
                 startActivity(new Intent(this, Home.class));
                 return true;
             case R.id.action_about_us:
                 // User chose the "About Us" item, show the About Us activity
-                finish();
                 startActivity(new Intent(this, AboutUs.class));
                 return true;
             case R.id.action_logout:

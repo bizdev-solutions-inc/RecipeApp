@@ -61,6 +61,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
             case R.id.save_ing:
                 startActivity(new Intent(this, SavedIngredients.class));
                 return true;

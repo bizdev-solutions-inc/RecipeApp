@@ -12,15 +12,26 @@
 
         <CheckBox
             android:id="@+id/chkbox_type"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tv_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:text="Type:"
+            android:textSize="18sp" />
 
         <Spinner
             android:id="@+id/sp_type"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:layout_weight="4" />
 
     </LinearLayout>
 
@@ -32,15 +43,26 @@
 
         <CheckBox
             android:id="@+id/chkbox_cuisine"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tv_cuisine"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:text="Cuisine:"
+            android:textSize="18sp" />
 
         <Spinner
             android:id="@+id/sp_cuisine"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:layout_weight="4" />
 
     </LinearLayout>
 
@@ -55,15 +77,17 @@
 
         <CheckBox
             android:id="@+id/chkbox_exclude"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/tv_exclude"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_weight="6"
             android:text="@string/tv_exclude_ingredient"
             android:textSize="18sp" />
 
