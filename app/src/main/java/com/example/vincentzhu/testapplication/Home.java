@@ -83,13 +83,13 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
                 break;
             case "Recipe Type":
                 parent.setSelection(0);
-                intent = new Intent(Home.this, SearchByRecipeAttribute.class);
+                intent = new Intent(Home.this, SearchByAttribute.class);
                 intent.putExtra("ATTRIBUTE", "Type_Recipes");
                 startActivity(intent);
                 break;
             case "Recipe Cuisine":
                 parent.setSelection(0);
-                intent = new Intent(Home.this, SearchByRecipeAttribute.class);
+                intent = new Intent(Home.this, SearchByAttribute.class);
                 intent.putExtra("ATTRIBUTE", "Cuisine_Recipe");
                 startActivity(intent);
                 break;
@@ -105,7 +105,7 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
                 break;
             case "Ingredient Catalog":
                 parent.setSelection(0);
-                intent = new Intent(Home.this, SearchByRecipeAttribute.class);
+                intent = new Intent(Home.this, SearchByAttribute.class);
                 intent.putExtra("ATTRIBUTE", "Type_Ingredients");
                 startActivity(intent);
                 break;
@@ -133,10 +133,6 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
     public void displaySavedIngredients(View view)
     {
         startActivity(new Intent(Home.this, SavedIngredients.class));
-    }
-
-    public void goToRecipePage(View view) {
-        startActivity(new Intent(Home.this, RecipePage.class));
     }
 
     public boolean onCreateOptionsMenu (Menu menu){
