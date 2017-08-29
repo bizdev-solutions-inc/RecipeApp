@@ -29,7 +29,8 @@
         </activity>
         <activity
             android:name=".AboutUs"
-            android:label="About Us">
+            android:label="About Us"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
@@ -67,13 +68,6 @@
                 android:value=".Home" />
         </activity>
         <activity
-            android:name=".MeatScroll"
-            android:label="Meat &amp; Seafood">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".IngredientCatalog" />
-        </activity>
-        <activity
             android:name=".PersonalRecipe"
             android:label="Add Recipe"
             android:windowSoftInputMode="stateVisible|adjustNothing"> <!-- show keyboard -->
@@ -83,14 +77,16 @@
         </activity>
         <activity
             android:name=".SavedRecipe"
-            android:label="Saved Recipes">
+            android:label="Saved Recipes"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
         </activity>
         <activity
             android:name=".SavedIngredients"
-            android:label="Saved Ingredients">
+            android:label="Saved Ingredients"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Home" />
@@ -136,7 +132,10 @@
 
         <activity android:name=".IngredientPage">
         </activity>
-        <activity android:name=".Favorites" android:label="Favorites" />
+        <activity
+            android:name=".Favorites"
+            android:label="Favorites"
+            android:launchMode="singleTop" />
     </application>
 
 </manifest>
