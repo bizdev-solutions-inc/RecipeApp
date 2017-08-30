@@ -73,12 +73,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (TextUtils.isEmpty(email)) {
             //Email is empty
+            progressB.setVisibility(View.GONE);
             Toast.makeText(this, "Please enter Email", Toast.LENGTH_SHORT).show();
             //Stopping the function from executing
             return;
         }
         if (TextUtils.isEmpty(password)) {
             //Password is empty
+            progressB.setVisibility(View.GONE);
             Toast.makeText(this, "Please enter Password", Toast.LENGTH_SHORT).show();
             //Stopping the function from executing
             return;
@@ -118,7 +120,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         if (view==textViewResetPass){
-            finish();
             startActivity(new Intent(this, ResetPassword.class));
         }
     }

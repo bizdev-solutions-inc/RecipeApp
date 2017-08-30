@@ -64,12 +64,14 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
         String password = editTextPassword.getText().toString().trim();
         if (TextUtils.isEmpty(email)) {
             //Email is empty
+            progressR.setVisibility(View.GONE);
             Toast.makeText(this, "Please enter Email", Toast.LENGTH_SHORT).show();
             //Stopping the function from executing
             return;
         }
         if (TextUtils.isEmpty(password)) {
             //Password is empty
+            progressR.setVisibility(View.GONE);
             Toast.makeText(this, "Please enter Password", Toast.LENGTH_SHORT).show();
             //Stopping the function from executing
             return;
@@ -115,9 +117,11 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         if (view == buttonRegister){
             registerUser();
+            finish();
         }
         if (view == textViewSignin){
             //Will open activity_registration activity here
+            finish();
             startActivity(new Intent(this,LoginActivity.class));
         }
     }
