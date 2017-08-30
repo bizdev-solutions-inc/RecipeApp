@@ -102,8 +102,6 @@ public class RecipePage extends BaseActivity {
                         .load(storageRef)
                         .into(iv_item_image);
 
-                // TODO: crashing at line 88
-
                 // Get recipe ingredients and instructions from the database and display them in
                 // the ExpandableListView
                 info_labels = new ArrayList<>(Arrays.asList("Ingredients", "Instructions"));

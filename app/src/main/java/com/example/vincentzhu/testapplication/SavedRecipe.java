@@ -64,14 +64,21 @@ public class SavedRecipe extends BaseActivity {
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    key = lv.getItemAtPosition(i).toString();
-                    Intent intent = new Intent(SavedRecipe.this, RecipePage.class);
-                    intent.putExtra(EXTRA_SEARCH_QUERY, key);
-                    intent.putExtra(EXTRA_GET_ACTIVITY, activityName);
-                    startActivity(intent);
+                    displayItem(addedRecipes.get(i));
+//                    key = lv.getItemAtPosition(i).toString();
+//                    Intent intent = new Intent(SavedRecipe.this, RecipePage.class);
+//                    intent.putExtra(EXTRA_SEARCH_QUERY, key);
+//                    intent.putExtra(EXTRA_GET_ACTIVITY, activityName);
+//                    startActivity(intent);
                 }
             });
         }
+    }
+
+    private void displayItem(String item) {
+        Intent intent = new Intent(SavedRecipe.this, RecipePage.class);
+        intent.putExtra("SELECTED_ITEM", item);
+        startActivity(intent);
     }
 
     private void showData(DataSnapshot dataSnapshot) {

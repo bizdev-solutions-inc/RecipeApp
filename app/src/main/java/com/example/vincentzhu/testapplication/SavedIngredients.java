@@ -2,20 +2,14 @@ package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,7 +17,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SavedIngredients extends BaseActivity {
 
@@ -75,14 +68,21 @@ public class SavedIngredients extends BaseActivity {
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    key = lv.getItemAtPosition(i).toString();
-                    Intent intent = new Intent(SavedIngredients.this, IngredientPage.class);
-                    intent.putExtra(EXTRA_SEARCH_QUERY, key);
-                    intent.putExtra(EXTRA_GET_ACTIVITY, activityName);
-                    startActivity(intent);
+                    displayItem(addedIngredients.get(i));
+//                    key = lv.getItemAtPosition(i).toString();
+//                    Intent intent = new Intent(SavedIngredients.this, IngredientPage.class);
+//                    intent.putExtra(EXTRA_SEARCH_QUERY, key);
+//                    intent.putExtra(EXTRA_GET_ACTIVITY, activityName);
+//                    startActivity(intent);
                 }
             });
         }
+    }
+
+    private void displayItem(String item) {
+        Intent intent = new Intent(SavedIngredients.this, RecipePage.class);
+        intent.putExtra("SELECTED_ITEM", item);
+        startActivity(intent);
     }
 
     private void showData(DataSnapshot dataSnapshot) {
