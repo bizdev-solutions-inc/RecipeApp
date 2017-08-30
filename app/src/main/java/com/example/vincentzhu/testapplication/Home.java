@@ -134,7 +134,7 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
                 startActivity(intent);
                 break;
             default:
-                // Do nothing
+                // Do nothin
                 break;
         }
     }
