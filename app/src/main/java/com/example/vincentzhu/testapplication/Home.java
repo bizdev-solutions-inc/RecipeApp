@@ -1,5 +1,6 @@
 package com.example.vincentzhu.testapplication;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -83,6 +84,22 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+    }
+
+    /**
+     * Show the Exit Dialog when the user presses the Back button.
+     */
+    @Override
+    public void onBackPressed() {
+        showExitDialog();
+    }
+
+    /**
+     * Show the Exit Dialog to prompt the user to exit the app or cancel.
+     */
+    public void showExitDialog() {
+        DialogFragment exitDialog = new ExitDialogFragment();
+        exitDialog.show(getFragmentManager(), "ExitDialogFragment");
     }
 
     /**
