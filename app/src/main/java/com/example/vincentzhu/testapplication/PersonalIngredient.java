@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -148,6 +149,20 @@ public class PersonalIngredient extends BaseActivity implements View.OnClickList
         String ingredientName = mIngName.getText().toString().trim();
         String ingredientDescription = mIngDescription.getText().toString().trim();
         String ingredientHistory = mIngHistory.getText().toString().trim();
+
+        if (TextUtils.isEmpty(ingredientName)) {
+            //ingredient name is empty
+            Toast.makeText(this, "Please enter ingredient name", Toast.LENGTH_SHORT).show();
+            //Stopping the function from executing
+            return;
+        }
+
+        if (TextUtils.isEmpty(ingredientDescription)) {
+            //Ingredient description is empty
+            Toast.makeText(this, "Please enter ingredient description", Toast.LENGTH_SHORT).show();
+            //Stopping the function from executing
+            return;
+        }
 
         //user tree
         mRoot = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Ingredients");;
