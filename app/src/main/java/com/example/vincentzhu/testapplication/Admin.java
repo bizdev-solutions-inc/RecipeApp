@@ -272,10 +272,7 @@ public class Admin extends AppCompatActivity {
             }
             else if((line.charAt(i) == ',' || i == line.length()-1) && found == true)
             {
-                if(line.charAt(line.length()-1) == ' ')
-                    endIndex = i-1;
-                else
-                    endIndex = i;
+                endIndex = i;
                 parse.add(line.substring(startIndex, endIndex));
                 found = false;
             }
