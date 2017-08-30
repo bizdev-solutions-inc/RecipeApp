@@ -67,6 +67,7 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         String mainAccount = "devbizrecipe@gmail.com";
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
+
         if(user.getEmail().equals(mainAccount)){
             //Profile activity here
             startActivity(new Intent(getApplicationContext(),Admin.class));
