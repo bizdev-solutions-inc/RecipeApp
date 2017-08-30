@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -33,7 +32,7 @@ public class SearchByName extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_search_by_name);
         super.onCreate(savedInstanceState);
-;
+
         searchBy = (String) getIntent().getSerializableExtra("SEARCH_NAME");
         setTitle("Search " + searchBy);
 
@@ -49,8 +48,7 @@ public class SearchByName extends BaseActivity {
             actv.setHint("Enter ingredient name");
         }
 
-
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         populateResults();
 

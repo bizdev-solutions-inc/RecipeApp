@@ -19,23 +19,16 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-/**
- * Created by XPS on 8/27/2017.
- */
-
 public class Favorites extends BaseActivity {
     private ArrayList<String> favorite_recipes, favorite_ingredients;
     private DatabaseReference mRoot;
     private DatabaseReference mFavorite;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
-    private String userid;
-    private String key;
+    private String userID;
     private String activityName;
-    private ArrayAdapter<String> adapter;
-
-    public static final String EXTRA_SEARCH_QUERY = "SELECTED_ITEM";
-    public static final String EXTRA_GET_ACTIVITY = "GET_ACTIVITY";
+    private ArrayAdapter<String> recipes_adapter;
+    private ArrayAdapter<String> ingredients_adapter;
 
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_favorites);
@@ -48,33 +41,36 @@ public class Favorites extends BaseActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         activityName = this.getLocalClassName();
-        favorite_recipes = new ArrayList<String>();
-        favorite_ingredients = new ArrayList<String>();
+        favorite_recipes = new ArrayList<>();
+        favorite_ingredients = new ArrayList<>();
 
         populateFavoriteRecipes();
 
-        adapter = new ArrayAdapter<>(Favorites.this,
+        recipes_adapter = new ArrayAdapter<>(Favorites.this,
                 android.R.layout.simple_list_item_1, favorite_recipes);
 
-        ListView lv_favorite_recipes = findViewById(R.id.lv_favorite_recipes);
-        lv_favorite_recipes.setAdapter(adapter);
-        lv_favorite_recipes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ListView lv_fav_recipes = findViewById(R.id.lv_favorite_recipes);
+        lv_fav_recipes.setAdapter(recipes_adapter);
+        lv_fav_recipes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 displayItem(favorite_recipes.get(i));
             }
         });
 
-//        lv_favorite_recipes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                key = lv_favorite_recipes.getItemAtPosition(i).toString();
-//                Intent intent = new Intent(Favorites.this, RecipePage.class);
-//                intent.putExtra(EXTRA_SEARCH_QUERY, key);
-//                intent.putExtra(EXTRA_GET_ACTIVITY, activityName);
-//                startActivity(intent);
-//            }
-//        });
+        populateFavoriteIngredients();
+
+        ingredients_adapter = new ArrayAdapter<>(Favorites.this,
+                android.R.layout.simple_list_item_1, favorite_ingredients);
+
+        ListView lv_fav_ingredients = findViewById(R.id.lv_fav_ingredients);
+        lv_fav_ingredients.setAdapter(ingredients_adapter);
+        lv_fav_ingredients.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                displayItem(favorite_ingredients.get(i));
+            }
+        });
     }
 
     private void displayItem(String item) {
@@ -87,15 +83,15 @@ public class Favorites extends BaseActivity {
     private void populateFavoriteRecipes() {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
-        userid = user.getUid();
+        userID = user.getUid();
         mRoot = FirebaseDatabase.getInstance().getReference().child("Recipes");
         mRoot.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    if (!favorite_recipes.contains(ds.getKey()) && ds.child("Favorited By").child(userid).exists()) {
+                    if (!favorite_recipes.contains(ds.getKey()) && ds.child("Favorited By").child(userID).exists()) {
                         favorite_recipes.add(ds.getKey());
-                        adapter.notifyDataSetChanged();
+                        recipes_adapter.notifyDataSetChanged();
                     }
                 }
             }
@@ -106,15 +102,15 @@ public class Favorites extends BaseActivity {
             }
         });
 
-        mFavorite = FirebaseDatabase.getInstance().getReference().child(userid).child("Added Recipes").child("Recipes");
+        mFavorite = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Recipes").child("Recipes");
         mFavorite.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren())
                 {
-                    if(!favorite_recipes.contains(ds.getKey()) && ds.child("Favorited By").child(userid).exists()){
+                    if (!favorite_recipes.contains(ds.getKey()) && ds.child("Favorited By").child(userID).exists()) {
                         favorite_recipes.add(ds.getKey());
-                        adapter.notifyDataSetChanged();
+                        recipes_adapter.notifyDataSetChanged();
                     }
                 }
             }
@@ -129,13 +125,13 @@ public class Favorites extends BaseActivity {
     private void populateFavoriteIngredients() {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
-        userid = user.getUid();
+        userID = user.getUid();
         mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredients");
         mRoot.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    if (ds.child("Favorited By").child(userid).exists()) {
+                    if (ds.child("Favorited By").child(userID).exists()) {
                         favorite_ingredients.add(ds.getKey());
                     }
                 }
@@ -147,13 +143,13 @@ public class Favorites extends BaseActivity {
             }
         });
 
-        mFavorite = FirebaseDatabase.getInstance().getReference().child(userid).child("Added Ingredients").child("Ingredients");
+        mFavorite = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Ingredients").child("Ingredients");
         mFavorite.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren())
                 {
-                    if(!favorite_ingredients.contains(ds.getKey()) && ds.child("Favorited By").child(userid).exists()){
+                    if (!favorite_ingredients.contains(ds.getKey()) && ds.child("Favorited By").child(userID).exists()) {
                         favorite_ingredients.add(ds.getKey());
                     }
                 }
