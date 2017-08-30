@@ -81,8 +81,15 @@ public class IngredientPage extends BaseActivity {
                 setName(dataSnapshot);
 
                 // Get the ingredient image url and display it in the ImageView
-                gs_url = dataSnapshot
-                        .child("Image").getValue(String.class);
+                if(dataSnapshot.child("Image").getValue(String.class) != null)
+                {
+                    gs_url = dataSnapshot
+                            .child("Image").getValue(String.class);
+                }
+                else
+                {
+                    gs_url = "gs://bizdevrecipeapp.appspot.com/Recipes/lRxFd3PSkGNfeUfZ3qOfpSRoaO12/restaurant-cutlery-circular-symbol-of-a-spoon-and-a-fork-in-a-circle_318-61086.jpg";
+                }
                 storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(gs_url);
                 ImageView iv_item_image = findViewById(R.id.iv_item_image);
                 Glide.with(getApplicationContext())
