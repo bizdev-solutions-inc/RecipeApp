@@ -84,7 +84,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         } else {
             textView.setText(text);
         }
-        textView.setPadding(160, 8, 0, 8); // left, top, right, bottom
+        textView.setPadding(120, 0, 120, 0); // left, top, right, bottom
         textView.setTextSize(20);
 
         textView.setOnClickListener(new View.OnClickListener() {
