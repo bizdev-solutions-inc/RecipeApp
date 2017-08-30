@@ -247,7 +247,7 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
                 .child("Image").getValue(String.class);
         StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(gs_url);
         ImageView iv_item_image = findViewById(R.id.imageDisplay);
-        Glide.with(this)
+        Glide.with(getApplicationContext())
                 .using(new FirebaseImageLoader())
                 .load(storageRef)
                 .into(iv_item_image);

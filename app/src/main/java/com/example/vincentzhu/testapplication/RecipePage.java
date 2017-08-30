@@ -39,10 +39,14 @@ public class RecipePage extends BaseActivity {
     private FirebaseUser user;
     private DatabaseReference dbRef;
 
+    private boolean isFavorite;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_item_page);
         super.onCreate(savedInstanceState);
+
+        checkFavorite(); // Check if the recipe is already a favorite of the user
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
@@ -87,7 +91,7 @@ public class RecipePage extends BaseActivity {
                         .child("Image").getValue(String.class);
                 storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(gs_url);
                 ImageView iv_item_image = findViewById(R.id.iv_item_image);
-                Glide.with(RecipePage.this)
+                Glide.with(getApplicationContext())
                         .using(new FirebaseImageLoader())
                         .load(storageRef)
                         .into(iv_item_image);
@@ -130,6 +134,11 @@ public class RecipePage extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.item_menu, menu);
+        MenuItem fav_button = menu.findItem(R.id.action_favorite);
+        // Change the Favorite button icon to a "filled heart" if the recipe is already a favorite
+        if (isFavorite) {
+            fav_button.setIcon(R.drawable.ic_action_is_favorite);
+        }
         return true;
     }
 
@@ -233,5 +242,40 @@ public class RecipePage extends BaseActivity {
             }
         }
         return false;
+    }
+
+    /**
+     * Called upon the start of this activity, when the toolbar options menu is created, to
+     * determine the appearance of the Favorite (heart) icon. Checks if the recipe has been added to
+     * the user's favorite recipes.
+     *
+     * @return
+     */
+    private void checkFavorite() {
+        DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference().child("Recipes");
+        mRoot.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                DataSnapshot favorited_by = dataSnapshot.child(recipe).child("Favorited By");
+//                userID = user.getUid();
+                if (dataSnapshot.child(recipe).child("Favorited By").exists()) {
+//                    Toast.makeText(RecipePage.this, "FAVORITED BY EXISTS", Toast.LENGTH_SHORT).show();
+                    for (DataSnapshot fav_user : favorited_by.getChildren()) {
+                        if (userID.equals(fav_user.getKey())) {
+                            isFavorite = true;
+//                            Toast.makeText(RecipePage.this, "isFavorite is true", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                    }
+                } else {
+                    isFavorite = false;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

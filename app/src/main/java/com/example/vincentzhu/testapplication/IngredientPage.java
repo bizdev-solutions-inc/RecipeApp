@@ -51,7 +51,7 @@ public class IngredientPage extends BaseActivity {
         setContentView(R.layout.activity_item_page);
         super.onCreate(savedInstanceState);
 
-        isFavorite = false; // Initialize boolean
+        checkFavorite();
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
@@ -91,7 +91,7 @@ public class IngredientPage extends BaseActivity {
                         .child("Image").getValue(String.class);
                 storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(gs_url);
                 ImageView iv_item_image = findViewById(R.id.iv_item_image);
-                Glide.with(IngredientPage.this)
+                Glide.with(getApplicationContext())
                         .using(new FirebaseImageLoader())
                         .load(storageRef)
                         .into(iv_item_image);
@@ -141,11 +141,11 @@ public class IngredientPage extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.item_menu, menu);
-        MenuItem favorite_button = menu.findItem(R.id.action_favorite);
-        if (favorite_button != null) { // TODO: favorite button icon
-            if (checkIfFavorite()) {
-                favorite_button.setIcon(R.drawable.ic_action_is_favorite);
-            }
+        MenuItem fav_button = menu.findItem(R.id.action_favorite);
+        // Change the Favorite button icon to a "filled heart"
+        // if the ingredient is already a favorite
+        if (isFavorite) {
+            fav_button.setIcon(R.drawable.ic_action_is_favorite);
         }
         return true;
     }
@@ -241,38 +241,34 @@ public class IngredientPage extends BaseActivity {
     }
 
     /**
-     * Checks if the ingredient has been added to the user's favorite ingredients.
-     * Used for determining the appearance of the Favorite (heart) action button.
-     *
-     * @return true if the ingredient is a favorite, false otherwise
+     * Called upon the start of this activity, when the toolbar options menu is created, to
+     * determine the appearance of the Favorite (heart) icon. Checks if the ingredient has been
+     * added to the user's favorite ingredients.
+     * @return
      */
-    private boolean checkIfFavorite() {
-//        final DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference()
-//                .child("Ingredients");
-//        mRoot.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                DataSnapshot favorited_by = dataSnapshot.child(ingredient).child("Favorited By");
-//                if (favorited_by.exists()) { // "Favorited By" attribute exists
-//                    for (DataSnapshot user : favorited_by.getChildren()) {
-//                        if (userID.equals(user.getKey())) {
-//                            isFavorite = true;
-//                            break;
-//                        }
-//                    }
-//                } else {
-//                    // "Favorited By" attribute does not exist, therefore is not possible
-//                    // for user to have already set as favorite
-//                    isFavorite = false;
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//
-        return isFavorite;
+    private void checkFavorite() {
+        DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference()
+                .child("Ingredients");
+        mRoot.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                DataSnapshot favorited_by = dataSnapshot.child(ingredient).child("Favorited By");
+                if (dataSnapshot.child(ingredient).child("Favorited By").exists()) {
+                    for (DataSnapshot fav_user : favorited_by.getChildren()) {
+                        if (userID.equals(fav_user.getKey())) {
+                            isFavorite = true;
+                            break;
+                        }
+                    }
+                } else {
+                    isFavorite = false;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
