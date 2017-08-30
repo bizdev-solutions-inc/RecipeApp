@@ -2,7 +2,6 @@ package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -45,68 +44,42 @@ public class Favorites extends BaseActivity {
         favorite_recipes = new ArrayList<>();
         favorite_ingredients = new ArrayList<>();
 
-        TabLayout tabLayout = new TabLayout(this);
-        tabLayout.addTab(tabLayout.newTab().setText("Recipes"));
-        tabLayout.addTab(tabLayout.newTab().setText("Ingredients"));
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
-        populateFavoriteRecipes();
-
         recipes_adapter = new ArrayAdapter<>(Favorites.this,
                 android.R.layout.simple_list_item_1, favorite_recipes);
-
-        ListView lv_fav_recipes = findViewById(R.id.lv_favorite_recipes);
-        lv_fav_recipes.setAdapter(recipes_adapter);
-        lv_fav_recipes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                displayRecipe(favorite_recipes.get(i));
-            }
-        });
-
-        populateFavoriteIngredients();
-
         ingredients_adapter = new ArrayAdapter<>(Favorites.this,
                 android.R.layout.simple_list_item_1, favorite_ingredients);
 
-        ListView lv_fav_ingredients = findViewById(R.id.lv_fav_ingredients);
-        lv_fav_ingredients.setAdapter(ingredients_adapter);
-        lv_fav_ingredients.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                displayIngredient(favorite_ingredients.get(i));
-            }
-        });
+        populateFavoriteIngredients();
+        populateFavoriteRecipes();
     }
 
+    /**
+     * Called when a recipe is selected by the user.
+     * Takes the user to the recipe's profile.
+     *
+     * @param item
+     */
     private void displayRecipe(String item) {
         Intent intent = new Intent(Favorites.this, RecipePage.class);
         intent.putExtra("SELECTED_ITEM", item);
         startActivity(intent);
     }
 
+    /**
+     * Called when an ingredient is selected by the user.
+     * Takes the user to the ingredient's profile.
+     * @param item
+     */
     private void displayIngredient(String item) {
         Intent intent = new Intent(Favorites.this, IngredientPage.class);
         intent.putExtra("SELECTED_INGREDIENT", item);
         startActivity(intent);
     }
 
+    /**
+     * Populates the ArrayList with the user's favorite recipes.
+     * Queries the database to check which recipes are favorites.
+     */
     private void populateFavoriteRecipes() {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
@@ -121,6 +94,15 @@ public class Favorites extends BaseActivity {
                         recipes_adapter.notifyDataSetChanged();
                     }
                 }
+
+                ListView lv_fav_recipes = findViewById(R.id.lv_favorite_recipes);
+                lv_fav_recipes.setAdapter(recipes_adapter);
+                lv_fav_recipes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        displayRecipe(favorite_recipes.get(i));
+                    }
+                });
             }
 
             @Override
@@ -149,6 +131,10 @@ public class Favorites extends BaseActivity {
         });
     }
 
+    /**
+     * Populates the ArrayList with the user's favorite ingredients.
+     * Queries the database to check which ingredients are favorites.
+     */
     private void populateFavoriteIngredients() {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
@@ -162,6 +148,15 @@ public class Favorites extends BaseActivity {
                         favorite_ingredients.add(ds.getKey());
                     }
                 }
+
+                ListView lv_fav_ingredients = findViewById(R.id.lv_fav_ingredients);
+                lv_fav_ingredients.setAdapter(ingredients_adapter);
+                lv_fav_ingredients.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        displayIngredient(favorite_ingredients.get(i));
+                    }
+                });
             }
 
             @Override

@@ -2,20 +2,14 @@ package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,7 +24,7 @@ public class SavedRecipe extends BaseActivity {
     private String userID;
     private String activityName;
     private ListView lv;
-    ArrayList<String> addedRecipes = new ArrayList<String>();
+    ArrayList<String> addedRecipes = new ArrayList<>();
     private String key;
     public static final String EXTRA_SEARCH_QUERY = "SELECTED_ITEM";
     public static final String EXTRA_GET_ACTIVITY = "GET_ACTIVITY";
@@ -85,7 +79,7 @@ public class SavedRecipe extends BaseActivity {
         {
             addedRecipes.add(ds.getKey());
         }
-        ListAdapter la = new ArrayAdapter<String>(SavedRecipe.this, android.R.layout.simple_list_item_1, addedRecipes);
+        ListAdapter la = new ArrayAdapter<>(SavedRecipe.this, android.R.layout.simple_list_item_1, addedRecipes);
         lv.setAdapter(la);
     }
 }

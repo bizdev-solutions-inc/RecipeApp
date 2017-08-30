@@ -38,6 +38,7 @@ public class IngredientList extends BaseActivity {
     private FirebaseUser user;
     private String userid;
     private AutoCompleteTextView actv;
+    private ArrayAdapter<String> lv_adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,15 @@ public class IngredientList extends BaseActivity {
 
         // Set the ListView's OnItemClickListener to handle clicking to remove list items
         ListView listView = findViewById(R.id.listView);
-        listView.setOnItemClickListener(itemClickListener);
+        lv_adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ingredient_list);
+        listView.setAdapter(lv_adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                ingredient_list.remove(i);
+                lv_adapter.notifyDataSetChanged();
+            }
+        });
 
         Spinner sp_favorites = findViewById(R.id.sp_favorites);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -87,7 +96,7 @@ public class IngredientList extends BaseActivity {
                 String item = actv.getText().toString();
                 if (!item.isEmpty() && !ingredient_list.contains(item)) {
                     ingredient_list.add(item);
-                    updateList();
+                    lv_adapter.notifyDataSetChanged();
                     actv.setText("");
                 }
             }
@@ -104,7 +113,7 @@ public class IngredientList extends BaseActivity {
                 String item = adapterView.getItemAtPosition(i).toString();
                 if (!item.equals("Favorites") && !ingredient_list.contains(item)){
                     ingredient_list.add(item);
-                    updateList();
+                    lv_adapter.notifyDataSetChanged();
                     adapterView.setSelection(0);
                 }
             }
@@ -255,38 +264,13 @@ public class IngredientList extends BaseActivity {
         return new ArrayList<>(recipes);
     }
 
-    // Create a list-item click-handling object as an anonymous class.
-    private AdapterView.OnItemClickListener itemClickListener =
-            new AdapterView.OnItemClickListener() {
-                // When the user clicks on a list item, it is removed from the list.
-                @Override
-                public void onItemClick(AdapterView adapterView, View view, int position, long id) {
-                    ingredient_list.remove(position);
-                    updateList();
-                }
-            };
-
-
-    /**
-     * Updates the ListView with entries from the ingredients list.
-     * Should be called every time an entry is added to or removed from the list.
-     * This method uses an ArrayAdapter to retrieve data from the ingredients ArrayList
-     * and display each String entry as an item in the ListView.
-     */
-    private void updateList() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, ingredient_list);
-        ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter(adapter);
-    }
-
     /**
      * Called when the user taps the Clear List button.
      * Clears the ingredients list contained in the ListView.
      */
     public void clearList(View view) {
         ingredient_list.clear();
-        updateList();
+        lv_adapter.notifyDataSetChanged();
     }
 
 }
