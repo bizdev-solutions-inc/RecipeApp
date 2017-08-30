@@ -217,7 +217,7 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         mTextView.setText(r);
         mImageView = findViewById(R.id.imageDisplay);
 
-        final Intent intent = new Intent(this, RecipePage.class);
+        final Intent intent = new Intent(Home.this, RecipePage.class);
         intent.putExtra("SELECTED_ITEM", r);
 
         mTextView.setOnClickListener(new View.OnClickListener() {
