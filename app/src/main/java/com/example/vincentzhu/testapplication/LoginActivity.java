@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        if(firebaseAuth.getCurrentUser()!=null){
+        if(firebaseAuth.getCurrentUser()!=null  && firebaseAuth.getCurrentUser().isEmailVerified()){
             //Profile activity here
             finish();
             startActivity(new Intent(getApplicationContext(),Home.class));

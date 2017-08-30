@@ -44,14 +44,14 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
 
        Window window = this.getWindow();
        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-      window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+       window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
        window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
 
         buttonRegister.setOnClickListener(this);
         textViewSignin.setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
-        if(mAuth.getCurrentUser()!=null){
+        if(mAuth.getCurrentUser()!=null  && mAuth.getCurrentUser().isEmailVerified()){
             //Profile activity here
             finish();
             startActivity(new Intent(getApplicationContext(),Home.class));
@@ -84,19 +84,19 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                 if (task.isSuccessful()) {
                     //User is successfully registered
                     progressR.setVisibility(View.GONE);
-                    Toast.makeText(Registration.this, "Registered successfully, please verify your Email to activity_registration", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Registration.this, "Registered successfully, please verify your Email", Toast.LENGTH_LONG).show();
                     user.sendEmailVerification().addOnCompleteListener(Registration.this, new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful())
                             {
                                 progressR.setVisibility(View.GONE);
-                                Toast.makeText(Registration.this, "Verification email sent to " + user.getEmail(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(Registration.this, "Verification Email sent to " + user.getEmail(), Toast.LENGTH_LONG).show();
                             }
                             else
                             {
                                 progressR.setVisibility(View.GONE);
-                                Toast.makeText(Registration.this, "Failed to send verification email.",
+                                Toast.makeText(Registration.this, "Failed to send Verification Email.",
                                         Toast.LENGTH_LONG).show();
                             }
                         }
@@ -106,7 +106,7 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                     startActivity(new Intent(Registration.this,LoginActivity.class));
                 }else{
                     progressR.setVisibility(View.GONE);
-                    Toast.makeText(Registration.this, "Account already exists or Email is incorrect, Please try again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Registration.this, "Account already exists or Email is invalid. Please try again", Toast.LENGTH_SHORT).show();
                 }
             }
         });

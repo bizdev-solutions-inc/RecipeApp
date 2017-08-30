@@ -30,7 +30,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         // Check if user is still logged in. If not, return to Login activity.
-        if (firebaseAuth.getCurrentUser() == null) {
+        if (firebaseAuth.getCurrentUser() == null && firebaseAuth.getCurrentUser().isEmailVerified()) {
             //Profile activity here
             finish();
             startActivity(new Intent(getApplicationContext(),
