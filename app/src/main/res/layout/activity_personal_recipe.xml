@@ -61,7 +61,7 @@
                 android:ems="10"/>
 
             <ListView
-                android:id="@+id/lv_added_ingredients"
+                android:id="@+id/lv_favorite_recipes"
                 android:layout_width="220dp"
                 android:layout_height="150dp"
                 android:layout_marginLeft="30dp"
@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 style="@style/spinner_style"
                 android:layout_marginTop="12dp"
-                android:layout_below="@+id/lv_added_ingredients"
+                android:layout_below="@+id/lv_favorite_recipes"
                 android:layout_centerHorizontal="true" />
 
             <Spinner

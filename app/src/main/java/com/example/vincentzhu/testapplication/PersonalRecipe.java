@@ -90,7 +90,7 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
         imageDisplayRec = (ImageView) findViewById(imageDisplay);
 //        mFirebaseBtn.setOnClickListener(this);
 
-        ListView listView = findViewById(R.id.lv_added_ingredients);
+        ListView listView = findViewById(R.id.lv_favorite_recipes);
         listView.setOnItemClickListener(itemClickListener);
 
         actv_ingredients = findViewById(R.id.actv_ingredients);
@@ -338,7 +338,7 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
     private void updateList() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, ingredient_list);
-        ListView lv_added_ingredients = (ListView) findViewById(R.id.lv_added_ingredients);
+        ListView lv_added_ingredients = (ListView) findViewById(R.id.lv_favorite_recipes);
         lv_added_ingredients.setAdapter(adapter);
     }
 }

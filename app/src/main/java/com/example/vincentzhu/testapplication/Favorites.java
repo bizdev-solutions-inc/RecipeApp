@@ -2,7 +2,6 @@ package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -54,22 +53,34 @@ public class Favorites extends BaseActivity {
 
         populateFavoriteRecipes();
 
-        adapter = new ArrayAdapter<String>(this,
+        adapter = new ArrayAdapter<>(Favorites.this,
                 android.R.layout.simple_list_item_1, favorite_recipes);
 
-        final ListView lv = (ListView)findViewById(R.id.lv_added_ingredients);
-        lv.setAdapter(adapter);
-
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ListView lv_favorite_recipes = findViewById(R.id.lv_favorite_recipes);
+        lv_favorite_recipes.setAdapter(adapter);
+        lv_favorite_recipes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                key = lv.getItemAtPosition(i).toString();
-                Intent intent = new Intent(Favorites.this, RecipePage.class);
-                intent.putExtra(EXTRA_SEARCH_QUERY, key);
-                intent.putExtra(EXTRA_GET_ACTIVITY, activityName);
-                startActivity(intent);
+                displayItem(favorite_recipes.get(i));
             }
         });
+
+//        lv_favorite_recipes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                key = lv_favorite_recipes.getItemAtPosition(i).toString();
+//                Intent intent = new Intent(Favorites.this, RecipePage.class);
+//                intent.putExtra(EXTRA_SEARCH_QUERY, key);
+//                intent.putExtra(EXTRA_GET_ACTIVITY, activityName);
+//                startActivity(intent);
+//            }
+//        });
+    }
+
+    private void displayItem(String item) {
+        Intent intent = new Intent(Favorites.this, RecipePage.class);
+        intent.putExtra("SELECTED_ITEM", item);
+        startActivity(intent);
     }
 
 
