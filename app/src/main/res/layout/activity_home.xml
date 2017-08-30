@@ -24,13 +24,14 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="200dp"
-        android:layout_height="56dp"
+        android:layout_height="40dp"
         android:gravity="center"
-        android:text="Please Select From the Following Options :"
+        android:text="Search for Recipes and Ingredients :"
+        android:textStyle="bold"
         android:textColor="@color/colorPrimary"
-        android:layout_marginBottom="37dp"
-        android:layout_alignBottom="@+id/spinner"
-        android:layout_centerHorizontal="true" />
+        android:layout_above="@+id/spinner"
+        android:layout_alignStart="@+id/spinner"
+        android:layout_alignEnd="@+id/spinner" />
 
     <android.support.v7.widget.AppCompatSpinner
         android:id="@+id/spinner"
@@ -46,16 +47,17 @@
         android:id="@+id/random_recipe_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textStyle="bold|italic"
         android:text="Recipe of the Day:"
         android:textColor="@color/colorPrimary"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp" />
+        android:layout_centerVertical="true"
+        android:layout_alignEnd="@+id/imageView" />
 
     <TextView
         android:id="@+id/random_recipe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="16sp"
         android:layout_below="@+id/random_recipe_name"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
@@ -64,9 +66,9 @@
     <ImageView
         android:id="@+id/imageDisplay"
         android:layout_width="250dp"
-        android:layout_height="200dp"
-        android:layout_alignTop="@+id/random_recipe"
-        android:layout_centerHorizontal="true" />
+        android:layout_height="180dp"
+        android:layout_below="@+id/random_recipe"
+        android:layout_alignStart="@+id/spinner" />
 
     <android.support.design.widget.BottomNavigationView
         android:theme="@style/NavigationTheme"
