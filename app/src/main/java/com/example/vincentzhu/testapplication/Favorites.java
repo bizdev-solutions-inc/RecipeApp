@@ -76,7 +76,7 @@ public class Favorites extends BaseActivity {
         lv_fav_recipes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                displayItem(favorite_recipes.get(i));
+                displayRecipe(favorite_recipes.get(i));
             }
         });
 
@@ -90,17 +90,22 @@ public class Favorites extends BaseActivity {
         lv_fav_ingredients.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                displayItem(favorite_ingredients.get(i));
+                displayIngredient(favorite_ingredients.get(i));
             }
         });
     }
 
-    private void displayItem(String item) {
+    private void displayRecipe(String item) {
         Intent intent = new Intent(Favorites.this, RecipePage.class);
         intent.putExtra("SELECTED_ITEM", item);
         startActivity(intent);
     }
 
+    private void displayIngredient(String item) {
+        Intent intent = new Intent(Favorites.this, IngredientPage.class);
+        intent.putExtra("SELECTED_INGREDIENT", item);
+        startActivity(intent);
+    }
 
     private void populateFavoriteRecipes() {
         firebaseAuth = FirebaseAuth.getInstance();
