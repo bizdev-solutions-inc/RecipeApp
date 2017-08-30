@@ -2,6 +2,7 @@ package com.example.vincentzhu.testapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -44,6 +45,27 @@ public class Favorites extends BaseActivity {
         favorite_recipes = new ArrayList<>();
         favorite_ingredients = new ArrayList<>();
 
+        TabLayout tabLayout = new TabLayout(this);
+        tabLayout.addTab(tabLayout.newTab().setText("Recipes"));
+        tabLayout.addTab(tabLayout.newTab().setText("Ingredients"));
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
         populateFavoriteRecipes();
 
         recipes_adapter = new ArrayAdapter<>(Favorites.this,
@@ -85,7 +107,7 @@ public class Favorites extends BaseActivity {
         user = firebaseAuth.getCurrentUser();
         userID = user.getUid();
         mRoot = FirebaseDatabase.getInstance().getReference().child("Recipes");
-        mRoot.addValueEventListener(new ValueEventListener() {
+        mRoot.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
@@ -127,7 +149,7 @@ public class Favorites extends BaseActivity {
         user = firebaseAuth.getCurrentUser();
         userID = user.getUid();
         mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredients");
-        mRoot.addValueEventListener(new ValueEventListener() {
+        mRoot.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {

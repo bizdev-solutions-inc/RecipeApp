@@ -21,33 +21,31 @@
             android:id="@+id/tv_fav_recipes"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:text="Favorite Recipes"
-            android:textAlignment="center"
-            android:textSize="18sp"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorAccent"
+            android:gravity="center"
+            android:text="@string/favorite_recipes"
+            android:textAlignment="center"
             android:textColor="@drawable/nav_item_color"
-            android:gravity="center" />
+            android:textSize="18sp" />
 
         <ListView
             android:id="@+id/lv_favorite_recipes"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_below="@+id/toolbar"
-            android:layout_centerHorizontal="true"
+            android:layout_weight="5"
             android:divider="@color/colorPrimary"
-            android:dividerHeight="1dp"
-            android:layout_weight="5" />
+            android:dividerHeight="1dp" />
 
         <TextView
             android:id="@+id/tv_fav_ingredients"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:text="Favorite Ingredients"
+            android:text="@string/favorite_ingredients"
             android:textAlignment="center"
             android:textSize="18sp"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorAccent"
             android:textColor="@drawable/nav_item_color"
             android:gravity="center" />
 

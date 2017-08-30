@@ -108,6 +108,8 @@
     <string name="tv_hint">(Tap an ingredient for more info)</string>
     <string name="tv_item_name">Item Name</string>
     <string name="desc_item">Picture of selected recipe/ingredient</string>
+    <string name="favorite_ingredients">Favorite Ingredients</string>
+    <string name="favorite_recipes">Favorite Recipes</string>
     <string-array name="filter_options">
         <item>Type</item>
         <item>Cuisine</item>

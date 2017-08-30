@@ -213,7 +213,7 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
      *  the day is displayed
      */
     private void displayRecipeOfDay(String r) {
-        final TextView mTextView = findViewById(R.id.random_recipe);
+        final TextView mTextView = findViewById(R.id.tv_daily_recipe_name);
         mTextView.setText(r);
         mImageView = findViewById(R.id.imageDisplay);
 

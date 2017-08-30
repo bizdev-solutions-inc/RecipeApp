@@ -199,6 +199,15 @@ public class RecipePage extends BaseActivity {
         }
     }
 
+    /**
+     * Called when the user taps the Favorite button in the toolbar. The user's ID is written to
+     * the database as a child of the subtree containing the recipe's information to indicate
+     * that the user has favorited this recipe. Calls the favoriteExists() method to check if
+     * the recipe is already a favorite of the user.
+     *
+     * @param mCurrent
+     * @param favorite_button
+     */
     public void setFavoriteRecipe(final DatabaseReference mCurrent, final MenuItem favorite_button)
     {
         if(mCurrent != null) { // "Favorited By" attribute exists
@@ -232,6 +241,12 @@ public class RecipePage extends BaseActivity {
 
     }
 
+    /**
+     * Checks if the recipe is a favorite of the user.
+     * @param dataSnapshot
+     * @param userID
+     * @return
+     */
     public boolean favoriteExists(DataSnapshot dataSnapshot, String userID)
     {
         for(DataSnapshot ds : dataSnapshot.getChildren())

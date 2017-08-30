@@ -49,9 +49,9 @@ public class SearchResults extends BaseActivity
 
     /**
      * Called when the user selects an item from the search results list.
-     * This takes the user to the RecipePage activity that displays information about
-     * the recipe or ingredient selected by the user.
-     * @param item
+     * This takes the user to the RecipePage or IngredientPage activity that displays information
+     * about the recipe or ingredient selected by the user.
+     * @param item The selected item to be displayed in its profile page
      */
     public void displayItem(String item) {
         Intent intent = new Intent(SearchResults.this, RecipePage.class);
@@ -103,6 +103,7 @@ public class SearchResults extends BaseActivity
      * Filter the search results by the type of recipe specified by the user's
      * filter option choices. All search results that do not match the specified
      * type of recipe are removed from the list.
+     * @param recipe_type The type of recipe to be filtered
      */
     private void filterByType(final String recipe_type) {
         DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference().child("Recipes");
@@ -127,10 +128,10 @@ public class SearchResults extends BaseActivity
     }
 
     /**
-     * Filter the search results by the type of recipe specified by the user's
+     * Filter the search results by the cuisine specified by the user's
      * filter option choices. All search results that do not match the specified
-     * type of recipe are removed from the list.
-     * @param recipe_cuisine
+     * cuisine are removed from the list.
+     * @param recipe_cuisine The specified cuisine to be filtered
      */
     private void filterByCuisine(final String recipe_cuisine) {
         DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference().child("Recipes");
@@ -160,7 +161,8 @@ public class SearchResults extends BaseActivity
      * Filter the search results based on the ingredient specified by the user.
      * All recipes in the search results containing the ingredient specified
      * are removed from the search results.
-     * @param ingredient_to_exclude
+     * @param ingredient_to_exclude Recipes containing this ingredient are filtered out of the
+     *                              search results
      */
     private void excludeIngredient(final String ingredient_to_exclude) {
         DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference()

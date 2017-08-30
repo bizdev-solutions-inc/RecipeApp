@@ -37,7 +37,6 @@ public class IngredientList extends BaseActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
     private String userid;
-//    private MultiAutoCompleteTextView mactv;
     private AutoCompleteTextView actv;
 
     @Override
@@ -64,9 +63,7 @@ public class IngredientList extends BaseActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, favorites_list);
 
-        /**
-         * Autocompletetextview
-         */
+        // AutoCompleteTextView
         actv = findViewById(R.id.autoCompleteTextView);
         actv.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -120,7 +117,8 @@ public class IngredientList extends BaseActivity {
     }
 
     /**
-     *
+     * Populates the ArrayList of all the ingredients in the database by querying the database.
+     * The ArrayList is used to populate the AutoCompleteTextView used as a search field.
      */
     private void populateIngredients(){
         firebaseAuth = FirebaseAuth.getInstance();
@@ -160,8 +158,11 @@ public class IngredientList extends BaseActivity {
             }
         });
     }
+
     /**
-     *
+     * Populates the list of the user's favorite ingredients. This list is used to populate the
+     * Favorites spinner that provides a drop-down list of all of the user's favorite recipes for
+     * easy access when searching for ingredients.
      */
     private void populateFavorites() {
         firebaseAuth = FirebaseAuth.getInstance();
@@ -205,7 +206,9 @@ public class IngredientList extends BaseActivity {
     }
 
     /**
-     *
+     * Called when the user taps the Search button.
+     * Searches the database for recipes containing the ingredients specified by the user and sends
+     * the results as a String extra to the SearchResults activity to be displayed.
      */
     public void search(View view) {
         mRoot = FirebaseDatabase.getInstance().getReference();
@@ -226,7 +229,9 @@ public class IngredientList extends BaseActivity {
     }
 
     /**
-     * @param dataSnapshot
+     * Queries the database and searches for recipes containing the specified ingredients.
+     * Results are partial hits.
+     * @param dataSnapshot the DataSnapshot containing the node in the database tree to be searched
      */
     public ArrayList<String> queryData(DataSnapshot dataSnapshot) {
 
@@ -247,8 +252,7 @@ public class IngredientList extends BaseActivity {
                 Log.d("Ingredient not found: ", currentIngredient);
             }
         }
-//        this.recipe_list = new ArrayList<>(recipes);
-        return new ArrayList<String>(recipes);
+        return new ArrayList<>(recipes);
     }
 
     // Create a list-item click-handling object as an anonymous class.
@@ -270,7 +274,7 @@ public class IngredientList extends BaseActivity {
      * and display each String entry as an item in the ListView.
      */
     private void updateList() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, ingredient_list);
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);

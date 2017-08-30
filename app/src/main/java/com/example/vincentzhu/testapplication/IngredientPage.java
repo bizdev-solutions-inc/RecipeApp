@@ -78,15 +78,9 @@ public class IngredientPage extends BaseActivity {
         mRoot.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ingredientLookup(dataSnapshot);
+                setName(dataSnapshot);
 
-                // Get the recipe name from the database and display it in the TextView
-                // Capitalize using WordUtils from org.apache library
-                String item_name = dataSnapshot.getKey();
-                TextView tv_item_name = findViewById(R.id.tv_item_name);
-                tv_item_name.setText(WordUtils.capitalize(item_name));
-
-                // Get the recipe image url and display it in the ImageView
+                // Get the ingredient image url and display it in the ImageView
                 gs_url = dataSnapshot
                         .child("Image").getValue(String.class);
                 storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(gs_url);
@@ -96,8 +90,8 @@ public class IngredientPage extends BaseActivity {
                         .load(storageRef)
                         .into(iv_item_image);
 
-                // Get recipe ingredients and instructions from the database and display them in
-                // the ExpandableListView
+                // Get ingredient type, season, description, and history and display them
+                // in the ExpandableListView
                 info_labels = new ArrayList<>
                         (Arrays.asList("Type", "Season", "Description", "History"));
                 ArrayList<String> ingredientType = new ArrayList<>();
@@ -129,11 +123,17 @@ public class IngredientPage extends BaseActivity {
         });
     }
 
-    public void ingredientLookup(DataSnapshot dataSnapshot) {
+    /**
+     * Query the database to get the name of the ingredient and set it as the text in the TextView.
+     * The ingredient name is capitalized using the WordUtils library function.
+     *
+     * @param dataSnapshot The DataSnapshot of the database tree node to query
+     */
+    public void setName(DataSnapshot dataSnapshot) {
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             if (ds.getKey().equals(ingredient)) {
-                TextView tv_item_name = (TextView) findViewById(R.id.tv_item_name);
-                tv_item_name.setText(ds.getKey().toString());
+                TextView tv_item_name = findViewById(R.id.tv_item_name);
+                tv_item_name.setText(WordUtils.capitalize(ds.getKey()));
             }
         }
     }
@@ -162,6 +162,14 @@ public class IngredientPage extends BaseActivity {
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
                 startActivity(new Intent(this, Home.class));
+            case R.id.save_ing:
+                startActivity(new Intent(this, SavedIngredients.class));
+                return true;
+            case R.id.save_recipe:
+                startActivity(new Intent(this, SavedRecipe.class));
+                return true;
+            case R.id.recipe_favorites:
+                startActivity(new Intent(this, Favorites.class));
                 return true;
             case R.id.action_about_us:
                 // User chose the "About Us" item, show the About Us activity
@@ -199,6 +207,14 @@ public class IngredientPage extends BaseActivity {
         }
     }
 
+    /**
+     * Called when the user taps the Favorite button in the toolbar. The user's ID is written to
+     * the database as a child of the subtree containing the ingredient's information to indicate
+     * that the user has favorited this ingredient. Calls the favoriteExists() method to check if
+     * the ingredient is already a favorite of the user.
+     * @param mCurrent
+     * @param favorite_button
+     */
     public void setFavoriteIngredient(final DatabaseReference mCurrent,
                                       final MenuItem favorite_button) {
         if (mCurrent != null) { // "Favorited By" attribute exists
@@ -231,6 +247,12 @@ public class IngredientPage extends BaseActivity {
         }
     }
 
+    /**
+     * Checks if the ingredient is a favorite of the user.
+     * @param dataSnapshot
+     * @param userID
+     * @return
+     */
     public boolean favoriteExists(DataSnapshot dataSnapshot, String userID) {
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             if (ds.getKey().equals(userID)) {
@@ -244,7 +266,6 @@ public class IngredientPage extends BaseActivity {
      * Called upon the start of this activity, when the toolbar options menu is created, to
      * determine the appearance of the Favorite (heart) icon. Checks if the ingredient has been
      * added to the user's favorite ingredients.
-     * @return
      */
     private void checkFavorite() {
         DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference()
