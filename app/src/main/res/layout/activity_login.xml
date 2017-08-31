@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    >
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -13,12 +13,12 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout"
         android:weightSum="1">
 
         <ImageView
@@ -27,8 +27,8 @@
             android:layout_height="90dp"
             android:layout_gravity="center"
             android:layout_margin="15dp"
-            android:src="@drawable/chef_cook"
-            android:layout_weight="0.09" />
+            android:layout_weight="0.09"
+            android:src="@drawable/chef_cook" />
 
         <TextView
             android:id="@+id/textView"
@@ -55,15 +55,15 @@
             android:inputType="textEmailAddress" />
 
         <EditText
-            android:layout_margin="15dp"
-            android:inputType="textPassword"
-            android:hint="  Password"
             android:id="@+id/editTextPassword"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/password"
             android:layout_gravity="center"
-            android:backgroundTint="@color/colorPrimary"/>
+            android:layout_margin="15dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:drawableLeft="@drawable/password"
+            android:hint="  Password"
+            android:inputType="textPassword" />
 
         <ImageButton
             android:id="@+id/buttonSignin"
@@ -74,29 +74,29 @@
             android:src="@drawable/sign_in" />
 
         <TextView
-            android:textAlignment="center"
-            android:text="Not Registered ? Sign up Here"
             android:id="@+id/textViewSignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="1dp" />
+            android:layout_margin="1dp"
+            android:text="Not Registered ? Sign up Here"
+            android:textAlignment="center" />
 
         <TextView
-            android:textAlignment="center"
-            android:text="Forgot Password ?"
             android:id="@+id/textViewResetPass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"/>
+            android:layout_margin="10dp"
+            android:text="Forgot Password ?"
+            android:textAlignment="center" />
 
         <ProgressBar
             android:id="@+id/progressLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:background="@drawable/progress"
             android:layout_gravity="center"
-            android:layout_margin="10dp"/>
+            android:layout_margin="10dp"
+            android:background="@drawable/progress"
+            android:indeterminate="true" />
 
 
     </LinearLayout>

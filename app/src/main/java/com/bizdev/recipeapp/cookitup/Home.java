@@ -46,31 +46,31 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.add_recipe:
-                        startActivity(new Intent(Home.this, AddRecipe.class));
-                        return true;
-                    case R.id.add_ing:
-                        startActivity(new Intent(Home.this, AddIngredient.class));
-                        return true;
-                    case R.id.favorite_re:
-                        startActivity(new Intent(Home.this, Favorites.class));
-                        return true;
-                    default:
-                        return true;
-                }
-            }
-        });
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.add_recipe:
+                                startActivity(new Intent(Home.this, AddRecipe.class));
+                                return true;
+                            case R.id.add_ing:
+                                startActivity(new Intent(Home.this, AddIngredient.class));
+                                return true;
+                            case R.id.favorite_re:
+                                startActivity(new Intent(Home.this, Favorites.class));
+                                return true;
+                            default:
+                                return true;
+                        }
+                    }
+                });
 
         String mainAccount = "devbizrecipe@gmail.com";
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        if(user.getEmail().equals(mainAccount)){
+        if (user.getEmail().equals(mainAccount)) {
             //Profile activity here
-            startActivity(new Intent(getApplicationContext(),Admin.class));
+            startActivity(new Intent(getApplicationContext(), Admin.class));
         }
 
         // Do not display Up button since this is the Home menu
@@ -152,7 +152,7 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
                 startActivity(intent);
                 break;
             default:
-                // Do nothin
+                // Do nothing
                 break;
         }
     }
@@ -167,9 +167,9 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         // Do nothing
     }
 
-    public boolean onCreateOptionsMenu (Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.home_menu,menu);
+        getMenuInflater().inflate(R.menu.home_menu, menu);
         return true;
     }
 
@@ -190,7 +190,8 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
                 startActivity(new Intent(this, AboutUs.class));
                 return true;
             case R.id.action_logout:
-                // User chose the "Log Out" item, log the user out and return to activity_registration activity
+                // User chose the "Log Out" item, log the user out and return to Registration
+                // activity
                 firebaseAuth.signOut();
                 finish();
                 startActivity(new Intent(this, Login.class));
@@ -211,9 +212,10 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         mRoot.child("Recipes").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<String> result = new ArrayList<>(((HashMap) dataSnapshot.getValue()).keySet());
+                ArrayList<String> result =
+                        new ArrayList<>(((HashMap) dataSnapshot.getValue()).keySet());
                 Calendar c = Calendar.getInstance();
-                int day = (c.get(c.DAY_OF_YEAR))%result.size();
+                int day = (c.get(c.DAY_OF_YEAR)) % result.size();
                 String recipe = result.get(day);
 
                 displayRecipeImage(recipe, dataSnapshot);
@@ -221,14 +223,15 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) { }
+            public void onCancelled(DatabaseError databaseError) {
+            }
         });
     }
 
     /**
-     *  Displays the name of the recipe of the day and when clicking on
-     *  either the name or the image the recipe page for the recipe of
-     *  the day is displayed
+     * Displays the name of the recipe of the day and when clicking on
+     * either the name or the image the recipe page for the recipe of
+     * the day is displayed
      */
     private void displayRecipeOfDay(String r) {
         final TextView mTextView = findViewById(R.id.tv_daily_recipe_name);
@@ -279,7 +282,8 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
         mRoot.child("Recipes").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<String> recipes = new ArrayList<>(((HashMap) dataSnapshot.getValue()).keySet());
+                ArrayList<String> recipes =
+                        new ArrayList<>(((HashMap) dataSnapshot.getValue()).keySet());
                 Collections.sort(recipes);
                 Intent intent = new Intent(Home.this, SearchResults.class);
                 intent.putExtra("RECIPE_RESULTS", recipes);
@@ -287,7 +291,8 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) { }
+            public void onCancelled(DatabaseError databaseError) {
+            }
         });
     }
 }

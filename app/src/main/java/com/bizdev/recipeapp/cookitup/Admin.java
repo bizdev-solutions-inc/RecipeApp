@@ -34,6 +34,25 @@ import java.util.UUID;
 
 public class Admin extends AppCompatActivity {
 
+    private static final int RESULT_IMAGE = 1;
+    Button addRecipe;
+    Button addIngredient;
+    Button mRecipeImg;
+    Button mIngredientImg;
+    EditText recipe_name;
+    EditText recipe_instruction;
+    EditText recipe_ingredients;
+    EditText ingredient_name;
+    EditText ingredient_description;
+    EditText ingredient_history;
+    Spinner spinner_recipe_type;
+    Spinner spinner_cuisine;
+    Spinner spinner_ing_type;
+    Spinner spinner_ing_season;
+    ArrayAdapter<CharSequence> adapter_recipe_type;
+    ArrayAdapter<CharSequence> adapter_cuisine;
+    ArrayAdapter<CharSequence> adapter_ing_cuisine;
+    ArrayAdapter<CharSequence> adapter_ing_season;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference mRoot;
     private DatabaseReference mIngredients;
@@ -44,31 +63,7 @@ public class Admin extends AppCompatActivity {
     private DatabaseReference mType_Recipes;
     private DatabaseReference mType_Ingredients;
     private StorageReference mStorage;
-
-    Button addRecipe;
-    Button addIngredient;
-    Button mRecipeImg;
-    Button mIngredientImg;
-    private static final int RESULT_IMAGE = 1;
     private Uri selectedImage;
-
-    EditText recipe_name;
-    EditText recipe_instruction;
-    EditText recipe_ingredients;
-    EditText ingredient_name;
-    EditText ingredient_description;
-    EditText ingredient_history;
-
-    Spinner spinner_recipe_type;
-    Spinner spinner_cuisine;
-    Spinner spinner_ing_type;
-    Spinner spinner_ing_season;
-    ArrayAdapter<CharSequence>adapter_recipe_type;
-    ArrayAdapter<CharSequence>adapter_cuisine;
-    ArrayAdapter<CharSequence>adapter_ing_cuisine;
-    ArrayAdapter<CharSequence>adapter_ing_season;
-
-    private String userID;
     private FirebaseUser user;
     private String uid;
     private StorageReference uploadPath;
@@ -77,41 +72,44 @@ public class Admin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        if(firebaseAuth.getCurrentUser() == null)
-        {
+        if (firebaseAuth.getCurrentUser() == null) {
             finish();
-            startActivity(new Intent(getApplicationContext(),Login.class));
+            startActivity(new Intent(getApplicationContext(), Login.class));
         }
 
-        addRecipe = (Button)findViewById(R.id.save_recipe);
-        addIngredient = (Button)findViewById(R.id.save_ingredient);
-        mRecipeImg = (Button) findViewById(R.id.recipe_img);
-        mIngredientImg = (Button) findViewById(R.id.ingredient_img);
-        recipe_name = (EditText)findViewById(R.id.recipeName);
-        recipe_instruction = (EditText)findViewById(R.id.recipeInstructions);
-        recipe_ingredients = (EditText)findViewById(R.id.recipeIngredients);
-        ingredient_name = (EditText)findViewById(R.id.ingredientName);
-        ingredient_description = (EditText)findViewById(R.id.ingredientDescription);
-        ingredient_history = (EditText)findViewById(R.id.ingredientHistory);
+        addRecipe = findViewById(R.id.save_recipe);
+        addIngredient = findViewById(R.id.save_ingredient);
+        mRecipeImg = findViewById(R.id.recipe_img);
+        mIngredientImg = findViewById(R.id.ingredient_img);
+        recipe_name = findViewById(R.id.recipeName);
+        recipe_instruction = findViewById(R.id.recipeInstructions);
+        recipe_ingredients = findViewById(R.id.recipeIngredients);
+        ingredient_name = findViewById(R.id.ingredientName);
+        ingredient_description = findViewById(R.id.ingredientDescription);
+        ingredient_history = findViewById(R.id.ingredientHistory);
 
         Window window = this.getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
 
-        spinner_recipe_type = (Spinner)findViewById(R.id.spinner_type);
-        spinner_cuisine = (Spinner)findViewById(R.id.spinner_cuisine);
-        spinner_ing_type = (Spinner)findViewById(R.id.spinner_ing_type);
-        spinner_ing_season = (Spinner)findViewById(R.id.spinner_ing_season);
-        adapter_recipe_type = ArrayAdapter.createFromResource(this, R.array.recipe_types,android.R.layout.simple_spinner_item);
-        adapter_cuisine = ArrayAdapter.createFromResource(this, R.array.recipe_cuisines,android.R.layout.simple_spinner_item);
-        adapter_ing_cuisine = ArrayAdapter.createFromResource(this, R.array.ingredient_types,android.R.layout.simple_spinner_item);
-        adapter_ing_season = ArrayAdapter.createFromResource(this, R.array.ingredient_seasons,android.R.layout.simple_spinner_item);
+        spinner_recipe_type = findViewById(R.id.spinner_type);
+        spinner_cuisine = findViewById(R.id.spinner_cuisine);
+        spinner_ing_type = findViewById(R.id.spinner_ing_type);
+        spinner_ing_season = findViewById(R.id.spinner_ing_season);
+        adapter_recipe_type = ArrayAdapter.createFromResource(this, R.array.recipe_types,
+                android.R.layout.simple_spinner_item);
+        adapter_cuisine = ArrayAdapter.createFromResource(this, R.array.recipe_cuisines,
+                android.R.layout.simple_spinner_item);
+        adapter_ing_cuisine = ArrayAdapter.createFromResource(this, R.array.ingredient_types,
+                android.R.layout.simple_spinner_item);
+        adapter_ing_season = ArrayAdapter.createFromResource(this, R.array.ingredient_seasons,
+                android.R.layout.simple_spinner_item);
         adapter_recipe_type.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adapter_cuisine.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adapter_ing_cuisine.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -121,7 +119,6 @@ public class Admin extends AppCompatActivity {
         spinner_ing_type.setAdapter(adapter_ing_cuisine);
         spinner_ing_season.setAdapter(adapter_ing_season);
 
-        userID = firebaseAuth.getCurrentUser().getUid();
         user = firebaseAuth.getCurrentUser();
         mRoot = FirebaseDatabase.getInstance().getReference();
 
@@ -152,24 +149,27 @@ public class Admin extends AppCompatActivity {
                 String recipeName = recipe_name.getText().toString().trim();
                 String recipeInstruction = recipe_instruction.getText().toString().trim();
                 String recipeIngredients = recipe_ingredients.getText().toString() + " "; //need to update later
-                ArrayList<String> parse = new ArrayList<String>();
+                ArrayList<String> parse = new ArrayList<>();
                 parseString(recipeIngredients, parse);
 
-                //Comment
                 //Method 3
-                mCuisine_Recipe.child(spinner_cuisine.getSelectedItem().toString()).child(recipeName).setValue(recipeName);
+                mCuisine_Recipe.child(spinner_cuisine.getSelectedItem().toString())
+                        .child(recipeName).setValue(recipeName);
                 //Method 4
-                mType_Recipes.child(spinner_recipe_type.getSelectedItem().toString()).child(recipeName).setValue(recipeName);
+                mType_Recipes.child(spinner_recipe_type.getSelectedItem().toString())
+                        .child(recipeName).setValue(recipeName);
                 //Method 5
-                mRecipes.child(recipeName).child("Type").setValue(spinner_recipe_type.getSelectedItem().toString());
-                mRecipes.child(recipeName).child("Cuisine").setValue(spinner_cuisine.getSelectedItem().toString());
+                mRecipes.child(recipeName).child("Type").setValue(spinner_recipe_type
+                        .getSelectedItem().toString());
+                mRecipes.child(recipeName).child("Cuisine").setValue(spinner_cuisine
+                        .getSelectedItem().toString());
                 mRecipes.child(recipeName).child("Instructions").setValue(recipeInstruction);
 
                 //Method 6 & 7
-                for(String word : parse)
-                {
+                for (String word : parse) {
                     mRecipe_Ingredients.child(recipeName).child(word.toLowerCase()).setValue(word);
-                    mIngredient_Recipes.child(word.toLowerCase()).child(recipeName).setValue(recipeName);
+                    mIngredient_Recipes.child(word.toLowerCase()).child(recipeName)
+                            .setValue(recipeName);
                 }
 
                 mStorage = FirebaseStorage.getInstance().getReference().child("Recipes");
@@ -186,14 +186,18 @@ public class Admin extends AppCompatActivity {
 
                 mIngredients = mRoot.child("Ingredients");
                 //Method 1
-                mIngredients.child(ingredientName).child("Description").setValue(ingredientDescription);
-                mIngredients.child(ingredientName).child("Type").setValue(spinner_ing_type.getSelectedItem().toString());
+                mIngredients.child(ingredientName).child("Description")
+                        .setValue(ingredientDescription);
+                mIngredients.child(ingredientName).child("Type").setValue(spinner_ing_type
+                        .getSelectedItem().toString());
                 mIngredients.child(ingredientName).child("History").setValue(ingredientHistory);
-                mIngredients.child(ingredientName).child("Season").setValue(spinner_ing_season.getSelectedItem().toString());
+                mIngredients.child(ingredientName).child("Season").setValue(spinner_ing_season
+                        .getSelectedItem().toString());
 
                 //Method 2
                 mType_Ingredients = mRoot.child("Type_Ingredients");
-                mType_Ingredients.child(spinner_ing_type.getSelectedItem().toString()).child(ingredientName).setValue(ingredientName);
+                mType_Ingredients.child(spinner_ing_type.getSelectedItem()
+                        .toString()).child(ingredientName).setValue(ingredientName);
 
                 mStorage = FirebaseStorage.getInstance().getReference().child("Ingredients");
                 uploadFile("null", ingredientName);
@@ -203,7 +207,8 @@ public class Admin extends AppCompatActivity {
         mRecipeImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 galleryIntent.setType("image/*");
                 startActivityForResult(galleryIntent, RESULT_IMAGE);
 
@@ -213,7 +218,8 @@ public class Admin extends AppCompatActivity {
         mIngredientImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 galleryIntent.setType("image/*");
                 startActivityForResult(galleryIntent, RESULT_IMAGE);
 
@@ -223,7 +229,7 @@ public class Admin extends AppCompatActivity {
     }
 
 
-    public boolean onCreateOptionsMenu (Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         MenuInflater mMenuInflater = getMenuInflater();
         mMenuInflater.inflate(R.menu.my_menu, menu);
@@ -256,22 +262,17 @@ public class Admin extends AppCompatActivity {
         }
     }
 
-    public void parseString(String line, ArrayList<String> parse)
-    {
+    public void parseString(String line, ArrayList<String> parse) {
         int startIndex = 0;
         int endIndex = 0;
         boolean found = false;
 
         //separate ingredients by comma
-        for(int i=0; i<line.length(); i++)
-        {
-            if(line.charAt(i)!= ' ' && found == false)
-            {
+        for (int i = 0; i < line.length(); i++) {
+            if (line.charAt(i) != ' ' && !found) {
                 startIndex = i;
                 found = true;
-            }
-            else if((line.charAt(i) == ',' || i == line.length()-1) && found == true)
-            {
+            } else if ((line.charAt(i) == ',' || i == line.length() - 1) && found) {
                 endIndex = i;
                 parse.add(line.substring(startIndex, endIndex));
                 found = false;
@@ -282,28 +283,28 @@ public class Admin extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==RESULT_IMAGE && resultCode==RESULT_OK && data!=null){
+        if (requestCode == RESULT_IMAGE && resultCode == RESULT_OK && data != null) {
             selectedImage = data.getData();
         }
     }
 
-    private void uploadFile (String recipeName, String ingredientName) {
+    private void uploadFile(String recipeName, String ingredientName) {
         uid = UUID.randomUUID().toString();
         if (selectedImage != null) {
             uploadPath = mStorage.child(user.getUid()).child(uid);
             Log.i("Admin", uploadPath.toString());
-            uploadPath.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                    progressU.setVisibility(View.GONE);
-                    Toast.makeText(Admin.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
-                }
-            });
+            uploadPath.putFile(selectedImage).addOnSuccessListener
+                    (new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(Admin.this, "Upload Completed successfully",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    });
 
-            if(ingredientName.equals("null")) {
+            if (ingredientName.equals("null")) {
                 mRecipes.child(recipeName).child("Image").setValue(uploadPath.toString());
-            }
-            else if(recipeName.equals("null")) {
+            } else if (recipeName.equals("null")) {
                 mIngredients.child(ingredientName).child("Image").setValue(uploadPath.toString());
             }
         }

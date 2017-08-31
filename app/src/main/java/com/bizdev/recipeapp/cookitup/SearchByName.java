@@ -24,7 +24,7 @@ public class SearchByName extends BaseActivity {
     private String searchBy;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
-    private ArrayList<String> all_results= new ArrayList<>();
+    private ArrayList<String> all_results = new ArrayList<>();
     private AutoCompleteTextView actv;
     private boolean isRecipe = false;
 
@@ -48,16 +48,12 @@ public class SearchByName extends BaseActivity {
             actv.setHint("Enter ingredient name");
         }
 
-//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-
         populateResults();
-
 
         actv.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if (i == KeyEvent.KEYCODE_ENTER)
-                {
+                if (i == KeyEvent.KEYCODE_ENTER) {
                     return true;
                 }
                 return false;
@@ -83,7 +79,7 @@ public class SearchByName extends BaseActivity {
      * Fills the autocomplete textView with results from the database that match the first
      * few characters that are inputted
      */
-    private void populateResults(){
+    private void populateResults() {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
 
@@ -96,32 +92,34 @@ public class SearchByName extends BaseActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) { }
+            public void onCancelled(DatabaseError databaseError) {
+            }
         });
 
-        mCustom = FirebaseDatabase.getInstance().getReference().child(user.getUid()).child("Added " + searchBy).child(searchBy);
+        mCustom = FirebaseDatabase.getInstance().getReference()
+                .child(user.getUid()).child("Added " + searchBy).child(searchBy);
         mCustom.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds : dataSnapshot.getChildren())
-                    if(!all_results.contains(ds.getKey()))
+                for (DataSnapshot ds : dataSnapshot.getChildren())
+                    if (!all_results.contains(ds.getKey()))
                         all_results.add(ds.getKey());
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) { }
+            public void onCancelled(DatabaseError databaseError) {
+            }
         });
     }
 
     // Shows either the IngredientPage or the RecipePage depending on the selection
     private void showResultPage(String item, boolean isRecipe) {
         Intent intent;
-        if(isRecipe) {
+        if (isRecipe) {
             intent = new Intent(SearchByName.this, RecipePage.class);
             intent.putExtra("SELECTED_ITEM", item);
-        }
-        else {
+        } else {
             intent = new Intent(SearchByName.this, IngredientPage.class);
             intent.putExtra("SELECTED_INGREDIENT", item);
         }

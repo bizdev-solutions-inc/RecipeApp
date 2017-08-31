@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -18,7 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class SearchResults extends BaseActivity
-        implements FilterResultsDialogFragment.FilterResultsDialogListener{
+        implements FilterResultsDialogFragment.FilterResultsDialogListener {
 
     private ArrayList<String> recipe_list;
 
@@ -56,6 +55,7 @@ public class SearchResults extends BaseActivity
      * Called when the user selects an item from the search results list.
      * This takes the user to the RecipePage or IngredientPage activity that displays information
      * about the recipe or ingredient selected by the user.
+     *
      * @param item The selected item to be displayed in its profile page
      */
     public void displayItem(String item) {
@@ -67,6 +67,7 @@ public class SearchResults extends BaseActivity
     /**
      * Called when the user taps the Filter Results button to filter their search results.
      * This shows the user a dialog with options to filter their results.
+     *
      * @param view
      */
     public void showFiltersDialog(View view) {
@@ -77,10 +78,11 @@ public class SearchResults extends BaseActivity
     /**
      * Called when user taps the Filter button in the Filter Results dialog.
      * Filters the search results according to the options selected by the user.
+     *
      * @param dialog
      */
     @Override
-    public void onDialogFilterClick(DialogFragment dialog, boolean [] filterOptionsChecked,
+    public void onDialogFilterClick(DialogFragment dialog, boolean[] filterOptionsChecked,
                                     String recipe_type, String recipe_cuisine,
                                     String ingredient_to_exclude) {
         this.recipe_type = recipe_type;
@@ -100,6 +102,7 @@ public class SearchResults extends BaseActivity
     /**
      * Called when user taps the Cancel button in the Filter Results dialog.
      * Closes the dialog and does nothing.
+     *
      * @param dialog
      */
     @Override
@@ -116,6 +119,7 @@ public class SearchResults extends BaseActivity
         DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference().child("Recipes");
         mRoot.addListenerForSingleValueEvent(new ValueEventListener() {
             ArrayList<String> filtered_results = new ArrayList<>();
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (String recipe : recipe_list) {
@@ -143,6 +147,7 @@ public class SearchResults extends BaseActivity
         DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference().child("Recipes");
         mRoot.addListenerForSingleValueEvent(new ValueEventListener() {
             ArrayList<String> filtered_results = new ArrayList<>();
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (String recipe : recipe_list) {
@@ -173,6 +178,7 @@ public class SearchResults extends BaseActivity
                 .child("Recipe_Ingredients");
         mRoot.addListenerForSingleValueEvent(new ValueEventListener() {
             ArrayList<String> contain_ingredient = new ArrayList<>();
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Check if recipe contains the ingredient to exclude.

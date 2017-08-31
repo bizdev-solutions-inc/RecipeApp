@@ -64,13 +64,12 @@ public class RecipePage extends BaseActivity {
                         .child(recipe).getKey());
 
                 // Get the recipe image url and display it in the ImageView
-                if(dataSnapshot.child("Recipes").child(recipe).child("Image").getValue(String.class) != null){
+                if (dataSnapshot.child("Recipes").child(recipe).child("Image").getValue(String.class) != null) {
                     gs_url = dataSnapshot
                             .child("Recipes")
                             .child(recipe)
-                            .child("Image").getValue(String.class);}
-                else
-                {
+                            .child("Image").getValue(String.class);
+                } else {
                     gs_url = "gs://bizdevrecipeapp.appspot.com/Recipes/lRxFd3PSkGNfeUfZ3qOfpSRoaO12/restaurant-cutlery-circular-symbol-of-a-spoon-and-a-fork-in-a-circle_318-61086.jpg";
                 }
                 storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(gs_url);
@@ -172,17 +171,15 @@ public class RecipePage extends BaseActivity {
      * that the user has favorited this recipe. Calls the favoriteExists() method to check if
      * the recipe is already a favorite of the user.
      *
-     *
      * @param favorite_button
      */
-    public void setFavoriteRecipe(final MenuItem favorite_button)
-    {
+    public void setFavoriteRecipe(final MenuItem favorite_button) {
         final DatabaseReference mCurrent = FirebaseDatabase.getInstance()
                 .getReference()
                 .child("Recipes")
                 .child(recipe)
                 .child("Favorited By");
-        if(mCurrent != null) { // "Favorited By" attribute exists
+        if (mCurrent != null) { // "Favorited By" attribute exists
             mCurrent.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -200,13 +197,13 @@ public class RecipePage extends BaseActivity {
                         return;
                     }
                 }
+
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 
                 }
             });
-        }
-        else // "Favorited By" attribute does not exist
+        } else // "Favorited By" attribute does not exist
         {
             mCurrent.child(userID).setValue(userID);
         }
@@ -215,16 +212,14 @@ public class RecipePage extends BaseActivity {
 
     /**
      * Checks if the recipe is a favorite of the user.
+     *
      * @param dataSnapshot
      * @param userID
      * @return
      */
-    public boolean favoriteExists(DataSnapshot dataSnapshot, String userID)
-    {
-        for(DataSnapshot ds : dataSnapshot.getChildren())
-        {
-            if(ds.getKey().equals(userID))
-            {
+    public boolean favoriteExists(DataSnapshot dataSnapshot, String userID) {
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+            if (ds.getKey().equals(userID)) {
                 return true;
             }
         }

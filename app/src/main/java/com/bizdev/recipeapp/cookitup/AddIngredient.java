@@ -14,10 +14,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -32,26 +30,20 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.UUID;
 
-public class AddIngredient extends BaseActivity implements View.OnClickListener {
+public class AddIngredient extends BaseActivity {
 
-    private static final String TAG = "AddIngredient";
-
-    //user-related widgets
-    private Button mPicture;
-    private Button mFirebaseBtn;
-    private EditText mIngName;
-    private EditText mIngDescription;
-    private EditText mIngHistory;
-    private ImageView imageDisplay;
     private static final int RESULT_IMAGE = 1;
     private static final int CAPTURE_CAMERA = 11;
-    private Uri selectedImage;
-    private ProgressBar progressU;
     Spinner spinner_type;
     Spinner spinner_season;
     ArrayAdapter<CharSequence> adapter_ingredient_type;
     ArrayAdapter<CharSequence> adapter_ingredient_season;
-
+    //user-related widgets
+    private EditText mIngName;
+    private EditText mIngDescription;
+    private EditText mIngHistory;
+    private ImageView imageDisplay;
+    private Uri selectedImage;
     //database-related objects
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
@@ -70,44 +62,48 @@ public class AddIngredient extends BaseActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
 
         //user-related display
-        imageDisplay = (ImageView) findViewById(R.id.imageDisplay_ing);
-        spinner_type = (Spinner)findViewById(R.id.spinner_ing_type);
-        spinner_season = (Spinner)findViewById(R.id.spinner_ing_season);
-        adapter_ingredient_type = ArrayAdapter.createFromResource(this, R.array.ingredient_types, android.R.layout.simple_spinner_item);
-        adapter_ingredient_season = ArrayAdapter.createFromResource(this, R.array.ingredient_seasons, android.R.layout.simple_spinner_item);
+        imageDisplay = findViewById(R.id.imageDisplay_ing);
+        spinner_type = findViewById(R.id.spinner_ing_type);
+        spinner_season = findViewById(R.id.spinner_ing_season);
+        adapter_ingredient_type = ArrayAdapter.createFromResource
+                (this, R.array.ingredient_types, android.R.layout.simple_spinner_item);
+        adapter_ingredient_season = ArrayAdapter.createFromResource
+                (this, R.array.ingredient_seasons, android.R.layout.simple_spinner_item);
         spinner_type.setAdapter(adapter_ingredient_type);
         spinner_season.setAdapter(adapter_ingredient_season);
-        mIngName = (EditText) findViewById(R.id.ing_name);
-        mIngDescription = (EditText) findViewById(R.id.ing_description);
-        mIngHistory = (EditText) findViewById(R.id.ing_history);
+        mIngName = findViewById(R.id.ing_name);
+        mIngDescription = findViewById(R.id.ing_description);
+        mIngHistory = findViewById(R.id.ing_history);
 
         Window window = this.getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.ing_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.pic_btn:
-                        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        galleryIntent.setType("image/*");
-                        startActivityForResult(galleryIntent, RESULT_IMAGE);
-                        return true;
-                    case R.id.firebase_ing_btn:
-                        saveIngData ();
-                        return true;
-                    case R.id.take_photo:
-                        Intent takePictureIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            startActivityForResult(takePictureIntent, CAPTURE_CAMERA);
-                        return true;
-                    default:
-                        return true;
-                }
-            }
-        });
+        BottomNavigationView bottomNavigationView = findViewById(R.id.ing_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener
+                (new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.pic_btn:
+                                Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                galleryIntent.setType("image/*");
+                                startActivityForResult(galleryIntent, RESULT_IMAGE);
+                                return true;
+                            case R.id.firebase_ing_btn:
+                                saveIngData();
+                                return true;
+                            case R.id.take_photo:
+                                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                startActivityForResult(takePictureIntent, CAPTURE_CAMERA);
+                                return true;
+                            default:
+                                return true;
+                        }
+                    }
+                });
 
         //database-related
         firebaseAuth = FirebaseAuth.getInstance();
@@ -139,12 +135,7 @@ public class AddIngredient extends BaseActivity implements View.OnClickListener 
         });
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
-
-    public void saveIngData (){
+    public void saveIngData() {
 
         String ingredientName = mIngName.getText().toString().trim();
         String ingredientDescription = mIngDescription.getText().toString().trim();
@@ -165,7 +156,9 @@ public class AddIngredient extends BaseActivity implements View.OnClickListener 
         }
 
         //user tree
-        mRoot = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Ingredients");;
+        mRoot = FirebaseDatabase.getInstance().getReference().child(userID)
+                .child("Added Ingredients");
+        ;
         mStorage = FirebaseStorage.getInstance().getReference().child("Ingredients");
         mIngredients = mRoot.child("Ingredients");
         mType_Ingredients = mRoot.child("Type_Ingredients");
@@ -178,62 +171,55 @@ public class AddIngredient extends BaseActivity implements View.OnClickListener 
         saveIngredient(ingredientName, ingredientDescription, ingredientHistory, true);
     }
 
-    public void saveIngredient(String ingredientName, String ingredientDescription, String ingredientHistory, boolean admin)
-    {
+    public void saveIngredient(String ingredientName, String ingredientDescription,
+                               String ingredientHistory, boolean admin) {
         mIngredients.child(ingredientName).child("Description").setValue(ingredientDescription);
-        mIngredients.child(ingredientName).child("Type").setValue(spinner_type.getSelectedItem().toString());
+        mIngredients.child(ingredientName).child("Type")
+                .setValue(spinner_type.getSelectedItem().toString());
         mIngredients.child(ingredientName).child("History").setValue(ingredientHistory);
-        mIngredients.child(ingredientName).child("Season").setValue(spinner_season.getSelectedItem().toString());
-        mType_Ingredients.child(spinner_type.getSelectedItem().toString()).child(ingredientName).setValue(ingredientName);
+        mIngredients.child(ingredientName).child("Season")
+                .setValue(spinner_season.getSelectedItem().toString());
+        mType_Ingredients.child(spinner_type.getSelectedItem()
+                .toString()).child(ingredientName).setValue(ingredientName);
         uploadFile(ingredientName, admin);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode==RESULT_OK && data!=null){
-           switch (requestCode){
-               case CAPTURE_CAMERA:
-                   Bundle extras = data.getExtras();
-                   Bitmap imageBitmap = (Bitmap) extras.get("data");
-                   imageDisplay.setImageBitmap(imageBitmap);
-                   break;
-               case  RESULT_IMAGE:
-                   selectedImage = data.getData();
-                   imageDisplay.setImageURI(selectedImage);
-                   break;
-           }
+        if (resultCode == RESULT_OK && data != null) {
+            switch (requestCode) {
+                case CAPTURE_CAMERA:
+                    Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    imageDisplay.setImageBitmap(imageBitmap);
+                    break;
+                case RESULT_IMAGE:
+                    selectedImage = data.getData();
+                    imageDisplay.setImageURI(selectedImage);
+                    break;
+            }
         }
     }
 
 
-    private void uploadFile (String ingredientName, boolean admin) {
+    private void uploadFile(String ingredientName, boolean admin) {
         uid = UUID.randomUUID().toString();
         if (selectedImage != null) {
-            if(!admin) {
+            if (!admin) {
                 uploadPath = mStorage.child(user.getUid()).child(uid);
-            }
-            else{
+            } else {
                 uploadPath = mStorage.child("lRxFd3PSkGNfeUfZ3qOfpSRoaO12").child(uid);
             }
-            uploadPath.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                    progressU.setVisibility(View.GONE);
-                    Toast.makeText(AddIngredient.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
+            uploadPath.putFile(selectedImage).addOnSuccessListener
+                    (new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(AddIngredient.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
 
-                }
-            });
-
+                        }
+                    });
             mIngredients.child(ingredientName).child("Image").setValue(uploadPath.toString());
-//            uploadPath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                @Override
-//                public void onSuccess(Uri uri) {
-//                    String url = uri.toString();
-//                    mIngredients.child(ingredientName).child("Image").setValue(url);
-//                    Toast.makeText(AddIngredient.this, "URL Saved successfully", Toast.LENGTH_LONG).show();
-//                }
-//            });
         }
     }
 

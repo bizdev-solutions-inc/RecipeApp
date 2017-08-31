@@ -38,23 +38,19 @@ import java.util.UUID;
 
 import static com.bizdev.recipeapp.cookitup.R.id.imageDisplay;
 
-public class AddRecipe extends BaseActivity implements View.OnClickListener {
+public class AddRecipe extends BaseActivity {
 
-    private static final String TAG = "AddRecipe";
-
-    //user-related widgets
-//    private Button mFirebaseBtn;
-    private EditText mNameField;
-    private EditText mInstrField;
     private static final int RESULT_IMAGE = 1;
     private static final int CAPTURE_CAMERA = 11;
-    private Uri selectedImage;
     Spinner spinner_recipe_type;
     Spinner spinner_recipe_cuisine;
     ArrayAdapter<CharSequence> adapter_recipe_type;
     ArrayAdapter<CharSequence> adapter_recipe_cuisine;
     AutoCompleteTextView actv_ingredients;
-
+    //user-related widgets
+    private EditText mNameField;
+    private EditText mInstrField;
+    private Uri selectedImage;
     //database-related objects
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
@@ -71,7 +67,16 @@ public class AddRecipe extends BaseActivity implements View.OnClickListener {
     private String uid;
     private StorageReference uploadPath;
     private ArrayList<String> all_ingredients, ingredient_list;
-
+    // Create a list-item click-handling object as an anonymous class.
+    private AdapterView.OnItemClickListener itemClickListener =
+            new AdapterView.OnItemClickListener() {
+                // When the user clicks on a list item, it is removed from the list.
+                @Override
+                public void onItemClick(AdapterView adapterView, View view, int position, long id) {
+                    ingredient_list.remove(position);
+                    updateList();
+                }
+            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,25 +84,26 @@ public class AddRecipe extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
 
         //user-related display
-//        mFirebaseBtn = findViewById(R.id.firebase_btn);
         spinner_recipe_type = findViewById(R.id.spinner_type);
         spinner_recipe_cuisine = findViewById(R.id.spinner_cuisine);
-        adapter_recipe_type = ArrayAdapter.createFromResource(this, R.array.recipe_types,android.R.layout.simple_spinner_item);
-        adapter_recipe_cuisine = ArrayAdapter.createFromResource(this, R.array.recipe_cuisines,android.R.layout.simple_spinner_item);
+        adapter_recipe_type = ArrayAdapter.createFromResource
+                (this, R.array.recipe_types, android.R.layout.simple_spinner_item);
+        adapter_recipe_cuisine = ArrayAdapter.createFromResource
+                (this, R.array.recipe_cuisines, android.R.layout.simple_spinner_item);
         spinner_recipe_type.setAdapter(adapter_recipe_type);
         spinner_recipe_cuisine.setAdapter(adapter_recipe_cuisine);
         mNameField = findViewById(R.id.name_field);
         mInstrField = findViewById(R.id.instr_field);
-        imageDisplayRec = (ImageView) findViewById(imageDisplay);
-//        mFirebaseBtn.setOnClickListener(this);
+        imageDisplayRec = findViewById(imageDisplay);
 
         ListView listView = findViewById(R.id.lv_favorite_recipes);
         listView.setOnItemClickListener(itemClickListener);
 
         actv_ingredients = findViewById(R.id.actv_ingredients);
-        all_ingredients = new ArrayList<String>();
-        ingredient_list = new ArrayList<String>();
-        ArrayAdapter<String> actvAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, all_ingredients);
+        all_ingredients = new ArrayList<>();
+        ingredient_list = new ArrayList<>();
+        ArrayAdapter<String> actvAdapter = new ArrayAdapter<>
+                (this, android.R.layout.simple_list_item_1, all_ingredients);
         actv_ingredients.setAdapter(actvAdapter);
 
         Window window = this.getWindow();
@@ -106,36 +112,36 @@ public class AddRecipe extends BaseActivity implements View.OnClickListener {
         window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.ing_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.pic_btn:
-                        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        galleryIntent.setType("image/*");
-                        startActivityForResult(galleryIntent, RESULT_IMAGE);
-                        return true;
-                    case R.id.firebase_ing_btn:
-//                        finish();
-//                        startActivity(new Intent(Home.this, AddIngredient.class));
-                        saveRecData();
-                        return true;
-                    case R.id.take_photo:
-                        Intent takePictureIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                        startActivityForResult(takePictureIntent, CAPTURE_CAMERA);
-//                        }
-                        return true;
-                    default:
-                        return true;
-                }
-            }
-        });
+        BottomNavigationView bottomNavigationView = findViewById(R.id.ing_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener
+                (new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.pic_btn:
+                                Intent galleryIntent = new Intent
+                                        (Intent.ACTION_PICK,
+                                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                galleryIntent.setType("image/*");
+                                startActivityForResult(galleryIntent, RESULT_IMAGE);
+                                return true;
+                            case R.id.firebase_ing_btn:
+                                saveRecData();
+                                return true;
+                            case R.id.take_photo:
+                                Intent takePictureIntent
+                                        = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                startActivityForResult(takePictureIntent, CAPTURE_CAMERA);
+                                return true;
+                            default:
+                                return true;
+                        }
+                    }
+                });
 
         //database-related
         firebaseAuth = FirebaseAuth.getInstance();
-        user  = firebaseAuth.getCurrentUser();
+        user = firebaseAuth.getCurrentUser();
         userID = user.getUid();
         mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredient_Recipes");
 
@@ -205,8 +211,8 @@ public class AddRecipe extends BaseActivity implements View.OnClickListener {
         saveRecipe(recipeName, recipeInstruction, recipeCuisine, recipeType, true);
     }
 
-    public void saveRecipe(String recipeName, String recipeInstruction, String recipeCuisine, String recipeType, boolean admin)
-    {
+    public void saveRecipe(String recipeName, String recipeInstruction, String recipeCuisine,
+                           String recipeType, boolean admin) {
         mCuisine_Recipe.child(recipeCuisine).child(recipeName).setValue(recipeName);
         mRecipes.child(recipeName).child("Cuisine").setValue(recipeCuisine);
         mRecipes.child(recipeName).child("Instructions").setValue(recipeInstruction);
@@ -218,47 +224,6 @@ public class AddRecipe extends BaseActivity implements View.OnClickListener {
             mIngredient_Recipes.child(word).child(recipeName).setValue(recipeName);
         }
         uploadFile(recipeName, admin);
-    }
-
-    @Override
-    public void onClick(View v) {
-//      switch(v.getId()) {
-//           case R.id.pic_btn:
-//      Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//              galleryIntent.setType("image/*");
-//               startActivityForResult(galleryIntent, RESULT_IMAGE);
-//               break;
-//          case R.id.firebase_btn:
-//               String recipeName = mNameField.getText().toString().trim();
-//              String recipeInstruction = mInstrField.getText().toString().trim();
-//               String recipeCuisine = spinner_recipe_cuisine.getSelectedItem().toString();
-//               String recipeType = spinner_recipe_type.getSelectedItem().toString();
-//
-//               if(spinner_recipe_cuisine.getSelectedItemPosition()==0)
-//                {
-//                    Toast.makeText(this, "Please select a valid cuisine", Toast.LENGTH_SHORT).show();
-//                }
-//                else if(spinner_recipe_type.getSelectedItemPosition()==0)
-//                {
-//                    Toast.makeText(this, "Please select a valid type", Toast.LENGTH_SHORT).show();
-//                }
-//                else
-//                {
-//                    mCuisine_Recipe.child(recipeCuisine).child(recipeName).setValue(recipeName);
-//                    mRecipes.child(recipeName).child("Cuisine").setValue(recipeCuisine);
-//                    mRecipes.child(recipeName).child("Instructions").setValue(recipeInstruction);
-//                    mType_Recipes.child(recipeType).child(recipeName).setValue(recipeName);
-//                    mRecipes.child(recipeName).child("Type").setValue(recipeType);
-
-//                    for(String word : ingredient_list)
-//                    {
-//                        mRecipe_Ingredients.child(recipeName).child(word).setValue(word);
-//                        mIngredient_Recipes.child(word).child(recipeName).setValue(recipeName);
-//                    }
-//                    uploadFile(recipeName);
-//                }
-//                break;
-//        }
     }
 
     private void populateIngredients() {
@@ -279,14 +244,14 @@ public class AddRecipe extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode==RESULT_OK && data!=null){
-            switch (requestCode){
+        if (resultCode == RESULT_OK && data != null) {
+            switch (requestCode) {
                 case CAPTURE_CAMERA:
                     Bundle extras = data.getExtras();
                     Bitmap imageBitmap = (Bitmap) extras.get("data");
                     imageDisplayRec.setImageBitmap(imageBitmap);
                     break;
-                case  RESULT_IMAGE:
+                case RESULT_IMAGE:
                     selectedImage = data.getData();
                     imageDisplayRec.setImageURI(selectedImage);
                     break;
@@ -294,64 +259,25 @@ public class AddRecipe extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    private void uploadFile (final String recipeName, boolean admin) {
+    private void uploadFile(final String recipeName, boolean admin) {
         uid = UUID.randomUUID().toString();
         if (selectedImage != null) {
-            if(!admin) {
+            if (!admin) {
                 uploadPath = mStorage.child(user.getUid()).child(uid);
-            }
-            else
-            {
+            } else {
                 uploadPath = mStorage.child("lRxFd3PSkGNfeUfZ3qOfpSRoaO12").child(uid);
             }
-            //Log.i(TAG, uploadPath.toString());
-            uploadPath.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(AddRecipe.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
-                }
-            });
+            uploadPath.putFile(selectedImage).addOnSuccessListener
+                    (new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(AddRecipe.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
+                        }
+                    });
             mRecipes.child(recipeName).child("Image").setValue(uploadPath.toString());
         }
     }
 
-
-//    public void parseString(String line, ArrayList<String> parse)
-//    {
-//        int startIndex = 0;
-//        int endIndex = 0;
-//        boolean found = false;
-//
-//        //separate ingredients by comma
-//        for(int i=0; i<line.length(); i++)
-//        {
-//            if(line.charAt(i)!= ',' && line.charAt(i)!= ' ' && found == false)
-//            {
-//                startIndex = i;
-//                found = true;
-//            }
-//            else if((line.charAt(i) == ',' || i == line.length()-1) && found == true)
-//            {
-//                if(line.charAt(line.length()-1) == ' ')
-//                    endIndex = i-1;
-//                else
-//                    endIndex = i;
-//                parse.add(line.substring(startIndex, endIndex));
-//                found = false;
-//            }
-//        }
-//    }
-
-    // Create a list-item click-handling object as an anonymous class.
-    private AdapterView.OnItemClickListener itemClickListener =
-            new AdapterView.OnItemClickListener() {
-                // When the user clicks on a list item, it is removed from the list.
-                @Override
-                public void onItemClick(AdapterView adapterView, View view, int position, long id) {
-                    ingredient_list.remove(position);
-                    updateList();
-                }
-            };
     /**
      * Updates the ListView with entries from the ingredients list.
      * Should be called every time an entry is added to or removed from the list.
@@ -359,9 +285,9 @@ public class AddRecipe extends BaseActivity implements View.OnClickListener {
      * and display each String entry as an item in the ListView.
      */
     private void updateList() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, ingredient_list);
-        ListView lv_added_ingredients = (ListView) findViewById(R.id.lv_favorite_recipes);
+        ListView lv_added_ingredients = findViewById(R.id.lv_favorite_recipes);
         lv_added_ingredients.setAdapter(adapter);
     }
 }

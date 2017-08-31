@@ -4,23 +4,23 @@
 
     <item
         android:id="@+id/add_recipe"
-        android:title="Add Recipe"
         android:icon="@drawable/recipe"
-        app:showAsAction="ifRoom"
-        android:theme="@style/NavigationTheme"/>
+        android:theme="@style/NavigationTheme"
+        android:title="Add Recipe"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/favorite_re"
-        android:title="Favorites"
         android:icon="@drawable/favorie"
-        app:showAsAction="ifRoom"
-        android:theme="@style/NavigationTheme"/>
+        android:theme="@style/NavigationTheme"
+        android:title="Favorites"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/add_ing"
-        android:title="Add Ingredient"
         android:icon="@drawable/ingredients"
-        app:showAsAction="ifRoom"
-        android:theme="@style/NavigationTheme"/>
+        android:theme="@style/NavigationTheme"
+        android:title="Add Ingredient"
+        app:showAsAction="ifRoom" />
 
 </menu>

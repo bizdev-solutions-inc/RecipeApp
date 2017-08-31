@@ -76,8 +76,7 @@ public class IngredientList extends BaseActivity {
         actv.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if (i == KeyEvent.KEYCODE_ENTER)
-                {
+                if (i == KeyEvent.KEYCODE_ENTER) {
                     return true;
                 }
                 return false;
@@ -110,7 +109,7 @@ public class IngredientList extends BaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String item = adapterView.getItemAtPosition(i).toString();
-                if (!item.equals("Favorites") && !ingredient_list.contains(item)){
+                if (!item.equals("Favorites") && !ingredient_list.contains(item)) {
                     ingredient_list.add(item);
                     lv_adapter.notifyDataSetChanged();
                     adapterView.setSelection(0);
@@ -128,7 +127,7 @@ public class IngredientList extends BaseActivity {
      * Populates the ArrayList of all the ingredients in the database by querying the database.
      * The ArrayList is used to populate the AutoCompleteTextView used as a search field.
      */
-    private void populateIngredients(){
+    private void populateIngredients() {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         userID = user.getUid();
@@ -153,9 +152,8 @@ public class IngredientList extends BaseActivity {
         mCustom.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds : dataSnapshot.getChildren())
-                {
-                    if(!all_ingredients.contains(ds.getKey())) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    if (!all_ingredients.contains(ds.getKey())) {
                         all_ingredients.add(ds.getKey());
                     }
                 }
@@ -199,9 +197,9 @@ public class IngredientList extends BaseActivity {
         mFavorite.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds : dataSnapshot.getChildren())
-                {
-                    if(!favorites_list.contains(ds.getKey()) && ds.child("Favorited By").child(userID).exists()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    if (!favorites_list.contains(ds.getKey()) && ds.child("Favorited By")
+                            .child(userID).exists()) {
                         favorites_list.add(ds.getKey());
                     }
                 }
@@ -241,6 +239,7 @@ public class IngredientList extends BaseActivity {
     /**
      * Queries the database and searches for recipes containing the specified ingredients.
      * Results are partial hits.
+     *
      * @param dataSnapshot the DataSnapshot containing the node in the database tree to be searched
      */
     public ArrayList<String> queryData(DataSnapshot dataSnapshot) {

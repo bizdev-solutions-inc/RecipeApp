@@ -20,14 +20,11 @@ import java.util.ArrayList;
 
 public class MyIngredients extends BaseActivity {
 
+    public static final String EXTRA_SEARCH_QUERY = "SELECTED_INGREDIENT";
+    ArrayList<String> addedIngredients = new ArrayList<>();
     //user-related
     private String userID;
-    private String activityName;
-    private String key;
     private ListView lv;
-    ArrayList<String> addedIngredients = new ArrayList<String>();
-    public static final String EXTRA_SEARCH_QUERY = "SELECTED_INGREDIENT";
-
     //database-related
     private DatabaseReference mDatabase;
 
@@ -43,7 +40,6 @@ public class MyIngredients extends BaseActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        activityName = this.getLocalClassName();
         userID = firebaseAuth.getCurrentUser().getUid();
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child(userID)
@@ -51,7 +47,7 @@ public class MyIngredients extends BaseActivity {
                 .child("Ingredients");
         lv = findViewById(R.id.savedIngredientListView);
 
-        if(mDatabase!=null) {
+        if (mDatabase != null) {
             mDatabase.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -68,11 +64,6 @@ public class MyIngredients extends BaseActivity {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     displayItem(addedIngredients.get(i));
-//                    key = lv.getItemAtPosition(i).toString();
-//                    Intent intent = new Intent(MyIngredients.this, IngredientPage.class);
-//                    intent.putExtra(EXTRA_SEARCH_QUERY, key);
-//                    intent.putExtra(EXTRA_GET_ACTIVITY, activityName);
-//                    startActivity(intent);
                 }
             });
         }
@@ -85,11 +76,11 @@ public class MyIngredients extends BaseActivity {
     }
 
     private void showData(DataSnapshot dataSnapshot) {
-        for(DataSnapshot ds : dataSnapshot.getChildren())
-        {
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
             addedIngredients.add(ds.getKey());
         }
-        ListAdapter la = new ArrayAdapter<String>(MyIngredients.this, android.R.layout.simple_list_item_1, addedIngredients);
+        ListAdapter la = new ArrayAdapter<>(MyIngredients.this,
+                android.R.layout.simple_list_item_1, addedIngredients);
         lv.setAdapter(la);
     }
 }

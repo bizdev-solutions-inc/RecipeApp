@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
 
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    android:layout_height="match_parent">
 
 
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:fillViewport="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:fillViewport="true">
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -33,47 +32,47 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="80dp"
-                android:hint="Ingredient Name..."
-                android:ems="10"
                 android:backgroundTint="@color/colorPrimary"
-                android:maxLines="1"
-                android:maxLength="40"/>
+                android:ems="10"
+                android:hint="Ingredient Name..."
+                android:maxLength="40"
+                android:maxLines="1" />
 
             <EditText
                 android:id="@+id/ing_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Description..."
-                android:ems="10"
-                android:backgroundTint="@color/colorPrimary"
-                android:maxLines="1"
+                android:layout_alignStart="@+id/ing_name"
                 android:layout_below="@+id/ing_name"
-                android:layout_alignStart="@+id/ing_name" />
+                android:backgroundTint="@color/colorPrimary"
+                android:ems="10"
+                android:hint="Description..."
+                android:maxLines="1" />
 
             <EditText
                 android:id="@+id/ing_history"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="History..."
-                android:ems="10"
-                android:backgroundTint="@color/colorPrimary"
-                android:layout_below="@+id/ing_description"
                 android:layout_alignStart="@+id/ing_description"
-                android:maxLines="1"/>
+                android:layout_below="@+id/ing_description"
+                android:backgroundTint="@color/colorPrimary"
+                android:ems="10"
+                android:hint="History..."
+                android:maxLines="1" />
 
             <TextView
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
-                android:text=" Type :"
                 android:layout_marginLeft="30dp"
-                android:layout_marginTop="230dp" />
+                android:layout_marginTop="230dp"
+                android:text=" Type :" />
 
             <Spinner
                 android:id="@+id/spinner_ing_type"
+                style="@style/spinner_style"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                style="@style/spinner_style"
                 android:layout_alignBottom="@+id/textView6"
                 android:layout_alignStart="@+id/spinner_ing_season" />
 
@@ -81,32 +80,31 @@
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
-                android:text="Season :"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="290dp" />
+                android:layout_marginTop="290dp"
+                android:text="Season :" />
 
             <Spinner
                 android:id="@+id/spinner_ing_season"
+                style="@style/spinner_style"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                style="@style/spinner_style"
-                android:layout_marginTop="280dp"
-                android:layout_centerHorizontal="true"/>
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="280dp" />
 
             <ImageView
                 android:id="@+id/imageDisplay_ing"
                 android:layout_width="200dp"
                 android:layout_height="150dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="340dp"
-                />
+                android:layout_marginTop="340dp" />
 
             <android.support.design.widget.BottomNavigationView
-                android:theme="@style/NavigationTheme"
                 android:id="@+id/ing_navigation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:theme="@style/NavigationTheme"
                 app:itemBackground="@color/colorPrimary"
                 app:itemIconTint="@drawable/nav_item_color"
                 app:itemTextColor="@drawable/nav_item_color"
@@ -115,6 +113,6 @@
         </RelativeLayout>
 
 
-       </ScrollView>
+    </ScrollView>
 
-    </RelativeLayout>
+</RelativeLayout>

@@ -16,7 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class ResetPassword extends AppCompatActivity implements View.OnClickListener{
+public class ResetPassword extends AppCompatActivity implements View.OnClickListener {
 
     private String email;
     private EditText editResetEmail;
@@ -29,8 +29,8 @@ public class ResetPassword extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.reset_password);
 
         editResetEmail = findViewById(R.id.editResetEmail);
-        loginPage = (TextView) findViewById(R.id.textViewReset);
-        passReset = (ImageButton) findViewById(R.id.buttonResetPass);
+        loginPage = findViewById(R.id.textViewReset);
+        passReset = findViewById(R.id.buttonResetPass);
 
         loginPage.setOnClickListener(this);
         passReset.setOnClickListener(this);
@@ -42,36 +42,39 @@ public class ResetPassword extends AppCompatActivity implements View.OnClickList
 
     }
 
-    public void resetPassWD (){
+    public void resetPassWD() {
         email = editResetEmail.getText().toString();
 
         if (!email.isEmpty()) {
-            FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(ResetPassword.this, "Reset password email sent.", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(ResetPassword.this, "Invalid email!", Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
-        }
-        else {
-            Toast.makeText(ResetPassword.this, "Please enter a valid email.", Toast.LENGTH_LONG).show();
+            FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener
+                    (new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(ResetPassword.this, "Reset password email sent.",
+                                        Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(ResetPassword.this, "Invalid email!",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+        } else {
+            Toast.makeText(ResetPassword.this, "Please enter a valid email.",
+                    Toast.LENGTH_LONG).show();
         }
 
 
     }
 
-    public void onClick(View view){
-        if (view == passReset){
+    public void onClick(View view) {
+        if (view == passReset) {
             resetPassWD();
         }
-        if (view == loginPage){
+        if (view == loginPage) {
             //Will open activity_registration activity here
             finish();
-            startActivity(new Intent(this,Login.class));
+            startActivity(new Intent(this, Login.class));
         }
     }
 

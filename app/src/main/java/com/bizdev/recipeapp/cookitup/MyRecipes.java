@@ -20,13 +20,13 @@ import java.util.ArrayList;
 
 public class MyRecipes extends BaseActivity {
 
+    public static final String EXTRA_SEARCH_QUERY = "SELECTED_ITEM";
+    ArrayList<String> addedRecipes = new ArrayList<>();
     private DatabaseReference mDatabase;
     private String userID;
     private String activityName;
     private ListView lv;
-    ArrayList<String> addedRecipes = new ArrayList<>();
     private String key;
-    public static final String EXTRA_SEARCH_QUERY = "SELECTED_ITEM";
 
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_my_recipes);
@@ -47,7 +47,7 @@ public class MyRecipes extends BaseActivity {
                 .child("Recipes");
         lv = findViewById(R.id.savedRecipeListView);
 
-        if(mDatabase != null) {
+        if (mDatabase != null) {
             mDatabase.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -76,8 +76,7 @@ public class MyRecipes extends BaseActivity {
     }
 
     private void showData(DataSnapshot dataSnapshot) {
-        for(DataSnapshot ds : dataSnapshot.getChildren())
-        {
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
             addedRecipes.add(ds.getKey());
         }
         ListAdapter la = new ArrayAdapter<>(MyRecipes.this, android.R.layout.simple_list_item_1, addedRecipes);

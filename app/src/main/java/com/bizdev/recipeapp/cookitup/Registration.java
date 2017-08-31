@@ -31,15 +31,15 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
 
     private FirebaseAuth mAuth;
 
-    protected void onCreate (Bundle SavedInstanceState) {
-        super.onCreate (SavedInstanceState);
+    protected void onCreate(Bundle SavedInstanceState) {
+        super.onCreate(SavedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        buttonRegister=(ImageButton) findViewById(R.id.buttonRegister);
-        editTextEmail=(EditText) findViewById(R.id.editTextEmail);
-        editTextPassword=(EditText) findViewById(R.id.editTextPassword);
-        textViewSignin = (TextView) findViewById(R.id.textViewSignin);
-        progressR=(ProgressBar) findViewById(R.id.progressReg);
+        buttonRegister = findViewById(R.id.buttonRegister);
+        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextPassword = findViewById(R.id.editTextPassword);
+        textViewSignin = findViewById(R.id.textViewSignin);
+        progressR = findViewById(R.id.progressReg);
         progressR.setVisibility(View.GONE);
 
         Window window = this.getWindow();
@@ -51,14 +51,14 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
         textViewSignin.setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
-        if(mAuth.getCurrentUser()!=null  && mAuth.getCurrentUser().isEmailVerified()){
+        if (mAuth.getCurrentUser() != null && mAuth.getCurrentUser().isEmailVerified()) {
             //Profile activity here
             finish();
-            startActivity(new Intent(getApplicationContext(),Home.class));
+            startActivity(new Intent(getApplicationContext(), Home.class));
         }
     }
 
-    private void registerUser () {
+    private void registerUser() {
         progressR.setVisibility(View.VISIBLE);
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
@@ -79,49 +79,55 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
 
         //if validations are ok
         //we will first show a progress bar
-        mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                final FirebaseUser user = mAuth.getCurrentUser();
-                if (task.isSuccessful()) {
-                    //User is successfully registered
-                    progressR.setVisibility(View.GONE);
-                    Toast.makeText(Registration.this, "Registered successfully, please verify your Email", Toast.LENGTH_LONG).show();
-                    user.sendEmailVerification().addOnCompleteListener(Registration.this, new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful())
-                            {
-                                progressR.setVisibility(View.GONE);
-                                Toast.makeText(Registration.this, "Verification Email sent to " + user.getEmail(), Toast.LENGTH_LONG).show();
-                            }
-                            else
-                            {
-                                progressR.setVisibility(View.GONE);
-                                Toast.makeText(Registration.this, "Failed to send Verification Email.",
-                                        Toast.LENGTH_LONG).show();
-                            }
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener
+                (this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        final FirebaseUser user = mAuth.getCurrentUser();
+                        if (task.isSuccessful()) {
+                            //User is successfully registered
+                            progressR.setVisibility(View.GONE);
+                            Toast.makeText(Registration.this,
+                                    "Registered successfully, please verify your Email",
+                                    Toast.LENGTH_LONG).show();
+                            user.sendEmailVerification().addOnCompleteListener
+                                    (Registration.this, new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                progressR.setVisibility(View.GONE);
+                                                Toast.makeText(Registration.this,
+                                                        "Verification Email sent to " + user.getEmail(),
+                                                        Toast.LENGTH_LONG).show();
+                                            } else {
+                                                progressR.setVisibility(View.GONE);
+                                                Toast.makeText(Registration.this,
+                                                        "Failed to send Verification Email.",
+                                                        Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+                            mAuth.signOut();
+                            finish();
+                            startActivity(new Intent(Registration.this, Login.class));
+                        } else {
+                            progressR.setVisibility(View.GONE);
+                            Toast.makeText(Registration.this,
+                                    "Account already exists or Email is invalid. Please try again",
+                                    Toast.LENGTH_SHORT).show();
                         }
-                    });
-                    mAuth.signOut();
-                    finish();
-                    startActivity(new Intent(Registration.this,Login.class));
-                }else{
-                    progressR.setVisibility(View.GONE);
-                    Toast.makeText(Registration.this, "Account already exists or Email is invalid. Please try again", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+                    }
+                });
     }
 
     public void onClick(View view) {
-        if (view == buttonRegister){
+        if (view == buttonRegister) {
             registerUser();
         }
-        if (view == textViewSignin){
+        if (view == textViewSignin) {
             //Will open activity_registration activity here
             finish();
-            startActivity(new Intent(this,Login.class));
+            startActivity(new Intent(this, Login.class));
         }
     }
 }

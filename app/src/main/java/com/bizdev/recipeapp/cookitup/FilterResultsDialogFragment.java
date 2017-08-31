@@ -28,8 +28,10 @@ import java.util.ArrayList;
 
 public class FilterResultsDialogFragment extends DialogFragment {
 
-    private boolean[] filterOptionsChecked; // Status of filter options checkboxes
     private final int NUM_OPTIONS = 3;
+    // Use this instance of the interface to deliver action events
+    FilterResultsDialogListener mListener;
+    private boolean[] filterOptionsChecked; // Status of filter options checkboxes
     private ArrayList<String> all_ingredients;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
@@ -38,20 +40,6 @@ public class FilterResultsDialogFragment extends DialogFragment {
     private String recipe_type;
     private String recipe_cuisine;
     private String ingredient_to_exclude;
-
-    /* The activity that creates an instance of this dialog fragment must
-     * implement this interface in order to receive event callbacks.
-     * Each method passes the DialogFragment in case the host needs to query it. */
-    public interface FilterResultsDialogListener {
-        void onDialogFilterClick(DialogFragment dialog, boolean[] filterOptionsChecked,
-                                 String recipe_type,
-                                 String recipe_cuisine,
-                                 String ingredient_to_exclude);
-        void onDialogCancelClick(DialogFragment dialog);
-    }
-
-    // Use this instance of the interface to deliver action events
-    FilterResultsDialogListener mListener;
 
     // Override the Fragment.onAttach() method to instantiate the FilterResultsDialogListener
     @Override
@@ -64,7 +52,7 @@ public class FilterResultsDialogFragment extends DialogFragment {
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(context.toString()
-            + " must implement FilterResultsDialogListener");
+                    + " must implement FilterResultsDialogListener");
         }
     }
 
@@ -176,6 +164,7 @@ public class FilterResultsDialogFragment extends DialogFragment {
      * When a CheckBox is clicked, its checked status is passed as a boolean
      * to the filterOptionsChecked boolean array that keeps track of the
      * CheckBox statuses.
+     *
      * @param mView
      */
     private void setupCheckboxHandlers(final View mView) {
@@ -231,5 +220,17 @@ public class FilterResultsDialogFragment extends DialogFragment {
 
             }
         });
+    }
+
+    /* The activity that creates an instance of this dialog fragment must
+     * implement this interface in order to receive event callbacks.
+     * Each method passes the DialogFragment in case the host needs to query it. */
+    public interface FilterResultsDialogListener {
+        void onDialogFilterClick(DialogFragment dialog, boolean[] filterOptionsChecked,
+                                 String recipe_type,
+                                 String recipe_cuisine,
+                                 String ingredient_to_exclude);
+
+        void onDialogCancelClick(DialogFragment dialog);
     }
 }

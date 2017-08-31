@@ -67,6 +67,7 @@ public class Favorites extends BaseActivity {
     /**
      * Called when an ingredient is selected by the user.
      * Takes the user to the ingredient's profile.
+     *
      * @param item
      */
     private void displayIngredient(String item) {
@@ -88,7 +89,8 @@ public class Favorites extends BaseActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    if (!favorite_recipes.contains(ds.getKey()) && ds.child("Favorited By").child(userID).exists()) {
+                    if (!favorite_recipes.contains(ds.getKey()) && ds.child("Favorited By")
+                            .child(userID).exists()) {
                         favorite_recipes.add(ds.getKey());
                         recipes_adapter.notifyDataSetChanged();
                     }
@@ -110,13 +112,14 @@ public class Favorites extends BaseActivity {
             }
         });
 
-        mFavorite = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Recipes").child("Recipes");
+        mFavorite = FirebaseDatabase.getInstance().getReference().child(userID)
+                .child("Added Recipes").child("Recipes");
         mFavorite.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds : dataSnapshot.getChildren())
-                {
-                    if (!favorite_recipes.contains(ds.getKey()) && ds.child("Favorited By").child(userID).exists()) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    if (!favorite_recipes.contains(ds.getKey()) && ds.child("Favorited By")
+                            .child(userID).exists()) {
                         favorite_recipes.add(ds.getKey());
                         recipes_adapter.notifyDataSetChanged();
                     }
@@ -165,13 +168,14 @@ public class Favorites extends BaseActivity {
             }
         });
 
-        mFavorite = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Ingredients").child("Ingredients");
+        mFavorite = FirebaseDatabase.getInstance().getReference().child(userID)
+                .child("Added Ingredients").child("Ingredients");
         mFavorite.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds : dataSnapshot.getChildren())
-                {
-                    if (!favorite_ingredients.contains(ds.getKey()) && ds.child("Favorited By").child(userID).exists()) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    if (!favorite_ingredients.contains(ds.getKey()) &&
+                            ds.child("Favorited By").child(userID).exists()) {
                         favorite_ingredients.add(ds.getKey());
                         ingredients_adapter.notifyDataSetChanged();
                     }

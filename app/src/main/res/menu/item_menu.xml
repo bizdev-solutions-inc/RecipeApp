@@ -4,9 +4,9 @@
 
     <item
         android:id="@+id/action_favorite"
+        android:icon="@drawable/ic_action_is_not_favorite"
         android:title="@string/action_favorite_recipe"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_action_is_not_favorite" />
+        app:showAsAction="ifRoom" />
 
     <!-- Return the user to the Home activity -->
     <item
@@ -16,24 +16,24 @@
 
     <item
         android:id="@+id/save_ing"
-        android:title="Saved Ingredients"
         android:icon="@drawable/ingredients_list"
-        app:showAsAction="never"
-        android:theme="@style/NavigationTheme"/>
+        android:theme="@style/NavigationTheme"
+        android:title="Saved Ingredients"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/save_recipe"
-        android:title="Saved Recipes"
         android:icon="@drawable/save"
-        app:showAsAction="never"
-        android:theme="@style/NavigationTheme"/>
+        android:theme="@style/NavigationTheme"
+        android:title="Saved Recipes"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/recipe_favorites"
-        android:title="Favorites"
         android:icon="@drawable/save"
-        app:showAsAction="never"
-        android:theme="@style/NavigationTheme"/>
+        android:theme="@style/NavigationTheme"
+        android:title="Favorites"
+        app:showAsAction="never" />
 
     <!-- Show the user the About Us activity -->
     <item

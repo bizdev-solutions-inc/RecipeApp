@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -48,10 +47,12 @@ public class IngredientCatalog extends BaseActivity {
             }
         });
     }
+
     /**
      * Called when the user selects an item from the search results list.
      * This takes the user to the RecipePage activity that displays information about
      * the recipe or ingredient selected by the user.
+     *
      * @param item
      */
     public void displayItem(String item) {

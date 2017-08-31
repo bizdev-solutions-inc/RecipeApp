@@ -24,6 +24,15 @@ public class SearchByAttribute extends BaseActivity {
     private ArrayList<String> list = new ArrayList<>();
     private String attribute, attributeSelection;
     private boolean isRecipe = true;
+    // Create a message handling object as an anonymous class.
+    private AdapterView.OnItemClickListener itemClickListener =
+            new AdapterView.OnItemClickListener() {
+                // When the user clicks on a list item, it is removed from the list.
+                @Override
+                public void onItemClick(AdapterView adapterView, View view, int position, long id) {
+                    search(recipeAttributeList[position]);
+                }
+            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +45,13 @@ public class SearchByAttribute extends BaseActivity {
         Resources res = getResources();
 
         // Set arrayId based on which search, either recipe type or cuisine
-        if(attribute.equals("Type_Recipes")) {
+        if (attribute.equals("Type_Recipes")) {
             arrayId = R.array.recipe_types;
             setTitle("Select Recipe Type");
-        }
-        else if(attribute.equals("Cuisine_Recipe")){
+        } else if (attribute.equals("Cuisine_Recipe")) {
             arrayId = R.array.recipe_cuisines;
             setTitle("Select Cuisine");
-        }
-        else {
+        } else {
             arrayId = R.array.ingredient_types;
             setTitle("Select A Catalog");
             isRecipe = false;
@@ -64,16 +71,6 @@ public class SearchByAttribute extends BaseActivity {
         lv_recipe_types.setOnItemClickListener(itemClickListener);
     }
 
-    // Create a message handling object as an anonymous class.
-    private AdapterView.OnItemClickListener itemClickListener =
-            new AdapterView.OnItemClickListener() {
-                // When the user clicks on a list item, it is removed from the list.
-                @Override
-                public void onItemClick(AdapterView adapterView, View view, int position, long id) {
-                    search(recipeAttributeList[position]);
-                }
-            };
-
     // Returns all recipes or ingredients under the specified type, cuisine, or catalog,
     // the selection of which is determined by the String attribute and the boolean isRecipe
     private void search(String selection) {
@@ -88,11 +85,10 @@ public class SearchByAttribute extends BaseActivity {
                 list = queryData(dataSnapshot);
 
                 Intent intent;
-                if(isRecipe) {
+                if (isRecipe) {
                     intent = new Intent(SearchByAttribute.this, SearchResults.class);
                     intent.putExtra("RECIPE_RESULTS", list);
-                }
-                else {
+                } else {
                     intent = new Intent(SearchByAttribute.this, IngredientCatalog.class);
                     intent.putExtra("INGREDIENT_RESULTS", list);
                 }
@@ -100,7 +96,8 @@ public class SearchByAttribute extends BaseActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) { }
+            public void onCancelled(DatabaseError databaseError) {
+            }
         });
     }
 
@@ -108,7 +105,7 @@ public class SearchByAttribute extends BaseActivity {
     public ArrayList<String> queryData(DataSnapshot dataSnapshot) {
 
         HashMap<String, Object> result =
-                    (HashMap) dataSnapshot.child(attributeSelection).getValue();
+                (HashMap) dataSnapshot.child(attributeSelection).getValue();
 
         return new ArrayList<>(result.keySet());
     }

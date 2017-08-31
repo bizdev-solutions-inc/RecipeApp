@@ -27,25 +27,21 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getGroupCount() {
-//        return groupNames.length;
         return groupNames.size();
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-//        return childNames[groupPosition].length;
         return childNames.get(groupPosition).size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-//        return groupNames[groupPosition];
         return groupNames.get(groupPosition);
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-//        return childNames[groupPosition][childPosition];
         return childNames.get(groupPosition).get(childPosition);
     }
 
@@ -75,8 +71,8 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View view,
-                             ViewGroup parent) {
+    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild,
+                             View view, ViewGroup parent) {
         final TextView textView = new TextView(context);
         String text = childNames.get(groupPosition).get(childPosition);
         if (groupPosition == 0 && groupNames.get(0).equals("Ingredients")) {
@@ -90,12 +86,11 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (groupPosition == 0 && groupNames.get(0).equals("Ingredients"))
-                {
+                if (groupPosition == 0 && groupNames.get(0).equals("Ingredients")) {
                     String item = textView.getText().toString().toLowerCase();
-                    Intent intent = new Intent(context.getApplicationContext(), IngredientPage.class);
+                    Intent intent = new Intent(context.getApplicationContext(),
+                            IngredientPage.class);
                     intent.putExtra("SELECTED_INGREDIENT", item);
-                    //Toast.makeText(context, textView.getText().toString(), Toast.LENGTH_SHORT).show();
                     context.startActivity(intent);
                 }
             }

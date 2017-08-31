@@ -4,23 +4,23 @@
 
     <item
         android:id="@+id/pic_btn"
-        android:title="Select Picture"
         android:icon="@drawable/add_photo"
-        app:showAsAction="ifRoom"
-        android:theme="@style/NavigationTheme"/>
+        android:theme="@style/NavigationTheme"
+        android:title="Select Picture"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/firebase_ing_btn"
-        android:title="Save"
         android:icon="@drawable/save_recipe"
-        app:showAsAction="ifRoom"
-        android:theme="@style/NavigationTheme"/>
+        android:theme="@style/NavigationTheme"
+        android:title="Save"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/take_photo"
-        android:title="Take a Photo"
         android:icon="@drawable/take_photo"
-        app:showAsAction="ifRoom"
-        android:theme="@style/NavigationTheme"/>
+        android:theme="@style/NavigationTheme"
+        android:title="Take a Photo"
+        app:showAsAction="ifRoom" />
 
 </menu>

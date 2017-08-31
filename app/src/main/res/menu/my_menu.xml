@@ -11,41 +11,41 @@
 
     <item
         android:id="@+id/save_ing"
-        android:title="Saved Ingredients"
         android:icon="@drawable/ingredients_list"
-        app:showAsAction="never"
-        android:theme="@style/NavigationTheme"/>
+        android:theme="@style/NavigationTheme"
+        android:title="Saved Ingredients"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/save_recipe"
-        android:title="Saved Recipes"
         android:icon="@drawable/save"
-        app:showAsAction="never"
-        android:theme="@style/NavigationTheme"/>
+        android:theme="@style/NavigationTheme"
+        android:title="Saved Recipes"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/recipe_favorites"
-        android:title="Favorites"
         android:icon="@drawable/save"
-        app:showAsAction="never"
-        android:theme="@style/NavigationTheme"/>
+        android:theme="@style/NavigationTheme"
+        android:title="Favorites"
+        app:showAsAction="never" />
 
 
     <!-- Show the user the About Us activity -->
     <item
         android:id="@+id/action_about_us"
-        android:title="@string/action_about_us"
         android:icon="@drawable/about_us"
-        app:showAsAction="never"
-        android:theme="@style/NavigationTheme"/>
+        android:theme="@style/NavigationTheme"
+        android:title="@string/action_about_us"
+        app:showAsAction="never" />
 
     <!-- Log the user out and return to activity_registration activity-->
     <item
         android:id="@+id/action_logout"
-        android:title="@string/action_logout"
         android:icon="@drawable/exit_app"
-        app:showAsAction="never"
-        android:theme="@style/NavigationTheme"/>
+        android:theme="@style/NavigationTheme"
+        android:title="@string/action_logout"
+        app:showAsAction="never" />
 
 
 </menu>

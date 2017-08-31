@@ -1,9 +1,9 @@
 package com.bizdev.recipeapp.cookitup;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
@@ -19,7 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class Login extends AppCompatActivity implements View.OnClickListener  {
+public class Login extends AppCompatActivity implements View.OnClickListener {
 
     private ImageButton buttonSignIn;
     private EditText editTextEmail;
@@ -36,10 +36,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener  {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        if(firebaseAuth.getCurrentUser()!=null  && firebaseAuth.getCurrentUser().isEmailVerified()){
+        if (firebaseAuth.getCurrentUser() != null && firebaseAuth.getCurrentUser().isEmailVerified()) {
             //Profile activity here
             finish();
-            startActivity(new Intent(getApplicationContext(),Home.class));
+            startActivity(new Intent(getApplicationContext(), Home.class));
         }
 
         Window window = this.getWindow();
@@ -47,12 +47,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener  {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
 
-        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
-        editTextPassword = (EditText) findViewById(R.id.editTextPassword);
-        buttonSignIn = (ImageButton) findViewById(R.id.buttonSignin);
-        textViewSignup = (TextView) findViewById(R.id.textViewSignup);
-        textViewResetPass = (TextView) findViewById(R.id.textViewResetPass);
-        progressB=(ProgressBar) findViewById(R.id.progressLogin);
+        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextPassword = findViewById(R.id.editTextPassword);
+        buttonSignIn = findViewById(R.id.buttonSignin);
+        textViewSignup = findViewById(R.id.textViewSignup);
+        textViewResetPass = findViewById(R.id.textViewResetPass);
+        progressB = findViewById(R.id.progressLogin);
         progressB.setVisibility(View.GONE);
 
         buttonSignIn.setOnClickListener(this);
@@ -81,40 +81,41 @@ public class Login extends AppCompatActivity implements View.OnClickListener  {
             return;
         }
 
-        firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful() && firebaseAuth.getCurrentUser().isEmailVerified()) {
-                    progressB.setVisibility(View.GONE);
-                    finish();
-                    startActivity(new Intent(Login.this, Home.class));
-                    //start the profile activity
-                }
-                else if(task.isSuccessful() && !firebaseAuth.getCurrentUser().isEmailVerified())
-                {
-                    progressB.setVisibility(View.GONE);
-                    Toast.makeText(Login.this, "User has not verified their email!", Toast.LENGTH_LONG).show();
-                }
-                else
-                {
-                    progressB.setVisibility(View.GONE);
-                    Toast.makeText(Login.this, "Account does not exist or Email/Password is incorrect, Please try again", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this,
+                new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful() && firebaseAuth.getCurrentUser().isEmailVerified()) {
+                            progressB.setVisibility(View.GONE);
+                            finish();
+                            startActivity(new Intent(Login.this, Home.class));
+                            //start the profile activity
+                        } else if (task.isSuccessful() && !firebaseAuth.getCurrentUser()
+                                .isEmailVerified()) {
+                            progressB.setVisibility(View.GONE);
+                            Toast.makeText(Login.this, "User has not verified their email!",
+                                    Toast.LENGTH_LONG).show();
+                        } else {
+                            progressB.setVisibility(View.GONE);
+                            Toast.makeText(Login.this,
+                                    "Account does not exist or Email/Password is incorrect, " +
+                                            "Please try again", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
 
     public void onClick(View view) {
-        if (view==buttonSignIn){
+        if (view == buttonSignIn) {
             userLogin();
         }
 
-        if (view==textViewSignup){
+        if (view == textViewSignup) {
             finish();
             startActivity(new Intent(this, Registration.class));
         }
 
-        if (view==textViewResetPass){
+        if (view == textViewResetPass) {
             startActivity(new Intent(this, ResetPassword.class));
         }
     }

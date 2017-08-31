@@ -71,13 +71,10 @@ public class IngredientPage extends BaseActivity {
                 setName(dataSnapshot);
 
                 // Get the ingredient image url and display it in the ImageView
-                if(dataSnapshot.child("Image").getValue(String.class) != null)
-                {
+                if (dataSnapshot.child("Image").getValue(String.class) != null) {
                     gs_url = dataSnapshot
                             .child("Image").getValue(String.class);
-                }
-                else
-                {
+                } else {
                     gs_url = "gs://bizdevrecipeapp.appspot.com/Recipes/lRxFd3PSkGNfeUfZ3qOfpSRoaO12/restaurant-cutlery-circular-symbol-of-a-spoon-and-a-fork-in-a-circle_318-61086.jpg";
                 }
                 storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(gs_url);
@@ -193,6 +190,7 @@ public class IngredientPage extends BaseActivity {
      * the database as a child of the subtree containing the ingredient's information to indicate
      * that the user has favorited this ingredient. Calls the favoriteExists() method to check if
      * the ingredient is already a favorite of the user.
+     *
      * @param favorite_button
      */
     public void setFavoriteIngredient(final MenuItem favorite_button) {
@@ -235,6 +233,7 @@ public class IngredientPage extends BaseActivity {
 
     /**
      * Checks if the ingredient is a favorite of the user.
+     *
      * @param dataSnapshot
      * @param userID
      * @return
