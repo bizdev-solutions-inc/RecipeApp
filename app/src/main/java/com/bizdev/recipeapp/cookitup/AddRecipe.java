@@ -266,7 +266,7 @@ public class AddRecipe extends BaseActivity implements View.OnClickListener {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                   all_ingredients.add(ds.getKey());
+                    all_ingredients.add(ds.getKey());
                 }
             }
 
@@ -279,7 +279,7 @@ public class AddRecipe extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode==RESULT_IMAGE && resultCode==RESULT_OK && data!=null){
+        if (resultCode==RESULT_OK && data!=null){
             switch (requestCode){
                 case CAPTURE_CAMERA:
                     Bundle extras = data.getExtras();
@@ -365,4 +365,3 @@ public class AddRecipe extends BaseActivity implements View.OnClickListener {
         lv_added_ingredients.setAdapter(adapter);
     }
 }
-

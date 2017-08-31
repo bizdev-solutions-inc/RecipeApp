@@ -191,7 +191,7 @@ public class AddIngredient extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==RESULT_IMAGE && resultCode==RESULT_OK && data!=null){
+        if (resultCode==RESULT_OK && data!=null){
            switch (requestCode){
                case CAPTURE_CAMERA:
                    Bundle extras = data.getExtras();
