@@ -18,18 +18,22 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class SavedRecipe extends BaseActivity {
+public class MyIngredients extends BaseActivity {
 
-    private DatabaseReference mDatabase;
+    //user-related
     private String userID;
     private String activityName;
-    private ListView lv;
-    ArrayList<String> addedRecipes = new ArrayList<>();
     private String key;
-    public static final String EXTRA_SEARCH_QUERY = "SELECTED_ITEM";
+    private ListView lv;
+    ArrayList<String> addedIngredients = new ArrayList<String>();
+    public static final String EXTRA_SEARCH_QUERY = "SELECTED_INGREDIENT";
+
+    //database-related
+    private DatabaseReference mDatabase;
+
 
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_saved_recipe);
+        setContentView(R.layout.activity_my_ingredients);
         super.onCreate(savedInstanceState);
 
         Window window = this.getWindow();
@@ -43,11 +47,11 @@ public class SavedRecipe extends BaseActivity {
         userID = firebaseAuth.getCurrentUser().getUid();
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child(userID)
-                .child("Added Recipes")
-                .child("Recipes");
-        lv = findViewById(R.id.savedRecipeListView);
+                .child("Added Ingredients")
+                .child("Ingredients");
+        lv = findViewById(R.id.savedIngredientListView);
 
-        if(mDatabase != null) {
+        if(mDatabase!=null) {
             mDatabase.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -63,14 +67,19 @@ public class SavedRecipe extends BaseActivity {
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    displayItem(addedRecipes.get(i));
+                    displayItem(addedIngredients.get(i));
+//                    key = lv.getItemAtPosition(i).toString();
+//                    Intent intent = new Intent(MyIngredients.this, IngredientPage.class);
+//                    intent.putExtra(EXTRA_SEARCH_QUERY, key);
+//                    intent.putExtra(EXTRA_GET_ACTIVITY, activityName);
+//                    startActivity(intent);
                 }
             });
         }
     }
 
     private void displayItem(String item) {
-        Intent intent = new Intent(SavedRecipe.this, RecipePage.class);
+        Intent intent = new Intent(MyIngredients.this, IngredientPage.class);
         intent.putExtra(EXTRA_SEARCH_QUERY, item);
         startActivity(intent);
     }
@@ -78,9 +87,9 @@ public class SavedRecipe extends BaseActivity {
     private void showData(DataSnapshot dataSnapshot) {
         for(DataSnapshot ds : dataSnapshot.getChildren())
         {
-            addedRecipes.add(ds.getKey());
+            addedIngredients.add(ds.getKey());
         }
-        ListAdapter la = new ArrayAdapter<>(SavedRecipe.this, android.R.layout.simple_list_item_1, addedRecipes);
+        ListAdapter la = new ArrayAdapter<String>(MyIngredients.this, android.R.layout.simple_list_item_1, addedIngredients);
         lv.setAdapter(la);
     }
 }

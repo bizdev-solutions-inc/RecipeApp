@@ -68,7 +68,7 @@
                 android:value="com.bizdev.recipeapp.cookitup.Home" />
         </activity>
         <activity
-            android:name="com.bizdev.recipeapp.cookitup.PersonalRecipe"
+            android:name="com.bizdev.recipeapp.cookitup.AddRecipe"
             android:label="Add Recipe"
             android:windowSoftInputMode="stateVisible|adjustNothing"> <!-- show keyboard -->
             <meta-data
@@ -76,7 +76,7 @@
                 android:value="com.bizdev.recipeapp.cookitup.Home" />
         </activity>
         <activity
-            android:name="com.bizdev.recipeapp.cookitup.SavedRecipe"
+            android:name="com.bizdev.recipeapp.cookitup.MyRecipes"
             android:label="Saved Recipes"
             android:launchMode="singleTop">
             <meta-data
@@ -84,7 +84,7 @@
                 android:value="com.bizdev.recipeapp.cookitup.Home" />
         </activity>
         <activity
-            android:name="com.bizdev.recipeapp.cookitup.SavedIngredients"
+            android:name="com.bizdev.recipeapp.cookitup.MyIngredients"
             android:label="Saved Ingredients"
             android:launchMode="singleTop">
             <meta-data
@@ -94,7 +94,7 @@
         <activity
             android:name="com.bizdev.recipeapp.cookitup.Admin"
             android:label="Admin" />
-        <activity android:name="com.bizdev.recipeapp.cookitup.PersonalIngredient"
+        <activity android:name="com.bizdev.recipeapp.cookitup.AddIngredient"
             android:label="Add Ingredient">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

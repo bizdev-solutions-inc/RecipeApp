@@ -38,9 +38,9 @@ import java.util.UUID;
 
 import static com.bizdev.recipeapp.cookitup.R.id.imageDisplay;
 
-public class PersonalRecipe extends BaseActivity implements View.OnClickListener {
+public class AddRecipe extends BaseActivity implements View.OnClickListener {
 
-    private static final String TAG = "PersonalRecipe";
+    private static final String TAG = "AddRecipe";
 
     //user-related widgets
 //    private Button mFirebaseBtn;
@@ -75,7 +75,7 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_personal_recipe);
+        setContentView(R.layout.activity_add_recipe);
         super.onCreate(savedInstanceState);
 
         //user-related display
@@ -118,7 +118,7 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
                         return true;
                     case R.id.firebase_ing_btn:
 //                        finish();
-//                        startActivity(new Intent(Home.this, PersonalIngredient.class));
+//                        startActivity(new Intent(Home.this, AddIngredient.class));
                         saveRecData();
                         return true;
                     case R.id.take_photo:
@@ -308,7 +308,7 @@ public class PersonalRecipe extends BaseActivity implements View.OnClickListener
             uploadPath.putFile(selectedImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(PersonalRecipe.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddRecipe.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
                 }
             });
             mRecipes.child(recipeName).child("Image").setValue(uploadPath.toString());

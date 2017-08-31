@@ -65,10 +65,10 @@ public abstract class BaseActivity extends AppCompatActivity {
                 onBackPressed();
                 return true;
             case R.id.save_ing:
-                startActivity(new Intent(this, SavedIngredients.class));
+                startActivity(new Intent(this, MyIngredients.class));
                 return true;
             case R.id.save_recipe:
-                startActivity(new Intent(this, SavedRecipe.class));
+                startActivity(new Intent(this, MyRecipes.class));
                 return true;
             case R.id.recipe_favorites:
                 startActivity(new Intent(this, Favorites.class));

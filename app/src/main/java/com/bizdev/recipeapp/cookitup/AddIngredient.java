@@ -32,9 +32,9 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.UUID;
 
-public class PersonalIngredient extends BaseActivity implements View.OnClickListener {
+public class AddIngredient extends BaseActivity implements View.OnClickListener {
 
-    private static final String TAG = "PersonalIngredient";
+    private static final String TAG = "AddIngredient";
 
     //user-related widgets
     private Button mPicture;
@@ -66,7 +66,7 @@ public class PersonalIngredient extends BaseActivity implements View.OnClickList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_personal_ingredient);
+        setContentView(R.layout.activity_add_ingredient);
         super.onCreate(savedInstanceState);
 
         //user-related display
@@ -220,7 +220,7 @@ public class PersonalIngredient extends BaseActivity implements View.OnClickList
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 //                    progressU.setVisibility(View.GONE);
-                    Toast.makeText(PersonalIngredient.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddIngredient.this, "Upload Completed successfully", Toast.LENGTH_LONG).show();
 
                 }
             });
@@ -231,7 +231,7 @@ public class PersonalIngredient extends BaseActivity implements View.OnClickList
 //                public void onSuccess(Uri uri) {
 //                    String url = uri.toString();
 //                    mIngredients.child(ingredientName).child("Image").setValue(url);
-//                    Toast.makeText(PersonalIngredient.this, "URL Saved successfully", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(AddIngredient.this, "URL Saved successfully", Toast.LENGTH_LONG).show();
 //                }
 //            });
         }
