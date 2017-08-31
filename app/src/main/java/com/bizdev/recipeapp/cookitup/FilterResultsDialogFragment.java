@@ -33,7 +33,7 @@ public class FilterResultsDialogFragment extends DialogFragment {
     private ArrayList<String> all_ingredients;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
-    private String userid;
+    private String userID;
     private DatabaseReference mRoot;
     private String recipe_type;
     private String recipe_cuisine;
@@ -154,13 +154,13 @@ public class FilterResultsDialogFragment extends DialogFragment {
         });
 
         // Populate list of ingredients for user to select for exclusion
-        all_ingredients = new ArrayList<String>();
+        all_ingredients = new ArrayList<>();
         populateIngredients();
 
         // Set up Exclude Ingredient text view
         final AutoCompleteTextView actv_exclude =
                 mView.findViewById(R.id.actv_exclude);
-        ArrayAdapter<String> actvAdapter = new ArrayAdapter<String>(getActivity(),
+        ArrayAdapter<String> actvAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1, all_ingredients);
         actv_exclude.setAdapter(actvAdapter);
         actv_exclude.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -216,9 +216,8 @@ public class FilterResultsDialogFragment extends DialogFragment {
     private void populateIngredients() {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
-        userid = user.getUid();
-//        mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredients");
-        mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredient_Recipes");
+        userID = user.getUid();
+        mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredients");
         mRoot.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

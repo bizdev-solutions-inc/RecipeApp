@@ -24,7 +24,9 @@ public class SearchResults extends BaseActivity
 
     private ArrayAdapter<String> adapter;
 
-    private boolean isIngredients;
+    private String recipe_type;
+    private String recipe_cuisine;
+    private String ingredient_to_exclude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +36,6 @@ public class SearchResults extends BaseActivity
         // Get the recipe results from the activity that called this one
         Intent intent = getIntent();
         recipe_list = intent.getStringArrayListExtra("RECIPE_RESULTS");
-        isIngredients = intent.getBooleanExtra("IS_INGREDIENTS", false);
-
-        if (isIngredients) {
-            Button btn_filter_results = findViewById(R.id.btn_filter_results);
-            btn_filter_results.setVisibility(View.GONE);
-        }
-
-
 
         // Initialize the adapter with the list of recipe results
         adapter = new ArrayAdapter<>(SearchResults.this,
@@ -89,14 +83,17 @@ public class SearchResults extends BaseActivity
     public void onDialogFilterClick(DialogFragment dialog, boolean [] filterOptionsChecked,
                                     String recipe_type, String recipe_cuisine,
                                     String ingredient_to_exclude) {
+        this.recipe_type = recipe_type;
+        this.recipe_cuisine = recipe_cuisine;
+        this.ingredient_to_exclude = ingredient_to_exclude;
         if (filterOptionsChecked[0]) { // Filter by recipe type
-            filterByType(recipe_type);
+            filterByType();
         }
         if (filterOptionsChecked[1]) { // Filter by recipe cuisine
-            filterByCuisine(recipe_cuisine);
+            filterByCuisine();
         }
         if (filterOptionsChecked[2]) { // Filter by excluding an ingredient
-            excludeIngredient(ingredient_to_exclude);
+            excludeIngredient();
         }
     }
 
@@ -114,9 +111,8 @@ public class SearchResults extends BaseActivity
      * Filter the search results by the type of recipe specified by the user's
      * filter option choices. All search results that do not match the specified
      * type of recipe are removed from the list.
-     * @param recipe_type The type of recipe to be filtered
      */
-    private void filterByType(final String recipe_type) {
+    private void filterByType() {
         DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference().child("Recipes");
         mRoot.addListenerForSingleValueEvent(new ValueEventListener() {
             ArrayList<String> filtered_results = new ArrayList<>();
@@ -142,9 +138,8 @@ public class SearchResults extends BaseActivity
      * Filter the search results by the cuisine specified by the user's
      * filter option choices. All search results that do not match the specified
      * cuisine are removed from the list.
-     * @param recipe_cuisine The specified cuisine to be filtered
      */
-    private void filterByCuisine(final String recipe_cuisine) {
+    private void filterByCuisine() {
         DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference().child("Recipes");
         mRoot.addListenerForSingleValueEvent(new ValueEventListener() {
             ArrayList<String> filtered_results = new ArrayList<>();
@@ -172,10 +167,8 @@ public class SearchResults extends BaseActivity
      * Filter the search results based on the ingredient specified by the user.
      * All recipes in the search results containing the ingredient specified
      * are removed from the search results.
-     * @param ingredient_to_exclude Recipes containing this ingredient are filtered out of the
-     *                              search results
      */
-    private void excludeIngredient(final String ingredient_to_exclude) {
+    private void excludeIngredient() {
         DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference()
                 .child("Recipe_Ingredients");
         mRoot.addListenerForSingleValueEvent(new ValueEventListener() {
