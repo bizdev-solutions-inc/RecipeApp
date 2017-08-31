@@ -42,10 +42,10 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
         progressR=(ProgressBar) findViewById(R.id.progressReg);
         progressR.setVisibility(View.GONE);
 
-       Window window = this.getWindow();
-       window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-       window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-       window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
+        Window window = this.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
 
         buttonRegister.setOnClickListener(this);
         textViewSignin.setOnClickListener(this);
@@ -117,7 +117,6 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         if (view == buttonRegister){
             registerUser();
-            finish();
         }
         if (view == textViewSignin){
             //Will open activity_registration activity here
