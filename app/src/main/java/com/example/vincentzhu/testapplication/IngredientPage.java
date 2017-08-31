@@ -37,7 +37,6 @@ public class IngredientPage extends BaseActivity {
     private DatabaseReference mRoot;
     private String ingredient;
     private String userID;
-    private String getActivity;
     private boolean isFavorite;
 
     private StorageReference storageRef;
@@ -56,7 +55,6 @@ public class IngredientPage extends BaseActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         userID = user.getUid();
-        getActivity = (String) getIntent().getSerializableExtra("GET_ACTIVITY");
 
         ingredient = (String) getIntent().getSerializableExtra("SELECTED_INGREDIENT");
 
@@ -64,16 +62,8 @@ public class IngredientPage extends BaseActivity {
         TextView tv_hint = findViewById(R.id.tv_hint);
         tv_hint.setVisibility(View.GONE);
 
-        if (getActivity != null) {
-            if (getActivity.equals("SavedIngredients")) {
-                mRoot = FirebaseDatabase.getInstance().getReference()
-                        .child(userID).child("Added Ingredients")
-                        .child("Ingredients").child(ingredient);
-            }
-        } else {
-            mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredients").child(ingredient);
-        }
-
+        //default tree
+        mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredients").child(ingredient);
 
         mRoot.addValueEventListener(new ValueEventListener() {
             @Override
@@ -152,6 +142,7 @@ public class IngredientPage extends BaseActivity {
         // Change the Favorite button icon to a "filled heart"
         // if the ingredient is already a favorite
         if (isFavorite) {
+            Toast.makeText(this, "Is already favorited", Toast.LENGTH_SHORT).show();
             fav_button.setIcon(R.drawable.ic_action_is_favorite);
         }
         return true;
@@ -159,9 +150,6 @@ public class IngredientPage extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        firebaseAuth = FirebaseAuth.getInstance();
-        final FirebaseUser user = firebaseAuth.getCurrentUser();
-        final String userID = user.getUid();
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
@@ -190,22 +178,7 @@ public class IngredientPage extends BaseActivity {
                 startActivity(new Intent(this, LoginActivity.class));
                 return true;
             case R.id.action_favorite:
-                final DatabaseReference mFavorite = FirebaseDatabase.getInstance().getReference();
-                if (getActivity != null) {
-                    if (getActivity.equals("SavedIngredients")) {
-                        final DatabaseReference mCurrent = mFavorite.child(userID)
-                                .child("Added Ingredients")
-                                .child("Ingredients")
-                                .child(ingredient)
-                                .child("Favorited By");
-                        setFavoriteIngredient(mCurrent, item);
-                    }
-                } else {
-                    final DatabaseReference mCurrent = mFavorite.child("Ingredients")
-                            .child(ingredient)
-                            .child("Favorited By");
-                    setFavoriteIngredient(mCurrent, item);
-                }
+                setFavoriteIngredient(item);
                 return true;
             default:
                 // The user's action was not recognized.
@@ -219,11 +192,16 @@ public class IngredientPage extends BaseActivity {
      * the database as a child of the subtree containing the ingredient's information to indicate
      * that the user has favorited this ingredient. Calls the favoriteExists() method to check if
      * the ingredient is already a favorite of the user.
-     * @param mCurrent
      * @param favorite_button
      */
-    public void setFavoriteIngredient(final DatabaseReference mCurrent,
-                                      final MenuItem favorite_button) {
+    public void setFavoriteIngredient(final MenuItem favorite_button) {
+
+        final DatabaseReference mCurrent = FirebaseDatabase.getInstance()
+                .getReference()
+                .child("Ingredients")
+                .child(ingredient)
+                .child("Favorited By");
+
         if (mCurrent != null) { // "Favorited By" attribute exists
             mCurrent.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -281,7 +259,7 @@ public class IngredientPage extends BaseActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 DataSnapshot favorited_by = dataSnapshot.child(ingredient).child("Favorited By");
-                if (dataSnapshot.child(ingredient).child("Favorited By").exists()) {
+                if (favorited_by.exists()) {
                     for (DataSnapshot fav_user : favorited_by.getChildren()) {
                         if (userID.equals(fav_user.getKey())) {
                             isFavorite = true;

@@ -29,7 +29,6 @@ public class RecipePage extends BaseActivity {
 
     private StorageReference storageRef;
     private String gs_url; // URL for recipe image in Firebase storage
-    private String getActivity;
     private ArrayList<String> info_labels;
     private ArrayList<ArrayList<String>> info_contents;
 
@@ -52,28 +51,9 @@ public class RecipePage extends BaseActivity {
         user = firebaseAuth.getCurrentUser();
         userID = user.getUid();
 
-        getActivity = (String)getIntent().getSerializableExtra("GET_ACTIVITY");
-
-        if(getActivity != null) {
-            if (getActivity.equals("SavedRecipe")) {
-                dbRef = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Recipes");
-            }
-            else if(getActivity.equals("SavedIngredients"))
-            {
-                dbRef = FirebaseDatabase.getInstance().getReference().child(userID).child("Added Ingredients");
-            }
-            else if(getActivity.equals("Favorites"))
-            {
-                dbRef = FirebaseDatabase.getInstance().getReference();
-            }
-        }
-        else
-        {
-            dbRef = FirebaseDatabase.getInstance().getReference();
-        }
+        dbRef = FirebaseDatabase.getInstance().getReference();
 
         recipe = (String) getIntent().getSerializableExtra("SELECTED_ITEM");
-        Log.i("RECIPE", recipe);
 
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
@@ -89,8 +69,7 @@ public class RecipePage extends BaseActivity {
                     gs_url = dataSnapshot
                             .child("Recipes")
                             .child(recipe)
-                            .child("Image").getValue(String.class);
-                }
+                            .child("Image").getValue(String.class);}
                 else
                 {
                     gs_url = "gs://bizdevrecipeapp.appspot.com/Recipes/lRxFd3PSkGNfeUfZ3qOfpSRoaO12/restaurant-cutlery-circular-symbol-of-a-spoon-and-a-fork-in-a-circle_318-61086.jpg";
@@ -141,6 +120,7 @@ public class RecipePage extends BaseActivity {
         MenuItem fav_button = menu.findItem(R.id.action_favorite);
         // Change the Favorite button icon to a "filled heart" if the recipe is already a favorite
         if (isFavorite) {
+            Toast.makeText(this, "Is already favorited", Toast.LENGTH_SHORT).show();
             fav_button.setIcon(R.drawable.ic_action_is_favorite);
         }
         return true;
@@ -176,25 +156,9 @@ public class RecipePage extends BaseActivity {
                 startActivity(new Intent(this, LoginActivity.class));
                 return true;
             case R.id.action_favorite:
-                final DatabaseReference mFavorite = FirebaseDatabase.getInstance().getReference();
+                //favorites under the default tree
+                setFavoriteRecipe(item);
 
-                if(getActivity!=null)
-                {
-                    if(getActivity.equals("SavedRecipe"))
-                    {
-                        final DatabaseReference mCurrent = mFavorite.child(userID)
-                                .child("Added Recipes")
-                                .child("Recipes")
-                                .child(recipe)
-                                .child("Favorited By");
-                        setFavoriteRecipe(mCurrent, item);
-                    }
-                }
-                else
-                {
-                    final DatabaseReference mCurrent = mFavorite.child("Recipes").child(recipe).child("Favorited By");
-                    setFavoriteRecipe(mCurrent, item);
-                }
                 return true;
             default:
                 // The user's action was not recognized.
@@ -209,11 +173,16 @@ public class RecipePage extends BaseActivity {
      * that the user has favorited this recipe. Calls the favoriteExists() method to check if
      * the recipe is already a favorite of the user.
      *
-     * @param mCurrent
+     *
      * @param favorite_button
      */
-    public void setFavoriteRecipe(final DatabaseReference mCurrent, final MenuItem favorite_button)
+    public void setFavoriteRecipe(final MenuItem favorite_button)
     {
+        final DatabaseReference mCurrent = FirebaseDatabase.getInstance()
+                .getReference()
+                .child("Recipes")
+                .child(recipe)
+                .child("Favorited By");
         if(mCurrent != null) { // "Favorited By" attribute exists
             mCurrent.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -276,13 +245,10 @@ public class RecipePage extends BaseActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 DataSnapshot favorited_by = dataSnapshot.child(recipe).child("Favorited By");
-//                userID = user.getUid();
-                if (dataSnapshot.child(recipe).child("Favorited By").exists()) {
-//                    Toast.makeText(RecipePage.this, "FAVORITED BY EXISTS", Toast.LENGTH_SHORT).show();
+                if (favorited_by.exists()) {
                     for (DataSnapshot fav_user : favorited_by.getChildren()) {
                         if (userID.equals(fav_user.getKey())) {
                             isFavorite = true;
-//                            Toast.makeText(RecipePage.this, "isFavorite is true", Toast.LENGTH_SHORT).show();
                             break;
                         }
                     }

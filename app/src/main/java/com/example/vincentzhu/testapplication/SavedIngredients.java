@@ -27,7 +27,6 @@ public class SavedIngredients extends BaseActivity {
     private ListView lv;
     ArrayList<String> addedIngredients = new ArrayList<String>();
     public static final String EXTRA_SEARCH_QUERY = "SELECTED_INGREDIENT";
-    public static final String EXTRA_GET_ACTIVITY = "GET_ACTIVITY";
 
     //database-related
     private DatabaseReference mDatabase;
@@ -80,8 +79,8 @@ public class SavedIngredients extends BaseActivity {
     }
 
     private void displayItem(String item) {
-        Intent intent = new Intent(SavedIngredients.this, RecipePage.class);
-        intent.putExtra("SELECTED_ITEM", item);
+        Intent intent = new Intent(SavedIngredients.this, IngredientPage.class);
+        intent.putExtra(EXTRA_SEARCH_QUERY, item);
         startActivity(intent);
     }
 

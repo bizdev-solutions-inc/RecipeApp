@@ -27,7 +27,6 @@ public class SavedRecipe extends BaseActivity {
     ArrayList<String> addedRecipes = new ArrayList<>();
     private String key;
     public static final String EXTRA_SEARCH_QUERY = "SELECTED_ITEM";
-    public static final String EXTRA_GET_ACTIVITY = "GET_ACTIVITY";
 
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_saved_recipe);
@@ -65,11 +64,6 @@ public class SavedRecipe extends BaseActivity {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     displayItem(addedRecipes.get(i));
-//                    key = lv.getItemAtPosition(i).toString();
-//                    Intent intent = new Intent(SavedRecipe.this, RecipePage.class);
-//                    intent.putExtra(EXTRA_SEARCH_QUERY, key);
-//                    intent.putExtra(EXTRA_GET_ACTIVITY, activityName);
-//                    startActivity(intent);
                 }
             });
         }
@@ -77,7 +71,7 @@ public class SavedRecipe extends BaseActivity {
 
     private void displayItem(String item) {
         Intent intent = new Intent(SavedRecipe.this, RecipePage.class);
-        intent.putExtra("SELECTED_ITEM", item);
+        intent.putExtra(EXTRA_SEARCH_QUERY, item);
         startActivity(intent);
     }
 

@@ -26,7 +26,6 @@ public class Favorites extends BaseActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
     private String userID;
-    private String activityName;
     private ArrayAdapter<String> recipes_adapter;
     private ArrayAdapter<String> ingredients_adapter;
 
@@ -40,12 +39,12 @@ public class Favorites extends BaseActivity {
         window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        activityName = this.getLocalClassName();
         favorite_recipes = new ArrayList<>();
         favorite_ingredients = new ArrayList<>();
 
         recipes_adapter = new ArrayAdapter<>(Favorites.this,
                 android.R.layout.simple_list_item_1, favorite_recipes);
+
         ingredients_adapter = new ArrayAdapter<>(Favorites.this,
                 android.R.layout.simple_list_item_1, favorite_ingredients);
 
@@ -146,6 +145,7 @@ public class Favorites extends BaseActivity {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     if (ds.child("Favorited By").child(userID).exists()) {
                         favorite_ingredients.add(ds.getKey());
+                        ingredients_adapter.notifyDataSetChanged();
                     }
                 }
 
@@ -173,6 +173,7 @@ public class Favorites extends BaseActivity {
                 {
                     if (!favorite_ingredients.contains(ds.getKey()) && ds.child("Favorited By").child(userID).exists()) {
                         favorite_ingredients.add(ds.getKey());
+                        ingredients_adapter.notifyDataSetChanged();
                     }
                 }
             }
