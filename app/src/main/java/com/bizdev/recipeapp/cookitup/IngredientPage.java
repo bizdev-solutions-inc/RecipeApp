@@ -157,6 +157,7 @@ public class IngredientPage extends BaseActivity {
             case R.id.action_home:
                 // User chose the "Home" item, show the Home activity
                 startActivity(new Intent(this, Home.class));
+                return true;
             case R.id.save_ing:
                 startActivity(new Intent(this, SavedIngredients.class));
                 return true;

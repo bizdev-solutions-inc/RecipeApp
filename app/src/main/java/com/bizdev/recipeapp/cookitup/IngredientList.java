@@ -30,13 +30,13 @@ import java.util.HashSet;
  */
 public class IngredientList extends BaseActivity {
 
-    private ArrayList<String> ingredient_list, recipe_list, favorites_list, all_ingredients, all_recipes;
+    private ArrayList<String> ingredient_list, recipe_list, favorites_list, all_ingredients;
     private DatabaseReference mRoot;
     private DatabaseReference mCustom;
     private DatabaseReference mFavorite;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
-    private String userid;
+    private String userID;
     private AutoCompleteTextView actv;
     private ArrayAdapter<String> lv_adapter;
 
@@ -48,7 +48,6 @@ public class IngredientList extends BaseActivity {
         ingredient_list = new ArrayList<>(); // initialize list of ingredients
         favorites_list = new ArrayList<>();
         all_ingredients = new ArrayList<>();
-        all_recipes = new ArrayList<>();
 
         populateIngredients();
 
@@ -132,7 +131,7 @@ public class IngredientList extends BaseActivity {
     private void populateIngredients(){
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
-        userid = user.getUid();
+        userID = user.getUid();
 
         mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredient_Recipes");
         mRoot.addValueEventListener(new ValueEventListener() {
@@ -149,7 +148,8 @@ public class IngredientList extends BaseActivity {
             }
         });
 
-        mCustom = FirebaseDatabase.getInstance().getReference().child(userid).child("Added Ingredients").child("Ingredients");
+        mCustom = FirebaseDatabase.getInstance().getReference()
+                .child(userID).child("Added Ingredients").child("Ingredients");
         mCustom.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -176,13 +176,13 @@ public class IngredientList extends BaseActivity {
     private void populateFavorites() {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
-        userid = user.getUid();
+        userID = user.getUid();
         mRoot = FirebaseDatabase.getInstance().getReference().child("Ingredients");
         mRoot.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    if (ds.child("Favorited By").child(userid).exists()) {
+                    if (ds.child("Favorited By").child(userID).exists()) {
                         favorites_list.add(ds.getKey());
                     }
                 }
@@ -194,13 +194,14 @@ public class IngredientList extends BaseActivity {
             }
         });
 
-        mFavorite = FirebaseDatabase.getInstance().getReference().child(userid).child("Added Ingredients").child("Ingredients");
+        mFavorite = FirebaseDatabase.getInstance().getReference()
+                .child(userID).child("Added Ingredients").child("Ingredients");
         mFavorite.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren())
                 {
-                    if(!favorites_list.contains(ds.getKey()) && ds.child("Favorited By").child(userid).exists()){
+                    if(!favorites_list.contains(ds.getKey()) && ds.child("Favorited By").child(userID).exists()){
                         favorites_list.add(ds.getKey());
                     }
                 }
@@ -243,14 +244,11 @@ public class IngredientList extends BaseActivity {
      * @param dataSnapshot the DataSnapshot containing the node in the database tree to be searched
      */
     public ArrayList<String> queryData(DataSnapshot dataSnapshot) {
-
         HashSet<String> recipes = new HashSet<>(), ingredients = new HashSet<>(ingredient_list);
-
         for (String currentIngredient : ingredients) {
             try {
                 HashMap<String, Object> current =
                         (HashMap) dataSnapshot.child(currentIngredient).getValue();
-
                 if (recipes.isEmpty())
                     recipes.addAll(current.keySet());
                 else {
