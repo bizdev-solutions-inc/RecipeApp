@@ -124,12 +124,8 @@ public class IngredientPage extends BaseActivity {
      * @param dataSnapshot The DataSnapshot of the database tree node to query
      */
     public void setName(DataSnapshot dataSnapshot) {
-        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-            if (ds.getKey().equals(ingredient)) {
-                TextView tv_item_name = findViewById(R.id.tv_item_name);
-                tv_item_name.setText(WordUtils.capitalize(ds.getKey()));
-            }
-        }
+        TextView tv_item_name = findViewById(R.id.tv_item_name);
+        tv_item_name.setText(WordUtils.capitalize(dataSnapshot.getKey()));
     }
 
     @Override
