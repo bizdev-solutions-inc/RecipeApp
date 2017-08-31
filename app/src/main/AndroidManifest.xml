@@ -17,7 +17,7 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         <!-- The login activity -->
-        <activity android:name="com.bizdev.recipeapp.cookitup.LoginActivity" />
+        <activity android:name="com.bizdev.recipeapp.cookitup.Login" />
         <activity
             android:name="com.bizdev.recipeapp.cookitup.Registration"
             android:label="@string/app_label">

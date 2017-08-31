@@ -85,7 +85,7 @@ public class Admin extends AppCompatActivity {
         if(firebaseAuth.getCurrentUser() == null)
         {
             finish();
-            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+            startActivity(new Intent(getApplicationContext(),Login.class));
         }
 
         addRecipe = (Button)findViewById(R.id.save_recipe);
@@ -247,7 +247,7 @@ public class Admin extends AppCompatActivity {
                 // User chose the "Log Out" item, log the user out and return to activity_registration activity
                 firebaseAuth.signOut();
                 finish();
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivity(new Intent(this, Login.class));
                 return true;
             default:
                 // The user's action was not recognized.

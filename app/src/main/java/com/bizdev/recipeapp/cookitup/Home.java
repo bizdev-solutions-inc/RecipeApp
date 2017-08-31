@@ -193,7 +193,7 @@ public class Home extends BaseActivity implements AdapterView.OnItemSelectedList
                 // User chose the "Log Out" item, log the user out and return to activity_registration activity
                 firebaseAuth.signOut();
                 finish();
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivity(new Intent(this, Login.class));
                 return true;
             default:
                 // The user's action was not recognized.

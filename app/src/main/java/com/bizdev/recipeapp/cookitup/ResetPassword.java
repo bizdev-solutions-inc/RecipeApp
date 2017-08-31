@@ -71,7 +71,7 @@ public class ResetPassword extends AppCompatActivity implements View.OnClickList
         if (view == loginPage){
             //Will open activity_registration activity here
             finish();
-            startActivity(new Intent(this,LoginActivity.class));
+            startActivity(new Intent(this,Login.class));
         }
     }
 

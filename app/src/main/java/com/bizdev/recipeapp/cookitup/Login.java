@@ -19,7 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener  {
+public class Login extends AppCompatActivity implements View.OnClickListener  {
 
     private ImageButton buttonSignIn;
     private EditText editTextEmail;
@@ -87,18 +87,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (task.isSuccessful() && firebaseAuth.getCurrentUser().isEmailVerified()) {
                     progressB.setVisibility(View.GONE);
                     finish();
-                    startActivity(new Intent(LoginActivity.this, Home.class));
+                    startActivity(new Intent(Login.this, Home.class));
                     //start the profile activity
                 }
                 else if(task.isSuccessful() && !firebaseAuth.getCurrentUser().isEmailVerified())
                 {
                     progressB.setVisibility(View.GONE);
-                    Toast.makeText(LoginActivity.this, "User has not verified their email!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Login.this, "User has not verified their email!", Toast.LENGTH_LONG).show();
                 }
                 else
                 {
                     progressB.setVisibility(View.GONE);
-                    Toast.makeText(LoginActivity.this, "Account does not exist or Email/Password is incorrect, Please try again", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Login.this, "Account does not exist or Email/Password is incorrect, Please try again", Toast.LENGTH_LONG).show();
                 }
             }
         });

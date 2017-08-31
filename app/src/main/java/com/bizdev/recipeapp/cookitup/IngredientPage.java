@@ -176,7 +176,7 @@ public class IngredientPage extends BaseActivity {
                 // log the user out and return to Registration activity
                 firebaseAuth.signOut();
                 finish();
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivity(new Intent(this, Login.class));
                 return true;
             case R.id.action_favorite:
                 setFavoriteIngredient(item);

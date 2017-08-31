@@ -105,7 +105,7 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                     });
                     mAuth.signOut();
                     finish();
-                    startActivity(new Intent(Registration.this,LoginActivity.class));
+                    startActivity(new Intent(Registration.this,Login.class));
                 }else{
                     progressR.setVisibility(View.GONE);
                     Toast.makeText(Registration.this, "Account already exists or Email is invalid. Please try again", Toast.LENGTH_SHORT).show();
@@ -121,7 +121,7 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
         if (view == textViewSignin){
             //Will open activity_registration activity here
             finish();
-            startActivity(new Intent(this,LoginActivity.class));
+            startActivity(new Intent(this,Login.class));
         }
     }
 }

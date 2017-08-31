@@ -152,7 +152,7 @@ public class RecipePage extends BaseActivity {
                 // User chose the "Log Out" item, log the user out and return to Registration activity
                 firebaseAuth.signOut();
                 finish();
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivity(new Intent(this, Login.class));
                 return true;
             case R.id.action_favorite:
                 //favorites under the default tree

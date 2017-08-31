@@ -34,7 +34,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             //Profile activity here
             finish();
             startActivity(new Intent(getApplicationContext(),
-                    LoginActivity.class));
+                    Login.class));
         }
 
         // Create the toolbar and set it as the app bar for the activity
@@ -85,7 +85,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 // User chose the "Log Out" item, log the user out and return to activity_registration activity
                 firebaseAuth = FirebaseAuth.getInstance();
                 firebaseAuth.signOut();
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivity(new Intent(this, Login.class));
                 return true;
             default:
                 // The user's action was not recognized.
