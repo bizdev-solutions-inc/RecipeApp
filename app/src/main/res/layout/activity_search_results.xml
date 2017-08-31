@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.vincentzhu.testapplication.SearchResults">
+    tools:context="com.bizdev.recipeapp.cookitup.SearchResults">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

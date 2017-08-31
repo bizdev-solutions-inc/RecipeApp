@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.vincentzhu.testapplication">
+    package="com.bizdev.recipeapp.cookitup">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET" />
@@ -17,9 +17,9 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         <!-- The login activity -->
-        <activity android:name=".LoginActivity" />
+        <activity android:name="com.bizdev.recipeapp.cookitup.LoginActivity" />
         <activity
-            android:name=".Registration"
+            android:name="com.bizdev.recipeapp.cookitup.Registration"
             android:label="@string/app_label">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,24 +28,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AboutUs"
+            android:name="com.bizdev.recipeapp.cookitup.AboutUs"
             android:label="About Us"
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Home" />
+                android:value="com.bizdev.recipeapp.cookitup.Home" />
         </activity>
         <activity
-            android:name=".Home"
+            android:name="com.bizdev.recipeapp.cookitup.Home"
             android:launchMode="singleTop"
             android:label="Home"/>
 
         <!-- Shows the list of ingredients entered by the user -->
         <activity
-            android:name=".IngredientList"
+            android:name="com.bizdev.recipeapp.cookitup.IngredientList"
             android:label="Ingredient List"
             android:launchMode="singleTop"
-            android:parentActivityName=".Home"
+            android:parentActivityName="com.bizdev.recipeapp.cookitup.Home"
             android:windowSoftInputMode="adjustPan|stateVisible"> <!-- show keyboard -->
             >
 
@@ -57,83 +57,83 @@
             <!-- This meta-data tag sets the parent activity for older Android versions -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Home" />
+                android:value="com.bizdev.recipeapp.cookitup.Home" />
         </activity>
         <activity
-            android:name=".IngredientCatalog"
+            android:name="com.bizdev.recipeapp.cookitup.IngredientCatalog"
             android:label="Ingredient Catalog"
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Home" />
+                android:value="com.bizdev.recipeapp.cookitup.Home" />
         </activity>
         <activity
-            android:name=".PersonalRecipe"
+            android:name="com.bizdev.recipeapp.cookitup.PersonalRecipe"
             android:label="Add Recipe"
             android:windowSoftInputMode="stateVisible|adjustNothing"> <!-- show keyboard -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Home" />
+                android:value="com.bizdev.recipeapp.cookitup.Home" />
         </activity>
         <activity
-            android:name=".SavedRecipe"
+            android:name="com.bizdev.recipeapp.cookitup.SavedRecipe"
             android:label="Saved Recipes"
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Home" />
+                android:value="com.bizdev.recipeapp.cookitup.Home" />
         </activity>
         <activity
-            android:name=".SavedIngredients"
+            android:name="com.bizdev.recipeapp.cookitup.SavedIngredients"
             android:label="Saved Ingredients"
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Home" />
+                android:value="com.bizdev.recipeapp.cookitup.Home" />
         </activity>
         <activity
-            android:name=".Admin"
+            android:name="com.bizdev.recipeapp.cookitup.Admin"
             android:label="Admin" />
-        <activity android:name=".PersonalIngredient"
+        <activity android:name="com.bizdev.recipeapp.cookitup.PersonalIngredient"
             android:label="Add Ingredient">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Home"/>
+                android:value="com.bizdev.recipeapp.cookitup.Home"/>
         </activity>
         <activity
-            android:name=".SearchByName"
+            android:name="com.bizdev.recipeapp.cookitup.SearchByName"
             android:label="Search by Name"
             android:windowSoftInputMode="stateVisible"> <!-- show keyboard -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Home" />
+                android:value="com.bizdev.recipeapp.cookitup.Home" />
         </activity>
         <activity
-            android:name=".SearchResults"
+            android:name="com.bizdev.recipeapp.cookitup.SearchResults"
             android:label="Search Results">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".SearchByName" />
+                android:value="com.bizdev.recipeapp.cookitup.SearchByName" />
         </activity>
         <activity
-            android:name=".SearchByAttribute"
+            android:name="com.bizdev.recipeapp.cookitup.SearchByAttribute"
             android:label="Search by Attribute">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Home" />
+                android:value="com.bizdev.recipeapp.cookitup.Home" />
         </activity>
-        <activity android:name=".RecipePage">
+        <activity android:name="com.bizdev.recipeapp.cookitup.RecipePage">
         </activity>
-        <activity android:name=".ResetPassword">
+        <activity android:name="com.bizdev.recipeapp.cookitup.ResetPassword">
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value=".Home"/>
+            android:value="com.bizdev.recipeapp.cookitup.Home"/>
         </activity>
 
-        <activity android:name=".IngredientPage">
+        <activity android:name="com.bizdev.recipeapp.cookitup.IngredientPage">
         </activity>
         <activity
-            android:name=".Favorites"
+            android:name="com.bizdev.recipeapp.cookitup.Favorites"
             android:label="Favorites"
             android:launchMode="singleTop" />
     </application>
