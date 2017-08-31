@@ -11,7 +11,7 @@
 
     <item
         android:id="@+id/favorite_re"
-        android:icon="@drawable/favorie"
+        android:icon="@drawable/heart_icon"
         android:theme="@style/NavigationTheme"
         android:title="Favorites"
         app:showAsAction="ifRoom" />
