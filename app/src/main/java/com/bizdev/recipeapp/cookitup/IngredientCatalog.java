@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -27,6 +29,10 @@ public class IngredientCatalog extends BaseActivity {
         for (int i = 0; i < ingredient_list.size(); i++) {
             ingredient_list.set(i, WordUtils.capitalize(ingredient_list.get(i)));
         }
+
+        // Hide the Filter Results button (it only applies to recipe results)
+        ImageButton btn_filter_results = findViewById(R.id.btn_filter_results);
+        btn_filter_results.setVisibility(View.GONE);
 
         // Initialize the adapter with the list of ingredient results
         adapter = new ArrayAdapter<>(IngredientCatalog.this,

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +24,8 @@ public class SearchResults extends BaseActivity
 
     private ArrayAdapter<String> adapter;
 
+    private boolean isIngredients;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_search_results);
@@ -30,7 +33,15 @@ public class SearchResults extends BaseActivity
 
         // Get the recipe results from the activity that called this one
         Intent intent = getIntent();
-        recipe_list = (ArrayList<String>) intent.getSerializableExtra("RECIPE_RESULTS");
+        recipe_list = intent.getStringArrayListExtra("RECIPE_RESULTS");
+        isIngredients = intent.getBooleanExtra("IS_INGREDIENTS", false);
+
+        if (isIngredients) {
+            Button btn_filter_results = findViewById(R.id.btn_filter_results);
+            btn_filter_results.setVisibility(View.GONE);
+        }
+
+
 
         // Initialize the adapter with the list of recipe results
         adapter = new ArrayAdapter<>(SearchResults.this,
